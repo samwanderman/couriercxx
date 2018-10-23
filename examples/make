@@ -1,0 +1,9 @@
+#!/bin/sh
+
+g++ -o GPIOPortExample GPIOPortExample.cpp -lCourierCXX -lpthread
+g++ -o I2CPortExample I2CPortExample.cpp -lCourierCXX -lpthread
+g++ -o PWMExample PWMExample.cpp -lCourierCXX -lpthread
+g++ -o SerialPortExample SerialPortExample.cpp -lCourierCXX -lpthread
+g++ -o ServerExample ServerExample.cpp -lCourierCXX -lpthread -levent
+g++ -o SPIPortExample SPIPortExample.cpp -lCourierCXX -lpthread
+g++ -o SPIExample SPIExample.cpp -lCourierCXX -lpthread

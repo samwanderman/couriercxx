@@ -1,0 +1,9 @@
+*.a
+*.o
+*.d
+.settings
+docs
+examples/*Example
+
+/Debug/
+/Release/
