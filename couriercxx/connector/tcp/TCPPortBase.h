@@ -102,6 +102,13 @@ public:
 	 */
 	int read(int clientFd, uint8_t* buffer, uint32_t bufferSize);
 
+	/**
+	 * Get callback
+	 *
+	 * \return callback
+	 */
+	std::function<void (TCPPortBase* self, int clientFd, std::list<uint8_t>& buffer)> getCallback();
+
 private:
 	std::string ip = "";
 	uint16_t port = 0;
