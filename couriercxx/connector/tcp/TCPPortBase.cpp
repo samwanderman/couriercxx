@@ -62,7 +62,6 @@ void acceptConnectionCallback(struct evconnlistener *listener, evutil_socket_t f
 
 void acceptErrorCallback(struct evconnlistener *listener, void *arg) {
   struct event_base *base = evconnlistener_get_base(listener);
-  int error = EVUTIL_SOCKET_ERROR();
   event_base_loopexit(base, nullptr);
 }
 
