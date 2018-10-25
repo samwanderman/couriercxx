@@ -15,7 +15,6 @@
 #include <stdexcept>
 #include <utility>
 
-
 ConfigBase::ConfigBase(std::string path) {
 	this->path = path;
 }
@@ -52,10 +51,38 @@ int ConfigBase::read() {
 }
 
 int ConfigBase::write() {
+	std::ofstream file(path, std::ios::out | std::ios::binary);
+
+	if (file.is_open()) {
+		std::map<std::string, std::string>::iterator it = properties.begin();
+
+		while (it != properties.end()) {
+			std::string line = it->first + "=" + it->second;
+
+			file << line << std::endl;
+
+			it++;
+		}
+
+		file.close();
+	}
+
 	return 0;
 }
 
 int ConfigBase::set(std::string name, std::string value) {
+	properties.insert(std::pair<std::string, std::string>(name, value));
+
+	return 0;
+}
+
+std::map<std::string, std::string> ConfigBase::getProperties() {
+	return properties;
+}
+
+int ConfigBase::setProperties(std::map<std::string, std::string> properties) {
+	this->properties = properties;
+
 	return 0;
 }
 

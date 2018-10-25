@@ -18,14 +18,13 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <cstring>
-#include <thread>
 
 #include "../../logger/Log.h"
 
 struct event_base;
 
 #define PORT_STRING_MAX_LEN	10
-#define BUFFER_SIZE 1024
+#define BUFFER_SIZE			1024
 
 void echoReadCallback(struct bufferevent *buffEvent, void *arg) {
 	TCPPortBase* self = (TCPPortBase*) arg;
@@ -124,21 +123,6 @@ int TCPPortBase::open() {
 		}
 
 		running = true;
-
-		auto func = [this]() {
-			while (running) {
-				uint8_t buffer[BUFFER_SIZE];
-				int bytesRead = ::read(socketFd, buffer, BUFFER_SIZE);
-				if (bytesRead > 0) {
-					std::list<uint8_t> bytes(buffer, buffer + bytesRead * sizeof(uint8_t));
-					callback(this, socketFd, bytes);
-				}
-			}
-
-			_close();
-		};
-		std::thread thread(func);
-		thread.detach();
 	}
 
 	return 0;
@@ -150,6 +134,10 @@ std::function<void (TCPPortBase* self, int clientFd, std::list<uint8_t>& buffer)
 
 int TCPPortBase::close() {
 	running = false;
+
+	if (callback == nullptr) {
+		return _close();
+	}
 
 	return 0;
 }

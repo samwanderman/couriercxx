@@ -56,6 +56,22 @@ public:
 	T get(std::string name);
 
 	/**
+	 * Get all properties
+	 *
+	 * \return map of properties
+	 */
+	std::map<std::string, std::string> getProperties();
+
+	/**
+	 * Set all properties
+	 *
+	 * \param[in] map<string, string> properties - properties
+	 *
+	 * \return 0 if success, -1 if error
+	 */
+	int setProperties(std::map<std::string, std::string> properties);
+
+	/**
 	 * Set property
 	 *
 	 * \param[in] string name - property name
