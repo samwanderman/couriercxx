@@ -9,8 +9,9 @@
 #ifndef COURIERCXX_UTIL_CONFIG_H_
 #define COURIERCXX_UTIL_CONFIG_H_
 
-#include <map>
 #include <string>
+
+class ConfigBase;
 
 /**
  * Read and load properties
@@ -40,15 +41,10 @@ public:
 	int init(std::string path);
 
 private:
-	std::map<std::string, std::string> properties;
+	ConfigBase* config = nullptr;
 
 	Config();
 	virtual ~Config();
-
-	Config(const Config& config) = default;
-	Config(Config&& config) = default;
-	Config& operator=(const Config& config) = default;
-	Config& operator=(Config&& config) = default;
 };
 
 #endif /* COURIERCXX_UTIL_CONFIG_H_ */
