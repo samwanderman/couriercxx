@@ -6,11 +6,11 @@
  *       Email: sam-wanderman@yandex.ru
  */
 
-#include "../../../couriercxx/connector/spi/SPIPortBase.h"
+#include "SPIPortBase.h"
 
-#include "../../../couriercxx/connector/gpio/GPIOPortBase.h"
+#include "../gpio/GPIOPortBase.h"
 
-SPIPortBase::SPIPortBase(int16_t mosi, int16_t miso, int16_t clk, int16_t cs) {
+SPIPortBase::SPIPortBase(int16_t mosi, int16_t miso, int16_t clk, int16_t cs) : IConnectorBase() {
 	this->mosi = mosi;
 	this->miso = miso;
 	this->clk = clk;
@@ -22,6 +22,10 @@ SPIPortBase::~SPIPortBase() {
 }
 
 int SPIPortBase::open() {
+	if (IConnectorBase::open() == -1) {
+		return -1;
+	}
+
 	gpioMOSI = new GPIOPortBase(mosi);
 
 	if (gpioMOSI->open() == -1) {
@@ -104,6 +108,10 @@ int SPIPortBase::open() {
 }
 
 int SPIPortBase::close() {
+	if (IConnectorBase::close() == -1) {
+		return -1;
+	}
+
 	if (gpioMOSI != nullptr) {
 		gpioMOSI->unexportGPIO();
 		delete gpioMOSI;
@@ -133,6 +141,10 @@ int SPIPortBase::close() {
 
 
 int SPIPortBase::write(const uint8_t* buffer, uint32_t bufferSize) {
+	if (!isOpen()) {
+		return -1;
+	}
+
 	setCSState(false);
 
 	for (uint32_t i = 0; i < bufferSize; i++) {
@@ -145,6 +157,10 @@ int SPIPortBase::write(const uint8_t* buffer, uint32_t bufferSize) {
 }
 
 int SPIPortBase::writeByte(uint8_t byte) {
+	if (!isOpen()) {
+		return -1;
+	}
+
 	setCSState(false);
 	write(byte);
 	setCSState(true);
@@ -153,6 +169,10 @@ int SPIPortBase::writeByte(uint8_t byte) {
 }
 
 int SPIPortBase::read(uint8_t* buffer, uint32_t bufferSize) {
+	if (!isOpen()) {
+		return -1;
+	}
+
 	return 0;
 }
 
@@ -182,6 +202,10 @@ void SPIPortBase::setCLKState(bool state) {
 }
 
 void SPIPortBase::write(uint8_t byte) {
+	if (!isOpen()) {
+		return;
+	}
+
 	for (uint8_t bit = 0; bit < 8 ; bit++) {
 		if ((byte & 0x80) > 0) {
 			setMOSIState(true);

@@ -6,8 +6,8 @@
  *       Email: sam-wanderman@yandex.ru
  */
 
-#ifndef COURIERCXX_UTIL_NET_H_
-#define COURIERCXX_UTIL_NET_H_
+#ifndef COURIERCXX_NET_NET_H_
+#define COURIERCXX_NET_NET_H_
 
 #include <string>
 
@@ -26,4 +26,4 @@ public:
 	static int getLocalIPAddr(std::string& addr);
 };
 
-#endif /* COURIERCXX_UTIL_NET_H_ */
+#endif /* COURIERCXX_NET_NET_H_ */

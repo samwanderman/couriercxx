@@ -11,7 +11,7 @@
 
 #include <cstdint>
 
-#include "../../../couriercxx/connector/IConnectorBase.h"
+#include "../IConnectorBase.h"
 
 /**
  * GPIO port base class

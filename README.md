@@ -4,12 +4,18 @@ C++ framework for standart operations simplification
 
 ### Requirements
 [1] libevent-dev
+
 [2] libpq-dev
+
 [3] libpqxx-dev
+
+[4] libpcap-dev
 
 ### Documentation
 To generate documentation, execute command:
+
 $ doxygen config.doxygen
+
 After generation it will be placed in /docs folder
 
 #### module Logger

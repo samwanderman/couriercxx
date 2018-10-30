@@ -6,7 +6,7 @@
  *       Email: sam-wanderman@yandex.ru
  */
 
-#include "../../couriercxx/util/Daemon.h"
+#include "Daemon.h"
 
 #include <sys/stat.h>
 #include <unistd.h>

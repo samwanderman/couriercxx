@@ -13,8 +13,8 @@
 #include <map>
 #include <mutex>
 
-#include "../../couriercxx/event/IEvent.h"
-#include "../../couriercxx/event/IListener.h"
+#include "IEvent.h"
+#include "IListener.h"
 
 /**
  * Event dispatcher class

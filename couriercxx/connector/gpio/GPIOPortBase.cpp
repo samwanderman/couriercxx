@@ -6,12 +6,12 @@
  *       Email: sam-wanderman@yandex.ru
  */
 
-#include "../../../couriercxx/connector/gpio/GPIOPortBase.h"
+#include "GPIOPortBase.h"
 
 #include <cstdio>
 #include <cstring>
 
-#include "../../../couriercxx/util/IO.h"
+#include "../../util/IO.h"
 
 #define EXPORT_PATH		"/sys/class/gpio/export"
 #define UNEXPORT_PATH	"/sys/class/gpio/unexport"
@@ -32,7 +32,7 @@ GPIOPortBase::GPIOPortBase(uint8_t pid, Direction direction) : GPIOPortBase(pid)
 GPIOPortBase::~GPIOPortBase() { }
 
 int GPIOPortBase::open() {
-	if (isOpen()) {
+	if (IConnectorBase::open() == -1) {
 		return -1;
 	}
 
@@ -52,21 +52,15 @@ int GPIOPortBase::open() {
 		return -1;
 	}
 
-	return IConnectorBase::open();
+	return 0;
 }
 
 int GPIOPortBase::close() {
-	if (!isOpen()) {
-		return -1;
-	}
-
-	int res = unexportGPIO();
-
 	if (IConnectorBase::close() == -1) {
 		return -1;
 	}
 
-	return res;
+	return unexportGPIO();
 }
 
 int GPIOPortBase::read(uint8_t* buffer, uint32_t bufferSize) {

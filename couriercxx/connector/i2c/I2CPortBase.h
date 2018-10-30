@@ -12,7 +12,7 @@
 #include <cstdint>
 #include <string>
 
-#include "../../../couriercxx/connector/IConnectorBase.h"
+#include "../IConnectorBase.h"
 
 /**
  * I2C port base class

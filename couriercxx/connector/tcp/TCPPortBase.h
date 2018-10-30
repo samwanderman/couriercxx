@@ -14,7 +14,7 @@
 #include <list>
 #include <string>
 
-#include "../../../couriercxx/connector/IConnectorBase.h"
+#include "../IConnectorBase.h"
 
 class TCPPortBase : public IConnectorBase {
 public:
@@ -115,7 +115,6 @@ private:
 	std::function<void (TCPPortBase* self, int clientFd, std::list<uint8_t>& buffer)> callback = nullptr;
 
 	int socketFd = -1;
-	bool running = false;
 
 	int _close();
 };

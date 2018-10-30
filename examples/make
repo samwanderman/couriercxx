@@ -7,3 +7,4 @@ g++ -o SerialPortExample SerialPortExample.cpp -lCourierCXX -lpthread
 g++ -o ServerExample ServerExample.cpp -lCourierCXX -lpthread -levent
 g++ -o SPIPortExample SPIPortExample.cpp -lCourierCXX -lpthread
 g++ -o SPIExample SPIExample.cpp -lCourierCXX -lpthread
+g++ -o SnifferExample SnifferExample.cpp -DDEBUG -lCourierCXX -lpthread -lpcap

@@ -6,7 +6,7 @@
  *       Email: sam-wanderman@yandex.ru
  */
 
-#include "../../../couriercxx/connector/serialport/SerialPortBase.h"
+#include "SerialPortBase.h"
 
 #include <fcntl.h>
 #include <termios.h>
@@ -42,7 +42,7 @@ SerialPortBase::SerialPortBase(std::string name, uint32_t speed) : IConnectorBas
 SerialPortBase::~SerialPortBase() { }
 
 int SerialPortBase::open() {
-	if (isOpen()) {
+	if (IConnectorBase::open() == -1) {
 		return -1;
 	}
 
@@ -97,28 +97,19 @@ int SerialPortBase::open() {
 		return -1;
 	}
 
-	return IConnectorBase::open();
+	return 0;
 }
 
 int SerialPortBase::close() {
-	if (!isOpen()) {
-		return -1;
-	}
-
-	int res = 0;
-
-	if (fd != -1) {
-		res = ::close(fd);
-		fd = -1;
-	} else {
-		res = -1;
-	}
-
 	if (IConnectorBase::close() == -1) {
 		return -1;
 	}
 
-	return res;
+	if (fd != -1) {
+		return ::close(fd);
+	}
+
+	return 0;
 }
 
 int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize) {

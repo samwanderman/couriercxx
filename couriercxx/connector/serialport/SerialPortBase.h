@@ -12,7 +12,7 @@
 #include <cstdint>
 #include <string>
 
-#include "../../../couriercxx/connector/IConnectorBase.h"
+#include "../IConnectorBase.h"
 
 /**
  * Serial port base class

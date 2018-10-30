@@ -9,7 +9,7 @@
 #ifndef COURIERCXX_EVENT_DISPATCHER_H_
 #define COURIERCXX_EVENT_DISPATCHER_H_
 
-#include "../../couriercxx/event/IEvent.h"
+#include "IEvent.h"
 
 class DispatcherBase;
 

@@ -1,1 +1,2 @@
-[] TCPPortBase client part refactoring - use libevent
+[] Check all inner buffers overflow
+[] move all io operations to streams

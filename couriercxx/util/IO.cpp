@@ -6,7 +6,7 @@
  *       Email: sam-wanderman@yandex.ru
  */
 
-#include "../../couriercxx/util/IO.h"
+#include "IO.h"
 
 #include <fcntl.h>
 #include <sys/stat.h>

@@ -6,9 +6,10 @@
  *       Email: sam-wanderman@yandex.ru
  */
 
-#include "../../couriercxx/logger/Logger.h"
+#include "Logger.h"
 
 #include <syslog.h>
+#include <cstdint>
 #include <cstring>
 
 // color macrosses

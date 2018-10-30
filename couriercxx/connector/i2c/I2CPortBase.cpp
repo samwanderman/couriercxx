@@ -6,7 +6,7 @@
  *       Email: sam-wanderman@yandex.ru
  */
 
-#include "../../../couriercxx/connector/i2c/I2CPortBase.h"
+#include "I2CPortBase.h"
 
 #include <fcntl.h>
 #include <linux/i2c-dev.h>
@@ -21,7 +21,7 @@ I2CPortBase::I2CPortBase(std::string path, uint8_t addr) : IConnectorBase() {
 I2CPortBase::~I2CPortBase() { }
 
 int I2CPortBase::open() {
-	if (isOpen()) {
+	if (IConnectorBase::open() == -1) {
 		return -1;
 	}
 
@@ -36,21 +36,15 @@ int I2CPortBase::open() {
 		return -1;
 	}
 
-	return IConnectorBase::open();
+	return 0;
 }
 
 int I2CPortBase::close() {
-	if (!isOpen()) {
-		return -1;
-	}
-
-	int res = ::close(fd);
-
 	if (IConnectorBase::close() == -1) {
 		return -1;
 	}
 
-	return res;
+	return ::close(fd);
 }
 
 int I2CPortBase::read(uint8_t* buffer, uint32_t bufferSize) {

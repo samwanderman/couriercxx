@@ -6,19 +6,27 @@
  *       Email: sam-wanderman@yandex.ru
  */
 
-#include "../../couriercxx/connector/IConnectorBase.h"
+#include "IConnectorBase.h"
 
 IConnectorBase::IConnectorBase() { }
 
 IConnectorBase::~IConnectorBase() { }
 
 int IConnectorBase::open() {
+	if (isOpen()) {
+		return -1;
+	}
+
 	opened = true;
 
 	return 0;
 }
 
 int IConnectorBase::close() {
+	if (!isOpen()) {
+		return -1;
+	}
+
 	opened = false;
 
 	return 0;

@@ -76,6 +76,10 @@ TCPPortBase::TCPPortBase(std::string ip, uint16_t port, std::function<void (TCPP
 TCPPortBase::~TCPPortBase() { }
 
 int TCPPortBase::open() {
+	if (IConnectorBase::open() == -1) {
+		return -1;
+	}
+
 	if (callback != nullptr) {
 		struct event_base* base;
 		struct evconnlistener* listener;
@@ -121,8 +125,6 @@ int TCPPortBase::open() {
 
 			return -1;
 		}
-
-		running = true;
 	}
 
 	return 0;
@@ -133,7 +135,9 @@ std::function<void (TCPPortBase* self, int clientFd, std::list<uint8_t>& buffer)
 }
 
 int TCPPortBase::close() {
-	running = false;
+	if (IConnectorBase::close() == -1) {
+		return -1;
+	}
 
 	if (callback == nullptr) {
 		return _close();
@@ -151,17 +155,33 @@ int TCPPortBase::_close() {
 }
 
 int TCPPortBase::write(const uint8_t* buffer, uint32_t bufferSize) {
+	if (!isOpen()) {
+		return -1;
+	}
+
 	return ::write(socketFd, buffer, bufferSize);
 }
 
 int TCPPortBase::write(int clientFd, const uint8_t* buffer, uint32_t bufferSize) {
+	if (!isOpen()) {
+		return -1;
+	}
+
 	return ::write(clientFd, buffer, bufferSize);
 }
 
 int TCPPortBase::read(uint8_t* buffer, uint32_t bufferSize) {
+	if (!isOpen()) {
+		return -1;
+	}
+
 	return ::read(socketFd, buffer, bufferSize);
 }
 
 int TCPPortBase::read(int clientFd, uint8_t* buffer, uint32_t bufferSize) {
+	if (!isOpen()) {
+		return -1;
+	}
+
 	return ::read(clientFd, buffer, bufferSize);
 }

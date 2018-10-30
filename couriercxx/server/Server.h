@@ -13,7 +13,7 @@
 #include <functional>
 #include <string>
 
-#include "../../couriercxx/server/Request.h"
+#include "Request.h"
 
 /**
  * Simple HTTP Server

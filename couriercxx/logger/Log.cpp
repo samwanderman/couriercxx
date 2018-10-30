@@ -6,12 +6,11 @@
  *       Email: sam-wanderman@yandex.ru
  */
 
-#include "../../couriercxx/logger/Log.h"
+#include "Log.h"
 
-#include <cstdio>
 #include <cstdarg>
 
-#include "../../couriercxx/logger/Logger.h"
+#include "Logger.h"
 
 void Log::info(std::string format, ...) {
 	va_list args;

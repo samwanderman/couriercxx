@@ -11,8 +11,8 @@
 
 #include <functional>
 
-#include "../../couriercxx/event/IEvent.h"
-#include "../../couriercxx/event/IListener.h"
+#include "IEvent.h"
+#include "IListener.h"
 
 /**
  * Wrapped listener for callback functionality simplification
