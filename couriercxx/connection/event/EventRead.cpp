@@ -91,11 +91,11 @@ EventRead& EventRead::operator=(EventRead&& other) {
 	return *this;
 }
 
-uint32_t EventRead::getDataLen() {
+uint32_t EventRead::getDataLen() const {
 	return dataLen;
 }
 
-int EventRead::getData(uint8_t* buffer, uint32_t bufferSize) {
+int EventRead::getData(uint8_t* buffer, uint32_t bufferSize) const {
 	if ((data == nullptr) || (buffer == nullptr) || (bufferSize == 0) || (dataLen == 0)) {
 		return -1;
 	}
@@ -106,7 +106,7 @@ int EventRead::getData(uint8_t* buffer, uint32_t bufferSize) {
 	return 0;
 }
 
-uint8_t* EventRead::getData() {
+uint8_t* EventRead::getData() const {
 	return this->data;
 }
 

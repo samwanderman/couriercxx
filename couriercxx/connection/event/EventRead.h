@@ -79,7 +79,7 @@ public:
 	 *
 	 * \return data len
 	 */
-	uint32_t getDataLen();
+	uint32_t getDataLen() const;
 
 	/**
 	 * Copy data to buffer
@@ -87,14 +87,14 @@ public:
 	 * \param[out] buffer - pointer to buffer
 	 * \param[in] buferSize - max buffer size
 	 */
-	int getData(uint8_t* buffer, uint32_t bufferSize);
+	int getData(uint8_t* buffer, uint32_t bufferSize) const;
 
 	/**
 	 * Get raw pointer to data
 	 *
 	 * \return pointer to data
 	 */
-	uint8_t* getData();
+	uint8_t* getData() const;
 
 private:
 	uint8_t* data = nullptr;
