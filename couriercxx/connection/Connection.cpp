@@ -88,10 +88,10 @@ int Connection::disable() {
 	return connector->close();
 }
 
-void Connection::on(IEvent* event) {
+void Connection::on(const IEvent* event) {
 	if (event->getType() == Connection::EVENT_WRITE) {
 		Log::debug("Connection.on(EVENT_WRITE)");
-		EventWrite* writeEvent = dynamic_cast<EventWrite*>(event);
+		const EventWrite* writeEvent = dynamic_cast<const EventWrite*>(event);
 		int res = this->connector->write(writeEvent->getData(), writeEvent->getDataLen());
 		Log::debug("Adapter.write() %i bytes", res);
 	} else if (event->getType() == Connection::EVENT_STATUS) {

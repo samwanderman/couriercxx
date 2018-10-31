@@ -92,11 +92,11 @@ EventWrite& EventWrite::operator=(EventWrite&& other) {
 	return *this;
 }
 
-uint32_t EventWrite::getDataLen() {
+uint32_t EventWrite::getDataLen() const {
 	return dataLen;
 }
 
-int EventWrite::getData(uint8_t* data, uint32_t dataLen) {
+int EventWrite::getData(uint8_t* data, uint32_t dataLen) const {
 	if ((this->data == nullptr) || (data == nullptr) || (dataLen == 0) || (this->dataLen == 0)) {
 		return -1;
 	}
@@ -107,7 +107,7 @@ int EventWrite::getData(uint8_t* data, uint32_t dataLen) {
 	return 0;
 }
 
-uint8_t* EventWrite::getData() {
+uint8_t* EventWrite::getData() const {
 	return this->data;
 }
 

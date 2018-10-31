@@ -24,7 +24,7 @@ public:
 	 *
 	 * \param[in] listener - callback function
 	 */
-	WrappedListener(std::function<void (IEvent*, WrappedListener*)> listener);
+	WrappedListener(std::function<void (const IEvent*, WrappedListener*)> listener);
 
 	/**
 	 * Destructor
@@ -36,10 +36,10 @@ public:
 	 *
 	 * \param[in] IEvent* event - event
 	 */
-	virtual void on(IEvent* event);
+	virtual void on(const IEvent* event);
 
 private:
-	std::function<void (IEvent*, WrappedListener*)> listener = nullptr;
+	std::function<void (const IEvent*, WrappedListener*)> listener = nullptr;
 };
 
 #endif /* COURIERCXX_EVENT_WRAPPEDLISTENER_H_ */

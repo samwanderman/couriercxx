@@ -8,7 +8,7 @@
 
 #include "WrappedListener.h"
 
-WrappedListener::WrappedListener(std::function<void (IEvent*, WrappedListener*)> listener) : IListener() {
+WrappedListener::WrappedListener(std::function<void (const IEvent*, WrappedListener*)> listener) : IListener() {
 	this->listener = listener;
 }
 
@@ -18,7 +18,7 @@ WrappedListener::~WrappedListener() {
 	}
 }
 
-void WrappedListener::on(IEvent* event) {
+void WrappedListener::on(const IEvent* event) {
 	if (listener != nullptr) {
 		listener(event, this);
 	}

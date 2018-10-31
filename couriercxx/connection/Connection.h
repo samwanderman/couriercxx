@@ -45,7 +45,7 @@ public:
 	/**
 	 * Event callback
 	 */
-	void on(IEvent* event);
+	void on(const IEvent* event);
 
 	/**
 	 * Enable event catching
