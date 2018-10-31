@@ -157,20 +157,20 @@ int main(int ac, char** av) {
 	Sniffer* sniffer = new Sniffer("ip", func);
 
 	if (sniffer->enable() == -1) {
-		Log::error("TCPDump.enable() error");
+		Log::error("Sniffer.enable() error");
 
 		return -1;
 	}
-	Log::info("TCPDump.enable() success");
+	Log::info("Sniffer.enable() success");
 
 	while (true) { }
 
 	if (sniffer->disable() == -1) {
-		Log::error("TCPDump.disable() error");
+		Log::error("Sniffer.disable() error");
 
 		return -1;
 	}
-	Log::info("TCPDump.disable() success");
+	Log::info("Sniffer.disable() success");
 
 	return 0;
 }
