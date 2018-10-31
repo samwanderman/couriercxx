@@ -58,8 +58,8 @@ public:
 
 private:
 	ServerConfig config;
-	bool running;
-	std::function<void (Request&)> callback;
+	bool running = false;
+	std::function<void (Request&)> callback = nullptr;
 };
 
 #endif /* COURIERCXX_SERVER_SERVER_H_ */

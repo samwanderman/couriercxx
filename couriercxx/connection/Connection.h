@@ -64,7 +64,7 @@ public:
 private:
 	const Info* info = nullptr;
 	IConnectorBase* connector = nullptr;
-	bool readThreadRunning;
+	bool readThreadRunning = false;
 };
 
 } /* namespace Connection */

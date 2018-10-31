@@ -98,7 +98,7 @@ public:
 
 private:
 	uint8_t* data = nullptr;
-	uint32_t dataLen= 0;
+	uint32_t dataLen = 0;
 };
 
 } /* namespace Connection */

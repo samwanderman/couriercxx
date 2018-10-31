@@ -52,7 +52,7 @@ public:
 	uint8_t getStatus();
 
 private:
-	uint8_t status;
+	uint8_t status = 0;
 };
 
 } /* namespace Connection */
