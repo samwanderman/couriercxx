@@ -4,6 +4,3 @@
 .settings
 docs
 examples/*Example
-
-/Debug/
-/Release/

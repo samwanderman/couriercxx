@@ -1,0 +1,27 @@
+################################################################################
+# Automatically-generated file. Do not edit!
+################################################################################
+
+# Add inputs and outputs from these tool invocations to the build variables 
+CPP_SRCS += \
+../couriercxx/connection/Connection.cpp \
+../couriercxx/connection/Info.cpp 
+
+OBJS += \
+./couriercxx/connection/Connection.o \
+./couriercxx/connection/Info.o 
+
+CPP_DEPS += \
+./couriercxx/connection/Connection.d \
+./couriercxx/connection/Info.d 
+
+
+# Each subdirectory must supply rules for building sources it contributes
+couriercxx/connection/%.o: ../couriercxx/connection/%.cpp
+	@echo 'Building file: $<'
+	@echo 'Invoking: Cross G++ Compiler'
+	g++ -std=c++1y -O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+
