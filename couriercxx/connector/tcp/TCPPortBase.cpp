@@ -107,7 +107,7 @@ int TCPPortBase::open() {
 
 			event_base_dispatch(base);
 
-			_close();
+			return 0;
 		};
 
 		std::thread th(func);
@@ -148,16 +148,14 @@ int TCPPortBase::close() {
 		return -1;
 	}
 
-	if (callback == nullptr) {
-		return _close();
-	} else {
+	if (callback != nullptr) {
 		struct timeval time;
 		time.tv_sec = 0;
 		time.tv_usec = 0;
 		event_loopexit(&time);
 	}
 
-	return 0;
+	return _close();
 }
 
 int TCPPortBase::_close() {
