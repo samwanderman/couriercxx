@@ -12,12 +12,15 @@
 #include <event2/buffer.h>
 #include <event2/bufferevent.h>
 #include <event2/event.h>
+#include <event2/event_compat.h>
 #include <event2/listener.h>
 #include <event2/util.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
+#include <sys/time.h>
 #include <unistd.h>
 #include <cstring>
+#include <thread>
 
 #include "../../logger/Log.h"
 
@@ -81,28 +84,34 @@ int TCPPortBase::open() {
 	}
 
 	if (callback != nullptr) {
-		struct event_base* base;
-		struct evconnlistener* listener;
-		struct sockaddr_in sin;
+		auto func = [this]() {
+			struct event_base* base;
+			struct evconnlistener* listener;
+			struct sockaddr_in sin;
 
-		base = event_base_new();
-		if (!base) {
-			return -1;
-		}
+			base = event_base_new();
+			if (!base) {
+				return -1;
+			}
 
-		memset(&sin, 0, sizeof(sin));
-		sin.sin_family = AF_INET;
-		sin.sin_addr.s_addr = htonl(INADDR_ANY);
-		sin.sin_port = htons(this->port);
+			memset(&sin, 0, sizeof(sin));
+			sin.sin_family = AF_INET;
+			sin.sin_addr.s_addr = htonl(INADDR_ANY);
+			sin.sin_port = htons(this->port);
 
-		listener = evconnlistener_new_bind(base, acceptConnectionCallback, this, (LEV_OPT_CLOSE_ON_FREE | LEV_OPT_REUSEABLE), -1, (struct sockaddr*) &sin, sizeof(sin));
-		if (!listener) {
-			return -1;
-		}
-		evconnlistener_set_error_cb(listener, acceptErrorCallback);
+			listener = evconnlistener_new_bind(base, acceptConnectionCallback, this, (LEV_OPT_CLOSE_ON_FREE | LEV_OPT_REUSEABLE), -1, (struct sockaddr*) &sin, sizeof(sin));
+			if (!listener) {
+				return -1;
+			}
+			evconnlistener_set_error_cb(listener, acceptErrorCallback);
 
-		event_base_dispatch(base);
+			event_base_dispatch(base);
 
+			_close();
+		};
+
+		std::thread th(func);
+		th.detach();
 	} else {
 		socketFd = socket(AF_INET, SOCK_STREAM, 0);
 		if (socketFd == -1) {
@@ -141,6 +150,11 @@ int TCPPortBase::close() {
 
 	if (callback == nullptr) {
 		return _close();
+	} else {
+		struct timeval time;
+		time.tv_sec = 0;
+		time.tv_usec = 0;
+		event_loopexit(&time);
 	}
 
 	return 0;
