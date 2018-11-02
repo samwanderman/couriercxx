@@ -28,6 +28,13 @@ public:
 	Info(int32_t id, std::string name);
 
 	/**
+	 * Constructor
+	 *
+	 * \param[in] int32_t id - connection id
+	 */
+	Info(int32_t id);
+
+	/**
 	 * Destructor
 	 */
 	virtual ~Info();

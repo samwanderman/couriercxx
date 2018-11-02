@@ -15,6 +15,8 @@ Info::Info(int32_t id, std::string name) {
 	this->name = name;
 }
 
+Info::Info(int32_t id) : Info(id, "") { }
+
 Info::~Info() { }
 
 int32_t Info::getId() {
