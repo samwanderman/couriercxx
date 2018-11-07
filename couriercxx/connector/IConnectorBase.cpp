@@ -24,6 +24,6 @@ int IConnectorBase::close() {
 	return 0;
 }
 
-bool IConnectorBase::isOpen() {
+bool IConnectorBase::isOpen() const{
 	return opened;
 }

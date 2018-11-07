@@ -68,7 +68,7 @@ public:
 	 *
 	 * \return number of written bytes if success, -1 if error
 	 */
-	int write(const uint8_t* buffer, uint32_t bufferSize);
+	int write(const uint8_t* buffer, uint32_t bufferSize) const;
 
 	/**
 	 * Write data to tcp port
@@ -79,7 +79,7 @@ public:
 	 *
 	 * \return number of written bytes if success, -1 if error
 	 */
-	int write(int clientFd, const uint8_t* buffer, uint32_t bufferSize);
+	int write(int clientFd, const uint8_t* buffer, uint32_t bufferSize) const;
 
 	/**
 	 * Read data from tcp port
@@ -89,7 +89,7 @@ public:
 	 *
 	 * \return number of read bytes if success, -1 if error
 	 */
-	int read(uint8_t* buffer, uint32_t bufferSize);
+	int read(uint8_t* buffer, uint32_t bufferSize) const;
 
 	/**
 	 * Read data from tcp port
@@ -100,7 +100,7 @@ public:
 	 *
 	 * \return number of read bytes if success, -1 if error
 	 */
-	int read(int clientFd, uint8_t* buffer, uint32_t bufferSize);
+	int read(int clientFd, uint8_t* buffer, uint32_t bufferSize) const;
 
 	/**
 	 * Get callback

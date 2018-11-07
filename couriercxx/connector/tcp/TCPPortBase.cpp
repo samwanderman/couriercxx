@@ -166,7 +166,7 @@ void TCPPortBase::clean() {
 	}
 }
 
-int TCPPortBase::write(const uint8_t* buffer, uint32_t bufferSize) {
+int TCPPortBase::write(const uint8_t* buffer, uint32_t bufferSize) const {
 	if (!isOpen()) {
 		return -1;
 	}
@@ -174,7 +174,7 @@ int TCPPortBase::write(const uint8_t* buffer, uint32_t bufferSize) {
 	return ::write(socketFd, buffer, bufferSize);
 }
 
-int TCPPortBase::write(int clientFd, const uint8_t* buffer, uint32_t bufferSize) {
+int TCPPortBase::write(int clientFd, const uint8_t* buffer, uint32_t bufferSize) const {
 	if (!isOpen()) {
 		return -1;
 	}
@@ -182,7 +182,7 @@ int TCPPortBase::write(int clientFd, const uint8_t* buffer, uint32_t bufferSize)
 	return ::write(clientFd, buffer, bufferSize);
 }
 
-int TCPPortBase::read(uint8_t* buffer, uint32_t bufferSize) {
+int TCPPortBase::read(uint8_t* buffer, uint32_t bufferSize) const {
 	if (!isOpen()) {
 		return -1;
 	}
@@ -190,7 +190,7 @@ int TCPPortBase::read(uint8_t* buffer, uint32_t bufferSize) {
 	return ::read(socketFd, buffer, bufferSize);
 }
 
-int TCPPortBase::read(int clientFd, uint8_t* buffer, uint32_t bufferSize) {
+int TCPPortBase::read(int clientFd, uint8_t* buffer, uint32_t bufferSize) const {
 	if (!isOpen()) {
 		return -1;
 	}

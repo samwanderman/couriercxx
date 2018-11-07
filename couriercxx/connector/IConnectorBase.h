@@ -48,7 +48,7 @@ public:
 	 *
 	 * \return true - connector is open, false - connector is closed
 	 */
-	virtual bool isOpen();
+	virtual bool isOpen() const;
 
 	/**
 	 * Read data from connector
