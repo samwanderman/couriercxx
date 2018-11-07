@@ -42,7 +42,7 @@ SerialPortBase::SerialPortBase(std::string name, uint32_t speed) : IConnectorBas
 SerialPortBase::~SerialPortBase() { }
 
 int SerialPortBase::open() {
-	if (IConnectorBase::open() == -1) {
+	if (isOpen()) {
 		return -1;
 	}
 
@@ -55,20 +55,20 @@ int SerialPortBase::open() {
 	memset(&tty, 0, sizeof(tty));
 
 	if (tcgetattr(fd, &tty) != 0) {
-		close();
+		clean();
 
 		return -1;
 	}
 
 	if (speed != 0) {
 		if (cfsetospeed(&tty, speed) == -1) {
-			close();
+			clean();
 
 			return -1;
 		}
 
 		if (cfsetispeed(&tty, speed) == -1) {
-			close();
+			clean();
 
 			return -1;
 		}
@@ -86,30 +86,32 @@ int SerialPortBase::open() {
 	cfmakeraw(&tty);
 
 	if (tcflush(fd, TCIFLUSH) == -1) {
-		close();
+		clean();
 
 		return -1;
 	}
 
 	if (tcsetattr(fd, TCSANOW, &tty) != 0) {
-		close();
+		clean();
 
 		return -1;
 	}
 
-	return 0;
+	return IConnectorBase::open();
 }
 
 int SerialPortBase::close() {
-	if (IConnectorBase::close() == -1) {
+	if (!isOpen()) {
 		return -1;
 	}
 
-	if (fd != -1) {
-		return ::close(fd);
-	}
+	clean();
 
-	return 0;
+	return IConnectorBase::close();
+}
+
+void SerialPortBase::clean() {
+	::close(fd);
 }
 
 int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize) {

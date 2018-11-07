@@ -83,6 +83,8 @@ private:
 	std::string name = "";
 	uint32_t speed = 0;
 	int fd = -1;
+
+	void clean();
 };
 
 #endif /* COURIERCXX_CONNECTOR_SERIALPORT_SERIALPORTBASE_H_ */

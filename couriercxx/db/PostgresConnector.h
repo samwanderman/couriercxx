@@ -108,6 +108,8 @@ private:
 	std::string password = "";
 	std::string dbName = "";
 	std::string encoding = "";
+
+	bool opened = false;
 };
 
 #endif /* COURIERCXX_DB_POSTGRESCONNECTOR_H_ */

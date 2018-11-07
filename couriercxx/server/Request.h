@@ -25,7 +25,7 @@ public:
 	 *
 	 * \param[in] request - initial request
 	 */
-	Request(evhttp_request *request);
+	Request(const evhttp_request *request);
 
 	/**
 	 * Destructor
@@ -71,9 +71,9 @@ public:
 	virtual int getRAWInput(uint8_t* buffer, uint32_t bufferSize);
 
 private:
-	evhttp_request *request = nullptr;
-	struct evbuffer* outputBuffer = nullptr;
-	struct evbuffer* inputBuffer = nullptr;
+	const evhttp_request *request = nullptr;
+	const struct evbuffer* outputBuffer = nullptr;
+	const struct evbuffer* inputBuffer = nullptr;
 };
 
 #endif /* COURIERCXX_SERVER_REQUEST_H_ */

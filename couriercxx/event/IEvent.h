@@ -33,11 +33,11 @@ public:
 	/**
 	 * Constructor
 	 *
-	 * \param[in] type - event type
-	 * \param[in] source - initiator of event
-	 * \param[in] target - target of event
+	 * \param[in] EVENT_T type - event type
+	 * \param[in] const IListener* source - initiator of event
+	 * \param[in] const IListener* target - target of event
 	 */
-	IEvent(EVENT_T type, IListener* source, IListener* target);
+	IEvent(EVENT_T type, const IListener* source, const IListener* target);
 
 	/**
 	 * Destructor
@@ -56,32 +56,32 @@ public:
 	 *
 	 * \return pointer to target
 	 */
-	IListener* getTarget();
+	const IListener* getTarget() const;
 
 	/**
 	 * Set target of event
 	 *
-	 * \param[in] target - target of event
+	 * \param[in] const IListener* target - target of event
 	 *
 	 * \return 0 if success, -1 if error
 	 */
-	int setTarget(IListener* target);
+	int setTarget(const IListener* target);
 
 	/**
 	 * Get source of event
 	 *
 	 * \return pointer to event source
 	 */
-	IListener* getSource() const;
+	const IListener* getSource() const;
 
 	/**
 	 * Set source of event
 	 *
-	 * \param[in] source - source of event
+	 * \param[in] const IListener* source - source of event
 	 *
 	 * \return 0 if success, -1 if error
 	 */
-	int setSource(IListener* source);
+	int setSource(const IListener* source);
 
 	/**
 	 * Generate new event UID
@@ -94,8 +94,8 @@ private:
 	static EVENT_T nextEventId;
 
 	EVENT_T type;
-	IListener* source = nullptr;
-	IListener* target = nullptr;
+	const IListener* source = nullptr;
+	const IListener* target = nullptr;
 };
 
 #endif /* COURIERCXX_EVENT_IEVENT_H_ */

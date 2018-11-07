@@ -16,7 +16,7 @@ IEvent::IEvent(EVENT_T type) {
 	this->target = nullptr;
 }
 
-IEvent::IEvent(EVENT_T type, IListener* source, IListener* target) {
+IEvent::IEvent(EVENT_T type, const IListener* source, const IListener* target) {
 	this->type = type;
 	this->source = source;
 	this->target = target;
@@ -28,21 +28,21 @@ EVENT_T IEvent::getType() const {
 	return type;
 }
 
-IListener* IEvent::getSource() const {
+const IListener* IEvent::getSource() const {
 	return source;
 }
 
-IListener* IEvent::getTarget() {
+const IListener* IEvent::getTarget() const {
 	return target;
 }
 
-int IEvent::setTarget(IListener* target) {
+int IEvent::setTarget(const IListener* target) {
 	this->target = target;
 
 	return 0;
 }
 
-int IEvent::setSource(IListener* source) {
+int IEvent::setSource(const IListener* source) {
 	this->source = source;
 
 	return 0;

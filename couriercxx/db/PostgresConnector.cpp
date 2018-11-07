@@ -36,12 +36,14 @@ PostgresConnector::PostgresConnector(std::string host, uint16_t port, std::strin
 }
 
 PostgresConnector::~PostgresConnector() {
-	if (connection != nullptr) {
-		delete connection;
-	}
+	close();
 }
 
 int PostgresConnector::open() {
+	if (opened) {
+		return -1;
+	}
+
 	char buffer[BUFFER_SIZE];
 	sprintf(buffer, "host=%s port=%u user=%s password=%s dbname=%s\r\n", host.c_str(), port, username.c_str(), password.c_str(), dbName.c_str());
 	connection = new pqxx::connection(buffer);
@@ -52,24 +54,32 @@ int PostgresConnector::open() {
 	}
 	connection->set_client_encoding(encoding);
 
+	opened = true;
+
 	return 0;
 }
 
 int PostgresConnector::close() {
+	if (!opened) {
+		return -1;
+	}
+
 	if (connection != nullptr) {
 		if (connection->is_open()) {
 			connection->disconnect();
 		}
+
+		delete connection;
+		connection = nullptr;
 	}
 
-	delete connection;
-	connection = nullptr;
+	opened = false;
 
 	return 0;
 }
 
 bool PostgresConnector::isOpen() {
-	return connection->is_open();
+	return opened && connection->is_open();
 }
 
 int PostgresConnector::addStatement(std::string name, std::string sql, std::list<std::type_index> types) {
@@ -81,6 +91,7 @@ int PostgresConnector::addStatement(std::string name, std::string sql, std::list
 
 int PostgresConnector::addStatement(std::string name, std::string sql) {
 	std::list<std::type_index> types;
+
 	return addStatement(name, sql, types);
 }
 

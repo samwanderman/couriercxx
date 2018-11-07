@@ -9,12 +9,10 @@
 #include "UDPPortBase.h"
 
 #include <arpa/inet.h>
-#include <netinet/in.h>
 #include <sys/socket.h>
 #include <unistd.h>
 #include <cstring>
 
-#include "../../logger/Log.h"
 
 UDPPortBase::UDPPortBase(std::string ip, uint16_t port) : IConnectorBase() {
 	this->ip = ip;
@@ -28,7 +26,7 @@ UDPPortBase::UDPPortBase(uint16_t port) : UDPPortBase("", port) {
 UDPPortBase::~UDPPortBase() { }
 
 int UDPPortBase::open() {
-	if (IConnectorBase::open() == -1) {
+	if (isOpen()) {
 		return -1;
 	}
 
@@ -45,31 +43,31 @@ int UDPPortBase::open() {
 		sin.sin_addr.s_addr = htonl(INADDR_ANY);
 
 		if (bind(fd, (struct sockaddr*)&sin, sizeof(sin)) == -1) {
-			close();
+			clean();
 
 			return -1;
 		}
 	} else {
-		Log::debug("%s", ip.c_str());
-
 		if (inet_aton(ip.c_str(), &sin.sin_addr) == 0) {
 			return -1;
 		}
 	}
 
-	return 0;
+	return IConnectorBase::open();
 }
 
 int UDPPortBase::close() {
-	if (IConnectorBase::close() == -1) {
+	if (!isOpen()) {
 		return -1;
 	}
 
-	if (fd != -1) {
-		return ::close(fd);
-	}
+	clean();
 
-	return 0;
+	return IConnectorBase::close();
+}
+
+void UDPPortBase::clean() {
+	::close(fd);
 }
 
 int UDPPortBase::write(const uint8_t* buffer, uint32_t bufferSize) {

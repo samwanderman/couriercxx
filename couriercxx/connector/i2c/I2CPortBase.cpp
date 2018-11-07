@@ -21,7 +21,7 @@ I2CPortBase::I2CPortBase(std::string path, uint8_t addr) : IConnectorBase() {
 I2CPortBase::~I2CPortBase() { }
 
 int I2CPortBase::open() {
-	if (IConnectorBase::open() == -1) {
+	if (isOpen()) {
 		return -1;
 	}
 
@@ -31,20 +31,26 @@ int I2CPortBase::open() {
 	}
 
 	if (ioctl(fd, I2C_SLAVE, addr) < 0) {
-		close();
+		clean();
 
 		return -1;
 	}
 
-	return 0;
+	return IConnectorBase::open();
 }
 
 int I2CPortBase::close() {
-	if (IConnectorBase::close() == -1) {
+	if (!isOpen()) {
 		return -1;
 	}
 
-	return ::close(fd);
+	clean();
+
+	return IConnectorBase::close();
+}
+
+void I2CPortBase::clean() {
+	::close(fd);
 }
 
 int I2CPortBase::read(uint8_t* buffer, uint32_t bufferSize) {

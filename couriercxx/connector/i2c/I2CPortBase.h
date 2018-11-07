@@ -77,6 +77,7 @@ private:
 	uint8_t addr = 0;
 	int fd = -1;
 
+	void clean();
 };
 
 #endif /* COURIERCXX_CONNECTOR_I2C_I2CPORTBASE_H_ */

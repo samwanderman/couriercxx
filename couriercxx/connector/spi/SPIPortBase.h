@@ -123,6 +123,8 @@ private:
 	 * \param[in] uint8_t byte
 	 */
 	void write(uint8_t byte);
+
+	void clean();
 };
 
 #endif /* COURIERCXX_CONNECTOR_SPI_SPIPORTBASE_H_ */

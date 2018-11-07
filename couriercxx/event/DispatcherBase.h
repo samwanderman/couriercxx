@@ -54,9 +54,9 @@ public:
 	/**
 	 * Trigger an event
 	 *
-	 * \param[in] event - event
+	 * \param[in] const IEvent* event - event to send
 	 */
-	void trigger(IEvent* event);
+	void trigger(const IEvent* event);
 
 private:
 	std::map<EVENT_T, std::list<IListener*>*> listeners;

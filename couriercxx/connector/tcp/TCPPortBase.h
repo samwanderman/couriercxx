@@ -116,7 +116,7 @@ private:
 
 	int socketFd = -1;
 
-	int _close();
+	void clean();
 };
 
 #endif /* COURIERCXX_CONNECTOR_TCP_TCPPORTBASE_H_ */

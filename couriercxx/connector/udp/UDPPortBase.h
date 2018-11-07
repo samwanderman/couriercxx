@@ -83,6 +83,8 @@ private:
 	uint16_t port = 0;
 	int fd = -1;
 	struct sockaddr_in sin;
+
+	void clean();
 };
 
 #endif /* COURIERCXX_CONNECTOR_UDP_UDPPORTBASE_H_ */

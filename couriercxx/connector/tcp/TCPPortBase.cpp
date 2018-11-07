@@ -79,7 +79,7 @@ TCPPortBase::TCPPortBase(std::string ip, uint16_t port, std::function<void (TCPP
 TCPPortBase::~TCPPortBase() { }
 
 int TCPPortBase::open() {
-	if (IConnectorBase::open() == -1) {
+	if (isOpen()) {
 		return -1;
 	}
 
@@ -124,19 +124,19 @@ int TCPPortBase::open() {
 		servAddr.sin_port = htons(port);
 
 		if (inet_pton(AF_INET, ip.c_str(), &servAddr.sin_addr) != 1) {
-			_close();
+			clean();
 
 			return -1;
 		}
 
 		if (connect(socketFd, (struct sockaddr*) &servAddr, sizeof(servAddr)) == -1) {
-			_close();
+			clean();
 
 			return -1;
 		}
 	}
 
-	return 0;
+	return IConnectorBase::open();
 }
 
 std::function<void (TCPPortBase* self, int clientFd, std::list<uint8_t>& buffer)> TCPPortBase::getCallback() {
@@ -144,10 +144,16 @@ std::function<void (TCPPortBase* self, int clientFd, std::list<uint8_t>& buffer)
 }
 
 int TCPPortBase::close() {
-	if (IConnectorBase::close() == -1) {
+	if (!isOpen()) {
 		return -1;
 	}
 
+	clean();
+
+	return IConnectorBase::close();
+}
+
+void TCPPortBase::clean() {
 	if (callback != nullptr) {
 		struct timeval time;
 		time.tv_sec = 0;
@@ -155,15 +161,9 @@ int TCPPortBase::close() {
 		event_loopexit(&time);
 	}
 
-	return _close();
-}
-
-int TCPPortBase::_close() {
 	if (socketFd != -1) {
 		::close(socketFd);
 	}
-
-	return 0;
 }
 
 int TCPPortBase::write(const uint8_t* buffer, uint32_t bufferSize) {

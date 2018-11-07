@@ -32,12 +32,11 @@ GPIOPortBase::GPIOPortBase(uint8_t pid, Direction direction) : GPIOPortBase(pid)
 GPIOPortBase::~GPIOPortBase() { }
 
 int GPIOPortBase::open() {
-	if (IConnectorBase::open() == -1) {
+	if (isOpen()) {
 		return -1;
 	}
 
 	int res = exportGPIO();
-
 	if (res == -1) {
 		return -1;
 	}
@@ -47,20 +46,26 @@ int GPIOPortBase::open() {
 	}
 
 	if (res == -1) {
-		close();
+		clean();
 
 		return -1;
 	}
 
-	return 0;
+	return IConnectorBase::open();
 }
 
 int GPIOPortBase::close() {
-	if (IConnectorBase::close() == -1) {
+	if (!isOpen()) {
 		return -1;
 	}
 
-	return unexportGPIO();
+	clean();
+
+	return IConnectorBase::close();
+}
+
+void GPIOPortBase::clean() {
+	unexportGPIO();
 }
 
 int GPIOPortBase::read(uint8_t* buffer, uint32_t bufferSize) {

@@ -140,6 +140,8 @@ public:
 private:
 	uint8_t pid = 0;
 	Direction direction = NONE;
+
+	void clean();
 };
 
 #endif /* COURIERCXX_CONNECTOR_GPIO_GPIOPORTBASE_H_ */

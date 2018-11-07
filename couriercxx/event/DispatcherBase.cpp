@@ -90,7 +90,7 @@ int DispatcherBase::removeListener(EVENT_T eventType, IListener* listener) {
 	return 0;
 }
 
-void DispatcherBase::trigger(IEvent* event) {
+void DispatcherBase::trigger(const IEvent* event) {
 	Log::debug("Events.trigger()", event->getType());
 	std::list<IListener*>* foundListeners = getListeners(event->getType());
 	if ((foundListeners == nullptr) || (foundListeners->size() == 0)) {
@@ -100,9 +100,10 @@ void DispatcherBase::trigger(IEvent* event) {
 	std::list<IListener*> l(*foundListeners);
 	std::list<IListener*>::iterator it = l.begin();
 	while (it != l.end()) {
-		if ((event->getTarget() == nullptr) || (event->getTarget() == *it)) {
+		if ((*it)->isEnabled() && ((event->getTarget() == nullptr) || (event->getTarget() == *it))) {
 			(*it)->on(event);
 		}
+
 		it++;
 	}
 

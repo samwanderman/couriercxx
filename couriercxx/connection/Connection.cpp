@@ -48,8 +48,11 @@ Connection::~Connection() {
 }
 
 int Connection::enable() {
-	int res = connector->open();
+	if (isEnabled()) {
+		return -1;
+	}
 
+	int res = connector->open();
 	if (res == -1) {
 		return -1;
 	}
@@ -77,15 +80,20 @@ int Connection::enable() {
 	std::thread thread(func);
 	thread.detach();
 
-	return res;
+	return IListener::enable();
 }
 
 int Connection::disable() {
+	if (!isEnabled()) {
+		return -1;
+	}
 	readThreadRunning = false;
 
 	Dispatcher::removeListener(Connection::EVENT_WRITE, this);
+	int res = connector->close();
+	IListener::disable();
 
-	return connector->close();
+	return res;
 }
 
 void Connection::on(const IEvent* event) {

@@ -22,96 +22,102 @@ SPIPortBase::~SPIPortBase() {
 }
 
 int SPIPortBase::open() {
-	if (IConnectorBase::open() == -1) {
+	if (isOpen()) {
 		return -1;
 	}
 
 	gpioMOSI = new GPIOPortBase(mosi);
 
 	if (gpioMOSI->open() == -1) {
-		close();
+		clean();
 
 		return -1;
 	}
 
 	gpioMOSI->unexportGPIO();
 	if (gpioMOSI->exportGPIO() == -1) {
-		close();
+		clean();
 
 		return -1;
 	}
 
 	if (gpioMOSI->setDirection(GPIOPortBase::Direction::OUT) == -1) {
-		close();
+		clean();
 
 		return -1;
 	}
 
 	gpioMISO = new GPIOPortBase(miso);
 	if (gpioMISO->open() == -1) {
-		close();
+		clean();
 
 		return -1;
 	}
 	gpioMISO->unexportGPIO();
 	if (gpioMISO->exportGPIO() == -1) {
-		close();
+		clean();
 
 		return -1;
 	}
 
 	if (gpioMISO->setDirection(GPIOPortBase::Direction::OUT) == -1) {
-		close();
+		clean();
 
 		return -1;
 	}
 
 	gpioCLK = new GPIOPortBase(clk);
 	if (gpioCLK->open() == -1) {
-		close();
+		clean();
 
 		return -1;
 	}
 	gpioCLK->unexportGPIO();
 	if (gpioCLK->exportGPIO() == -1) {
-		close();
+		clean();
 
 		return -1;
 	}
 
 	if (gpioCLK->setDirection(GPIOPortBase::Direction::OUT) == -1) {
-		close();
+		clean();
 
 		return -1;
 	}
 
 	gpioCS = new GPIOPortBase(cs);
 	if (gpioCS->open() == -1) {
-		close();
+		clean();
 
 		return -1;
 	}
 	gpioCS->unexportGPIO();
 	if (gpioCS->exportGPIO() == -1) {
-		close();
+		clean();
 
 		return -1;
 	}
 
 	if (gpioCS->setDirection(GPIOPortBase::Direction::OUT) == -1) {
-		close();
+		clean();
 
 		return -1;
 	}
 
-	return 0;
+	return IConnectorBase::open();
 }
 
 int SPIPortBase::close() {
-	if (IConnectorBase::close() == -1) {
+	if (!isOpen()) {
 		return -1;
 	}
 
+	clean();
+
+	return IConnectorBase::close();
+}
+
+void SPIPortBase::clean() {
 	if (gpioMOSI != nullptr) {
 		gpioMOSI->unexportGPIO();
 		delete gpioMOSI;
@@ -135,10 +141,7 @@ int SPIPortBase::close() {
 		delete gpioCS;
 		gpioCS = nullptr;
 	}
-
-	return 0;
 }
-
 
 int SPIPortBase::write(const uint8_t* buffer, uint32_t bufferSize) {
 	if (!isOpen()) {
@@ -192,7 +195,6 @@ void SPIPortBase::setCSState(bool state) {
 	if (gpioCS != nullptr) {
 		gpioCS->setValue(state ? 1 : 0);
 	}
-
 }
 
 void SPIPortBase::setCLKState(bool state) {

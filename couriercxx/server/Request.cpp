@@ -15,10 +15,10 @@
 #include <cstdarg>
 #include <cstring>
 
-Request::Request(evhttp_request *request) {
+Request::Request(const evhttp_request* request) {
 	this->request = request;
-	inputBuffer = evhttp_request_get_input_buffer(request);
-	outputBuffer = evhttp_request_get_output_buffer(request);
+	inputBuffer = evhttp_request_get_input_buffer((evhttp_request*) request);
+	outputBuffer = evhttp_request_get_output_buffer((evhttp_request*) request);
 }
 
 Request::~Request() {
@@ -39,7 +39,7 @@ Request::~Request() {
 int Request::writeString(std::string format, ...) {
 	va_list args;
 	va_start(args, format);
-	evbuffer_add_vprintf(outputBuffer, format.c_str(), args);
+	evbuffer_add_vprintf((evbuffer*) outputBuffer, format.c_str(), args);
 	va_end(args);
 
 	return 0;
@@ -52,13 +52,13 @@ int Request::addResponseHeader(std::string name, std::string value) {
 }
 
 int Request::send(uint16_t code, std::string text) {
-	evhttp_send_reply(request, code, text.c_str(), outputBuffer);
+	evhttp_send_reply((evhttp_request*) request, code, text.c_str(), (evbuffer*) outputBuffer);
 
 	return 0;
 }
 
 int Request::getRAWInput(uint8_t* buffer, uint32_t bufferSize) {
-	uint8_t* dataRef = (uint8_t*) EVBUFFER_DATA(inputBuffer);
+	uint8_t* dataRef = (uint8_t*) EVBUFFER_DATA((evbuffer*) inputBuffer);
 	uint16_t minSize = evbuffer_get_length(inputBuffer);
 	minSize = minSize > bufferSize ? bufferSize : minSize;
 	memmove(buffer, dataRef, bufferSize * sizeof(uint8_t));
