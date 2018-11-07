@@ -58,7 +58,7 @@ public:
 	 *
 	 * \return number of read bytes if success, -1 if error
 	 */
-	virtual int read(uint8_t* buffer, uint32_t bufferSize) = 0;
+	virtual int read(uint8_t* buffer, uint32_t bufferSize) const;
 
 	/**
 	 * Write data to connector
@@ -68,7 +68,7 @@ public:
 	 *
 	 * \return number of written bytes if success, -1 if error
 	 */
-	virtual int write(const uint8_t* buffer, uint32_t bufferSize) = 0;
+	virtual int write(const uint8_t* buffer, uint32_t bufferSize) const;
 
 private:
 	bool opened = false;
