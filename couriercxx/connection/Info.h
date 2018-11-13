@@ -24,8 +24,9 @@ public:
 	 *
 	 * \param[in] int32_t id - connection id
 	 * \param[in] string name - conenction name
+	 * \param[in] uint64_t commandTimeout - command timeout
 	 */
-	Info(int32_t id, std::string name);
+	Info(int32_t id, std::string name, uint64_t commandTimeout);
 
 	/**
 	 * Constructor
@@ -44,18 +45,24 @@ public:
 	 *
 	 * \return connection id
 	 */
-	int32_t getId();
+	int32_t getId() const;
 
 	/**
 	 * Get connection name
 	 *
 	 * \return connection name
 	 */
-	std::string getName();
+	std::string getName() const;
+
+	/**
+	 * Get fommand timeout for some types of connection
+	 */
+	uint64_t getCommandTimeout() const;
 
 private:
 	int32_t id = -1;
 	std::string name = "";
+	uint64_t commandTimeout = 0;
 };
 
 }

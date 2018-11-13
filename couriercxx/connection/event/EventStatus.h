@@ -45,6 +45,26 @@ public:
 	virtual ~EventStatus();
 
 	/**
+	 * Copy-constructor
+	 */
+	EventStatus(const EventStatus& other);
+
+	/**
+	 * Move-constructor
+	 */
+	EventStatus(EventStatus&& other);
+
+	/**
+	 * Copy-operator
+	 */
+	EventStatus& operator=(const EventStatus& other);
+
+	/**
+	 * Move-operator
+	 */
+	EventStatus& operator=(EventStatus&& other);
+
+	/**
 	 * Get connection status
 	 *
 	 * \return status

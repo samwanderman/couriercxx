@@ -18,7 +18,7 @@ int Dispatcher::removeListener(EVENT_T eventType, IListener* listener) {
 	return Dispatcher::getInstance().removeListener(eventType, listener);
 }
 
-void Dispatcher::trigger(IEvent* event) {
+void Dispatcher::trigger(const IEvent* event) {
 	Dispatcher::getInstance().trigger(event);
 }
 

@@ -45,6 +45,26 @@ public:
 	virtual ~IEvent();
 
 	/**
+	 * Copy-constructor
+	 */
+	IEvent(const IEvent& other);
+
+	/**
+	 * Move-constructor
+	 */
+	IEvent(IEvent&& other);
+
+	/**
+	 * Copy operator overload
+	 */
+	IEvent& operator=(const IEvent& other);
+
+	/**
+	 * Move operator overload
+	 */
+	IEvent& operator=(IEvent&& event);
+
+	/**
 	 * Get event type
 	 *
 	 * \return event type

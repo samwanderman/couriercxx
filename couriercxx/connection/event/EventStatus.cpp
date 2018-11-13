@@ -22,4 +22,29 @@ EventStatus::EventStatus(const Info* info, uint8_t status, IListener* source, IL
 
 EventStatus::~EventStatus() { }
 
+EventStatus::EventStatus(const EventStatus& other) : IEvent(other), EventConnection(other) {
+	status = other.status;
+}
+
+EventStatus::EventStatus(EventStatus&& other) : IEvent(other), EventConnection(other) {
+	status = other.status;
+}
+
+EventStatus& EventStatus::operator=(const EventStatus& other) {
+	IEvent::operator=(other);
+	EventConnection::operator=(other);
+	status = other.status;
+
+	return *this;
+}
+
+EventStatus& EventStatus::operator=(EventStatus&& other) {
+	IEvent::operator=(other);
+	EventConnection::operator=(other);
+	status = other.status;
+
+	return *this;
+}
+
+
 } /* namespace Connection */

@@ -24,6 +24,38 @@ IEvent::IEvent(EVENT_T type, const IListener* source, const IListener* target) {
 
 IEvent::~IEvent() { }
 
+IEvent::IEvent(const IEvent& other) {
+	type = other.type;
+	source = other.source;
+	target = other.target;
+}
+
+IEvent::IEvent(IEvent&& other) {
+	type = other.type;
+	source = other.source;
+	target = other.target;
+	other.source = nullptr;
+	other.target = nullptr;
+}
+
+IEvent& IEvent::operator=(const IEvent& other) {
+	type = other.type;
+	source = other.source;
+	target = other.target;
+
+	return *this;
+}
+
+IEvent& IEvent::operator=(IEvent&& other) {
+	type = other.type;
+	source = other.source;
+	target = other.target;
+	other.source = nullptr;
+	other.target = nullptr;
+
+	return *this;
+}
+
 EVENT_T IEvent::getType() const {
 	return type;
 }

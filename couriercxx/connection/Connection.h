@@ -9,8 +9,12 @@
 #ifndef COURIERCXX_CONNECTION_CONNECTION_H_
 #define COURIERCXX_CONNECTION_CONNECTION_H_
 
+#include <list>
+#include <mutex>
+
 #include "../event/IEvent.h"
 #include "../event/IListener.h"
+#include "event/EventWrite.h"
 
 class IConnectorBase;
 
@@ -65,6 +69,9 @@ private:
 	const Info* info = nullptr;
 	IConnectorBase* connector = nullptr;
 	bool readThreadRunning = false;
+	bool eventsThreadRunning = false;
+	std::list<EventWrite*> eventsList;
+	std::mutex eventsListMutex;
 };
 
 } /* namespace Connection */

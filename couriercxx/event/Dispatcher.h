@@ -43,7 +43,7 @@ public:
 	 *
 	 * \param[in] event - event
 	 */
-	static void trigger(IEvent* event);
+	static void trigger(const IEvent* event);
 
 private:
 	/**

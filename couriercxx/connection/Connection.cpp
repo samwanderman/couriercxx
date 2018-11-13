@@ -16,10 +16,10 @@
 #include "../event/Dispatcher.h"
 #include "../logger/Log.h"
 #include "event/EventRead.h"
-#include "event/EventWrite.h"
 #include "Info.h"
 
 #define BUFFER_MAX_SIZE	1024
+#define MAX_EVENTS		128
 
 namespace Connection {
 
@@ -31,6 +31,7 @@ Connection::Connection(const Info* info, IConnectorBase* connector) {
 	this->info = info;
 	this->connector = connector;
 	readThreadRunning = false;
+	eventsThreadRunning = false;
 }
 
 Connection::~Connection() {
@@ -61,7 +62,7 @@ int Connection::enable() {
 
 	readThreadRunning = true;
 
-	auto func = [this]() {
+	auto readThreadFunc = [this]() {
 		while (this->readThreadRunning) {
 			uint8_t buffer[BUFFER_MAX_SIZE];
 			int bytesRead = this->connector->read(buffer, BUFFER_MAX_SIZE);
@@ -76,9 +77,28 @@ int Connection::enable() {
 			usleep(100000);
 		}
 	};
+	std::thread readThread(readThreadFunc);
+	readThread.detach();
 
-	std::thread thread(func);
-	thread.detach();
+	eventsThreadRunning = true;
+
+	auto eventsThreadFunc = [this]() {
+		while (eventsThreadRunning) {
+			eventsListMutex.lock();
+			if (eventsList.size() > 0) {
+				Log::info("process event");
+				EventWrite* ev = eventsList.front();
+				int res = this->connector->write(ev->getData(), ev->getDataLen());
+				Log::debug("Adapter.write() %i bytes", res);
+				eventsList.pop_front();
+				delete ev;
+				usleep(info->getCommandTimeout() * 1000);
+			}
+			eventsListMutex.unlock();
+		}
+	};
+	std::thread thEvents(eventsThreadFunc);
+	thEvents.detach();
 
 	return IListener::enable();
 }
@@ -99,9 +119,13 @@ int Connection::disable() {
 void Connection::on(const IEvent* event) {
 	if (event->getType() == Connection::EVENT_WRITE) {
 		Log::debug("Connection.on(EVENT_WRITE)");
-		const EventWrite* writeEvent = dynamic_cast<const EventWrite*>(event);
-		int res = this->connector->write(writeEvent->getData(), writeEvent->getDataLen());
-		Log::debug("Adapter.write() %i bytes", res);
+		eventsListMutex.lock();
+		if (eventsList.size() >= MAX_EVENTS) {
+			eventsList.pop_front();
+		}
+		eventsList.push_back(new EventWrite(*dynamic_cast<const EventWrite*>(event)));
+		eventsListMutex.unlock();
+		Log::debug("added event to queue");
 	} else if (event->getType() == Connection::EVENT_STATUS) {
 		Log::debug("Connection.on(EVENT_STATUS)");
 	}

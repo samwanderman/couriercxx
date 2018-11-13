@@ -33,6 +33,26 @@ public:
 	virtual ~EventConnection();
 
 	/**
+	 * Copy-constructor
+	 */
+	EventConnection(const EventConnection& other);
+
+	/**
+	 * Move-constructor
+	 */
+	EventConnection(EventConnection&& other);
+
+	/**
+	 * Copy-operator
+	 */
+	EventConnection& operator=(const EventConnection& other);
+
+	/**
+	 * Move-operator
+	 */
+	EventConnection& operator=(EventConnection&& other);
+
+	/**
 	 * Get connection info
 	 *
 	 * \return connection info
