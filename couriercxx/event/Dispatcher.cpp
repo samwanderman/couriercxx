@@ -22,6 +22,15 @@ void Dispatcher::trigger(const IEvent* event) {
 	Dispatcher::getInstance().trigger(event);
 }
 
+void Dispatcher::trigger(IEvent* event, EVENT_T responseEventType, IListener* listener) {
+	event->setSource(listener);
+	if (Dispatcher::addListener(responseEventType, listener) == -1) {
+		return;
+	}
+
+	Dispatcher::trigger(event);
+}
+
 DispatcherBase& Dispatcher::getInstance() {
 	static DispatcherBase dispatcher;
 	return dispatcher;

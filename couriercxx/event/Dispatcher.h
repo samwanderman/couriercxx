@@ -41,9 +41,18 @@ public:
 	/**
 	 * Trigger an event
 	 *
-	 * \param[in] event - event
+	 * \param[in] const IEvent* event - event
 	 */
 	static void trigger(const IEvent* event);
+
+	/**
+	 * Trigger an event and catch response
+	 *
+	 * \param[in] IEvent* event - event
+	 * \param[in] EVENT_T responseEventType - response event type
+	 * \param[in] IListener* listener - listener
+	 */
+	static void trigger(IEvent* event, EVENT_T responseEventType, IListener* listener);
 
 private:
 	/**
