@@ -40,7 +40,7 @@ public:
 	 *
 	 * \return 0 if success, -1 if error
 	 */
-	virtual int writeString(std::string format, ...);
+	virtual int writeString(std::string format, ...) const;
 
 	/**
 	 * Add header to response
@@ -50,7 +50,7 @@ public:
 	 *
 	 * \return 0 if success, -1 if error
 	 */
-	virtual int addResponseHeader(std::string name, std::string value);
+	virtual int addResponseHeader(std::string name, std::string value) const;
 
 	/**
 	 * Send code to client
@@ -60,7 +60,7 @@ public:
 	 *
 	 * \return 0 if success, -1 if error
 	 */
-	virtual int send(uint16_t code, std::string text);
+	virtual int send(uint16_t code, std::string text) const;
 
 	/**
 	 * Get raw input
@@ -68,7 +68,7 @@ public:
 	 * \param[out] uint8_t* buffer - pointer to buffer
 	 * \param[in] uint32_t bufferSize - max size of buffer
 	 */
-	virtual int getRAWInput(uint8_t* buffer, uint32_t bufferSize);
+	virtual int getRAWInput(uint8_t* buffer, uint32_t bufferSize) const;
 
 private:
 	const evhttp_request *request = nullptr;

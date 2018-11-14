@@ -36,7 +36,7 @@ Request::~Request() {
 	}
 }
 
-int Request::writeString(std::string format, ...) {
+int Request::writeString(std::string format, ...) const {
 	va_list args;
 	va_start(args, format);
 	evbuffer_add_vprintf((evbuffer*) outputBuffer, format.c_str(), args);
@@ -45,19 +45,19 @@ int Request::writeString(std::string format, ...) {
 	return 0;
 }
 
-int Request::addResponseHeader(std::string name, std::string value) {
+int Request::addResponseHeader(std::string name, std::string value) const {
 	evhttp_add_header(request->output_headers, name.c_str(), value.c_str());
 
 	return 0;
 }
 
-int Request::send(uint16_t code, std::string text) {
+int Request::send(uint16_t code, std::string text) const {
 	evhttp_send_reply((evhttp_request*) request, code, text.c_str(), (evbuffer*) outputBuffer);
 
 	return 0;
 }
 
-int Request::getRAWInput(uint8_t* buffer, uint32_t bufferSize) {
+int Request::getRAWInput(uint8_t* buffer, uint32_t bufferSize) const {
 	uint8_t* dataRef = (uint8_t*) EVBUFFER_DATA((evbuffer*) inputBuffer);
 	uint16_t minSize = evbuffer_get_length(inputBuffer);
 	minSize = minSize > bufferSize ? bufferSize : minSize;

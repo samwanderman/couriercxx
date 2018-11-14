@@ -24,7 +24,7 @@ public:
 	/**
 	 * Destructor
 	 */
-	virtual ~IListener() = 0;
+	virtual ~IListener();
 
 	/**
 	 * Operator== overloading

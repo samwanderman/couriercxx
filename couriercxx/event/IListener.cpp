@@ -10,6 +10,8 @@
 
 IListener::IListener() { }
 
+IListener::~IListener() { }
+
 bool IListener::operator==(const IListener& listener) {
 	return this == &listener;
 }
