@@ -24,14 +24,14 @@ int IConnectorBase::close() {
 	return 0;
 }
 
-bool IConnectorBase::isOpen() const {
+bool IConnectorBase::isOpen() {
 	return opened;
 }
 
-int IConnectorBase::read(uint8_t* buffer, uint32_t bufferSize) const {
+int IConnectorBase::read(uint8_t* buffer, uint32_t bufferSize) {
 	return 0;
 }
 
-int IConnectorBase::write(const uint8_t* buffer, uint32_t bufferSize) const {
+int IConnectorBase::write(const uint8_t* buffer, uint32_t bufferSize) {
 	return 0;
 }

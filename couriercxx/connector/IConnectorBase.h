@@ -48,7 +48,7 @@ public:
 	 *
 	 * \return true - connector is open, false - connector is closed
 	 */
-	virtual bool isOpen() const;
+	virtual bool isOpen();
 
 	/**
 	 * Read data from connector
@@ -58,7 +58,7 @@ public:
 	 *
 	 * \return number of read bytes if success, -1 if error
 	 */
-	virtual int read(uint8_t* buffer, uint32_t bufferSize) const;
+	virtual int read(uint8_t* buffer, uint32_t bufferSize);
 
 	/**
 	 * Write data to connector
@@ -68,7 +68,7 @@ public:
 	 *
 	 * \return number of written bytes if success, -1 if error
 	 */
-	virtual int write(const uint8_t* buffer, uint32_t bufferSize) const;
+	virtual int write(const uint8_t* buffer, uint32_t bufferSize);
 
 private:
 	bool opened = false;

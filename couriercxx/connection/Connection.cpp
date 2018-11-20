@@ -53,6 +53,8 @@ int Connection::enable() {
 		return -1;
 	}
 
+	Log::debug("Connection.enable()");
+
 	int res = connector->open();
 	if (res == -1) {
 		return -1;
@@ -67,9 +69,9 @@ int Connection::enable() {
 			uint8_t buffer[BUFFER_MAX_SIZE];
 			int bytesRead = this->connector->read(buffer, BUFFER_MAX_SIZE);
 			if (bytesRead == -1) {
-				Log::error("Adapter.read() error");
+				Log::error("Connection.read() error");
 			} else if (bytesRead > 0) {
-				Log::debug("Adapter.read() %i bytes", bytesRead);
+				Log::debug("Connection.read() %i bytes", bytesRead);
 				EventRead* event = new EventRead(this->info, buffer, bytesRead);
 				Dispatcher::trigger(event);
 			}
@@ -86,10 +88,9 @@ int Connection::enable() {
 		while (eventsThreadRunning) {
 			eventsListMutex.lock();
 			if (eventsList.size() > 0) {
-				Log::info("process event");
 				EventWrite* ev = eventsList.front();
 				int res = this->connector->write(ev->getData(), ev->getDataLen());
-				Log::debug("Adapter.write() %i bytes", res);
+				Log::debug("Connection.write() %i bytes", res);
 				eventsList.pop_front();
 				delete ev;
 				usleep(info->getCommandTimeout() * 1000);
@@ -107,6 +108,9 @@ int Connection::disable() {
 	if (!isEnabled()) {
 		return -1;
 	}
+
+	Log::debug("Connection.disable()");
+
 	readThreadRunning = false;
 
 	Dispatcher::removeListener(Connection::EVENT_WRITE, this);

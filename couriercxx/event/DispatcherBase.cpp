@@ -33,7 +33,7 @@ DispatcherBase::~DispatcherBase() {
 }
 
 int DispatcherBase::addListener(EVENT_T eventType, IListener* listener) {
-	Log::debug("Events.addListener(%x)", listener);
+	Log::debug("DispatcherBase.addListener(%x)", listener);
 	listenerMutex.lock();
 	std::list<IListener*>* foundListeners = getListeners(eventType);
 	bool eventExists = foundListeners != nullptr;
@@ -60,7 +60,7 @@ int DispatcherBase::addListener(EVENT_T eventType, IListener* listener) {
 }
 
 int DispatcherBase::removeListener(EVENT_T eventType, IListener* listener) {
-	Log::debug("Events.removeListener(%x)", listener);
+	Log::debug("DispatcherBase.removeListener(%x)", listener);
 	listenerMutex.lock();
 
 	std::list<IListener*>* foundListeners = getListeners(eventType);
@@ -91,15 +91,17 @@ int DispatcherBase::removeListener(EVENT_T eventType, IListener* listener) {
 }
 
 void DispatcherBase::trigger(const IEvent* event) {
-	Log::debug("Events.trigger()", event->getType());
+	Log::debug("DispatcherBase.trigger()", event->getType());
 	std::list<IListener*>* foundListeners = getListeners(event->getType());
 	if ((foundListeners == nullptr) || (foundListeners->size() == 0)) {
+		Log::error("Listener not found");
 		return;
 	}
 
 	std::list<IListener*> l(*foundListeners);
 	std::list<IListener*>::iterator it = l.begin();
 	while (it != l.end()) {
+		Log::debug("IListener.isEnabled() %i", (*it)->isEnabled());
 		if ((*it)->isEnabled() && ((event->getTarget() == nullptr) || (event->getTarget() == *it))) {
 			(*it)->on(event);
 		}
