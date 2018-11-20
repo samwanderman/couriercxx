@@ -10,6 +10,7 @@
 
 WrappedListener::WrappedListener(std::function<void (const IEvent*, const WrappedListener*)> listener) : IListener() {
 	this->listener = listener;
+	enable();
 }
 
 WrappedListener::~WrappedListener() {
@@ -19,6 +20,8 @@ WrappedListener::~WrappedListener() {
 }
 
 void WrappedListener::on(const IEvent* event) {
+	disable();
+
 	if (listener != nullptr) {
 		listener(event, this);
 	}

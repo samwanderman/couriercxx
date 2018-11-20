@@ -21,20 +21,7 @@ Request::Request(const evhttp_request* request) {
 	outputBuffer = evhttp_request_get_output_buffer((evhttp_request*) request);
 }
 
-Request::~Request() {
-	if (request != nullptr) {
-		delete request;
-		request = nullptr;
-	}
-
-	if (inputBuffer != nullptr) {
-		inputBuffer = nullptr;
-	}
-
-	if (outputBuffer != nullptr) {
-		outputBuffer = nullptr;
-	}
-}
+Request::~Request() { }
 
 int Request::writeString(std::string format, ...) const {
 	va_list args;
