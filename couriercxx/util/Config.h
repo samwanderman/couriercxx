@@ -31,6 +31,14 @@ public:
 	static T get(std::string propertyName);
 
 	/**
+	 * Set property
+	 *
+	 * \param[in] std::string name - name of property
+	 * \param[in] std::string value - value of property
+	 */
+	static void set(std::string name, std::string value);
+
+	/**
 	 * Get instance of class
 	 */
 	static Config& getInstance();
@@ -39,6 +47,16 @@ public:
 	 * Init property file
 	 */
 	int init(std::string path);
+
+	/**
+	 * Reload properties from file
+	 */
+	static int update();
+
+	/**
+	 * Save current properties
+	 */
+	static int save();
 
 private:
 	ConfigBase* config = nullptr;

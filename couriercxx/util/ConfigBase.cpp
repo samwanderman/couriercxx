@@ -26,6 +26,7 @@ int ConfigBase::read() {
 
 	if (file.is_open()) {
 		std::string line;
+		properties.clear();
 
 		while (getline(file, line)) {
 			if (line.empty()) {

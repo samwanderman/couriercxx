@@ -32,10 +32,22 @@ int Config::init(std::string path) {
 	return config->read();
 }
 
+int Config::update() {
+	return getInstance().config->read();
+}
+
+int Config::save() {
+	return getInstance().config->write();
+}
+
 Config& Config::getInstance() {
 	static Config config;
 
 	return config;
+}
+
+void Config::set(std::string name, std::string value) {
+	getInstance().config->getProperties().insert(std::pair<std::string, std::string>(name, value));
 }
 
 template<typename T>
