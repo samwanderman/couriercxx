@@ -32,6 +32,11 @@ public:
 	 */
 	virtual ~Request();
 
+	Request(const Request& other) = default;
+	Request(Request&& other) = default;
+	Request& operator=(const Request& other) = default;
+	Request& operator=(Request&& other) = default;
+
 	/**
 	 * Write string to output
 	 *
