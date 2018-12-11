@@ -24,6 +24,11 @@ SerialPortBase::SerialPortBase(std::string name, uint32_t speed) : IConnectorBas
 
 		break;
 
+	case 19200:
+		this->speed = B19200;
+
+		break;
+
 	case 38400:
 		this->speed = B38400;
 
@@ -31,6 +36,11 @@ SerialPortBase::SerialPortBase(std::string name, uint32_t speed) : IConnectorBas
 
 	case 57600:
 		this->speed = B57600;
+
+		break;
+
+	case 115200:
+		this->speed = B115200;
 
 		break;
 
