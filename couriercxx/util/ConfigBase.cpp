@@ -72,12 +72,13 @@ int ConfigBase::write() {
 }
 
 int ConfigBase::set(std::string name, std::string value) {
+	properties.erase(name);
 	properties.insert(std::pair<std::string, std::string>(name, value));
 
 	return 0;
 }
 
-std::map<std::string, std::string> ConfigBase::getProperties() {
+std::map<std::string, std::string>& ConfigBase::getProperties() {
 	return properties;
 }
 

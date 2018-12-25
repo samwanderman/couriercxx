@@ -47,6 +47,7 @@ Config& Config::getInstance() {
 }
 
 void Config::set(std::string name, std::string value) {
+	getInstance().config->getProperties().erase(name);
 	getInstance().config->getProperties().insert(std::pair<std::string, std::string>(name, value));
 }
 

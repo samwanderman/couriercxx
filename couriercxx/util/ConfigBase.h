@@ -60,7 +60,7 @@ public:
 	 *
 	 * \return map of properties
 	 */
-	std::map<std::string, std::string> getProperties();
+	std::map<std::string, std::string>& getProperties();
 
 	/**
 	 * Set all properties
