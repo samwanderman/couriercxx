@@ -36,6 +36,10 @@ int GPIOPortBase::open() {
 		return -1;
 	}
 
+	if (IO::exists(EXPORT_PATH)) {
+		unexportGPIO();
+	}
+
 	int res = exportGPIO();
 	if (res == -1) {
 		return -1;
