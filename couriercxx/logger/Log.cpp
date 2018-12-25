@@ -26,6 +26,13 @@ void Log::debug(std::string format, ...) {
 	va_end(args);
 }
 
+void Log::warn(std::string format, ...) {
+	va_list args;
+	va_start(args, format);
+	Log::getLog().print(Logger::LEVEL_WARNING, format, args);
+	va_end(args);
+}
+
 void Log::error(std::string format, ...) {
 	va_list args;
 	va_start(args, format);

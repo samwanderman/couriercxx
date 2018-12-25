@@ -16,6 +16,7 @@
 #define COLOR_ERROR		"\x1b[31m"
 #define COLOR_LOG		"\x1b[32m"
 #define COLOR_DEBUG		"\x1b[30;1m"
+#define COLOR_WARNING	"\x1b[33m"
 #define COLOR_RESET		"\x1b[0m"
 
 #define STRING_MAX_LEN	1024
@@ -65,6 +66,11 @@ void Logger::print(uint8_t level, std::string format, va_list args) {
 
 			break;
 
+		case LEVEL_WARNING:
+			logLevel = LOG_WARNING;
+
+			break;
+
 		case LEVEL_INFO:
 			logLevel = LOG_INFO;
 
@@ -92,6 +98,11 @@ void Logger::print(uint8_t level, std::string format, va_list args) {
 
 			break;
 
+		case LEVEL_WARNING:
+			logLevel = "[WARNING]";
+
+			break;
+
 		case LEVEL_INFO:
 			logLevel = "[INFO]";
 
@@ -113,6 +124,11 @@ void Logger::print(uint8_t level, std::string format, va_list args) {
 
 		case LEVEL_DEBUG:
 			printf(COLOR_DEBUG "%s: %s: %s" COLOR_RESET "\r\n", name.c_str(), logLevel.c_str(), bytes);
+
+			break;
+
+		case LEVEL_WARNING:
+			printf(COLOR_WARNING "%s: %s: %s" COLOR_RESET "\r\n", name.c_str(), logLevel.c_str(), bytes);
 
 			break;
 

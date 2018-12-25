@@ -23,7 +23,8 @@ public:
 	static const uint8_t LEVEL_LOG = 0;
 	static const uint8_t LEVEL_INFO = 1;
 	static const uint8_t LEVEL_DEBUG = 2;
-	static const uint8_t LEVEL_ERROR = 3;
+	static const uint8_t LEVEL_WARNING = 3;
+	static const uint8_t LEVEL_ERROR = 4;
 
 	/**
 	 * Empty constructor

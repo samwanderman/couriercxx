@@ -43,6 +43,14 @@ public:
 	static void error(std::string format, ...);
 
 	/**
+	 * Print warning level log
+	 *
+	 * \param[in] string format - format string
+	 * \param[in] any ... - arguments
+	 */
+	static void warn(std::string format, ...);
+
+	/**
 	 * Print log level log
 	 *
 	 * \param[in] string format - format string
