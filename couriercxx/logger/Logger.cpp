@@ -16,7 +16,7 @@
 #define COLOR_ERROR		"\x1b[31m"
 #define COLOR_LOG		"\x1b[32m"
 #define COLOR_DEBUG		"\x1b[30;1m"
-#define COLOR_WARNING	"\x1b[93m"
+#define COLOR_WARNING	"\x1b[33m"
 #define COLOR_RESET		"\x1b[0m"
 
 #define STRING_MAX_LEN	1024
