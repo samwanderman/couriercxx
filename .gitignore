@@ -4,3 +4,4 @@
 .settings
 docs
 examples/*Example
+utils/*Test
