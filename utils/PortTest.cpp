@@ -6,100 +6,100 @@
  *       Email: sam-wanderman@yandex.ru
  */
 
-#include <sys/select.h>
-#include <unistd.h>
+#include <cstdint>
 #include <cstring>
-#include <csignal>
-#include <cinttypes>
-#include <thread>
 
-#include <couriercxx/connector/serialport/SerialPortBase.h>
-#include <couriercxx/logger/Log.h>
+#include "../couriercxx/connector/serialport/SerialPortBase.h"
+#include "../couriercxx/logger/Log.h"
 
-volatile std::sig_atomic_t running = 1;
+int testPort(const char* portName) {
+	Log::debug("Test port %s", portName);
 
-void signalHandler(int signal) {
-	switch (signal) {
-	case SIGHUP:
-		break;
+	SerialPortBase* port = new SerialPortBase(portName, 57600, 10000);
+	if (port->open() == -1) {
+		Log::error("SerialPortBase.open() error");
 
-	case SIGTERM:
-	case SIGINT:
-		running = 0;
-
-		break;
+		return -1;
 	}
+	Log::debug("SerialPort.open() success");
+
+	const uint8_t testWrite[17] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 0 };
+
+	int res = -1;
+	if ((res = port->write(testWrite, 17)) == -1) {
+		Log::error("SerialPortBase.write('%s', %i) error", testWrite, 17);
+
+		port->close();
+
+		return -1;
+	}
+	Log::debug("SerialPortBase.write('%s', %i) success", testWrite, 17);
+
+	uint8_t testRead[17];
+	memset(testRead, 0, 17 * sizeof(uint8_t));
+	if ((res = port->read(testRead, 17)) == -1) {
+		Log::error("SerialPortBase.read('%s', %i) error", testRead, res);
+
+		port->close();
+
+		return -1;
+	}
+	Log::debug("SerialPortBase.read('%s', %i) success", testRead, res);
+
+	if (res != 17) {
+		port->close();
+
+		return -1;
+	}
+
+	for (int i = 0; i < 17; i++) {
+		if (testWrite[i] != testRead[i]) {
+			port->close();
+
+			return -1;
+		}
+	}
+
+	if (port->close() == -1) {
+		Log::error("SerialPortBase.close() error");
+
+		return -1;
+	}
+	Log::debug("SerialPortBase.close() success");
+
+	return 0;
 }
 
 int main(int ac, char** av) {
 	Log::setAppName(&av[0][2]);
-	Log::info("Start test");
+	Log::info("Start program");
 
-	struct sigaction act;
-	memset(&act, 0, sizeof(act));
-	act.sa_handler = signalHandler;
-	sigset_t   set;
-	sigemptyset(&set);
-	sigaddset(&set, SIGTERM);
-	sigaddset(&set, SIGINT);
-	sigaddset(&set, SIGHUP);
-	act.sa_mask = set;
-	sigaction(SIGTERM, &act, 0);
-	sigaction(SIGINT, &act, 0);
-	sigaction(SIGHUP, &act, 0);
+	const char** ports = nullptr;
+	uint8_t portsNum = ac - 1;
 
-	Log::info("Handlers setted");
-
-	for (int i = 1; i < ac; i++) {
-		const char* portName = av[i];
-		Log::info("%s", portName);
-		auto func = [portName]() {
-			Log::info("Port %s", portName);
-
-			SerialPortBase *port = new SerialPortBase(portName);
-			if (port->open() == -1) {
-				Log::error("SerialPortBase.open('%s') error", portName);
-
-				return;
-			}
-			Log::debug("SerialPort.open('%s') success", portName);
-
-			while (running) {
-				uint8_t toWrite[33] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 0};
-
-				int res = -1;
-				if ((res = port->write(toWrite, 33)) == -1) {
-					Log::error("SerialPort.write() error");
-				} else {
-					Log::debug("SerialPort.write() %i success", res);
-				}
-
-				uint8_t toRead[33];
-				memset(toRead, 0, sizeof(uint8_t) * 33);
-				if ((res = port->read(toRead, 33)) == -1) {
-					Log::error("SerialPort.read() error");
-				} else {
-					Log::debug("SerialPort.read() %i success", res);
-				}
-
-				Log::debug("%s", toRead);
-
-				sleep(3);
-			}
-
-			port->close();
-			Log::info("close %s", portName);
-		};
-
-		std::thread th(func);
-		th.detach();
+	if (portsNum == 0) {
+		portsNum = 4;
+		ports = new const char*[portsNum];
+		ports[0] = "/dev/ttyS1";
+		ports[1] = "/dev/ttyS2";
+		ports[2] = "/dev/ttyUSB0";
+		ports[3] = "/dev/ttyUSB1";
+	} else {
+		ports = new const char*[portsNum];
+		for (int i = 0; i < portsNum; i++) {
+			ports[i] = av[1 + i];
+		}
 	}
 
-	while (running) {
-		sleep(3);
+	for (int i = 0; i < portsNum; i++) {
+		if (testPort(ports[i]) == 0) {
+			Log::info("TEST %s SUCCESS", ports[i]);
+		} else {
+			Log::error("TEST %s ERROR", ports[i]);
+		}
 	}
 
-	Log::info("Stop test");
+	delete[] ports;
 
 	return 0;
 }

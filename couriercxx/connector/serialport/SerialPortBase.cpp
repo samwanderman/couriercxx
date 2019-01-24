@@ -9,6 +9,8 @@
 #include "SerialPortBase.h"
 
 #include <fcntl.h>
+#include <sys/select.h>
+#include <sys/time.h>
 #include <termios.h>
 #include <unistd.h>
 #include <cstring>
@@ -47,6 +49,10 @@ SerialPortBase::SerialPortBase(std::string name, uint32_t speed) : IConnectorBas
 	default:
 		this->speed = speed;
 	}
+}
+
+SerialPortBase::SerialPortBase(std::string name, uint32_t speed, uint32_t timeout) : SerialPortBase(name, speed) {
+	this->timeout = timeout;
 }
 
 SerialPortBase::~SerialPortBase() { }
@@ -127,6 +133,24 @@ void SerialPortBase::clean() {
 int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize) {
 	if (!isOpen()) {
 		return -1;
+	}
+
+	if (timeout != (uint32_t) ~0) {
+		fd_set set;
+		struct timeval timeoutVal;
+
+		FD_ZERO(&set);
+		FD_SET(fd, &set);
+
+		timeoutVal.tv_sec = 0;
+		timeoutVal.tv_usec = timeout;
+
+		int rv = select(fd + 1, &set, NULL, NULL, &timeoutVal);
+		if (rv == -1) {
+			return -1;
+		} else if (rv == 0) {
+			return -1;
+		}
 	}
 
 	return ::read(fd, buffer, bufferSize);

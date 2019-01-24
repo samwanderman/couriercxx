@@ -34,6 +34,15 @@ public:
 	 */
 	SerialPortBase(std::string name, uint32_t speed);
 
+	/**
+	 * Base serial port constructor
+	 *
+	 * \param[in] string name - port system name
+	 * \param[in] uint32_t speed - port speed
+	 * \param[in] uint32_t timeout - port IO timeout
+	 */
+	SerialPortBase(std::string name, uint32_t speed, uint32_t timeout);
+
 	SerialPortBase(const SerialPortBase& port) = default;
 	SerialPortBase(SerialPortBase&& port) = default;
 
@@ -83,6 +92,7 @@ private:
 	std::string name = "";
 	uint32_t speed = 0;
 	int fd = -1;
+	uint32_t timeout = ~0;
 
 	void clean();
 };
