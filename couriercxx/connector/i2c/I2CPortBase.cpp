@@ -13,7 +13,7 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
 
-I2CPortBase::I2CPortBase(std::string path, uint8_t addr) : IConnectorBase() {
+I2CPortBase::I2CPortBase(std::string name, uint8_t addr) : IConnectorBase() {
 	this->name = name;
 	this->addr = addr;
 }

@@ -69,7 +69,7 @@ public:
 	int close();
 
 	/**
-	 * Read data from pgio port
+	 * Read data from gpio port
 	 *
 	 * \param[out] uint8_t* buffer - buffer to store data
 	 * \param[in] uint32_t bufferSize - size of buffer
@@ -89,7 +89,7 @@ public:
 	int write(const uint8_t* buffer, uint32_t bufferSize);
 
 	/**
-	 * Export GPIO port
+	 * Export gpio port
 	 *
 	 * \return 0 - success, -1 - error
 	 */
