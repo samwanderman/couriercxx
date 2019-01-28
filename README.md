@@ -1,5 +1,5 @@
 # CourierCXX
-##### v0.2.1 (23.10.2018)
+##### v0.3.0 (28.01.2019)
 C++ framework for standart operations simplification
 
 ### Requirements
@@ -10,6 +10,8 @@ C++ framework for standart operations simplification
 [3] libpqxx-dev
 
 [4] libpcap-dev
+
+[5] libbluetooth-dev
 
 ### Documentation
 To generate documentation, execute command:

@@ -14,6 +14,8 @@ RM := rm -rf
 -include couriercxx/net/subdir.mk
 -include couriercxx/logger/subdir.mk
 -include couriercxx/event/subdir.mk
+-include couriercxx/device/bluetooth/subdir.mk
+-include couriercxx/device/subdir.mk
 -include couriercxx/db/subdir.mk
 -include couriercxx/connector/udp/subdir.mk
 -include couriercxx/connector/tcp/subdir.mk
@@ -21,6 +23,7 @@ RM := rm -rf
 -include couriercxx/connector/serialport/subdir.mk
 -include couriercxx/connector/i2c/subdir.mk
 -include couriercxx/connector/gpio/subdir.mk
+-include couriercxx/connector/bluetooth/subdir.mk
 -include couriercxx/connector/subdir.mk
 -include couriercxx/connection/event/subdir.mk
 -include couriercxx/connection/subdir.mk

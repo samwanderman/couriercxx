@@ -26,6 +26,7 @@ SUBDIRS := \
 couriercxx/connection \
 couriercxx/connection/event \
 couriercxx/connector \
+couriercxx/connector/bluetooth \
 couriercxx/connector/gpio \
 couriercxx/connector/i2c \
 couriercxx/connector/serialport \
@@ -33,6 +34,8 @@ couriercxx/connector/spi \
 couriercxx/connector/tcp \
 couriercxx/connector/udp \
 couriercxx/db \
+couriercxx/device \
+couriercxx/device/bluetooth \
 couriercxx/event \
 couriercxx/logger \
 couriercxx/net \
