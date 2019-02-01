@@ -11,10 +11,13 @@
 #include <bluetooth/bluetooth.h>
 #include <bluetooth/hci.h>
 #include <bluetooth/hci_lib.h>
-#include <cstdlib>
 #include <unistd.h>
+#include <cstdint>
+#include <cstdlib>
+#include <cstring>
 
 #define MAX_DEVICES	16
+#define SEARCH_TIME	8
 
 BluetoothPortBase::BluetoothPortBase() : IConnectorBase() { }
 
@@ -29,10 +32,14 @@ int BluetoothPortBase::open() {
 		return -1;
 	}
 
-	if (addr.size() == 0) {
-		devId = hci_get_route((bdaddr_t*) addr.c_str());
+	if (addr.length() == 0) {
+		devId = hci_get_route(nullptr);
 	} else {
 		devId = hci_devid(addr.c_str());
+	}
+
+	if (devId == -1) {
+		return -1;
 	}
 
 	fd = hci_open_dev(devId);
@@ -61,11 +68,7 @@ std::list<BluetoothDevice*> BluetoothPortBase::search() {
 	int maxDevices = MAX_DEVICES;
 
 	inquiry_info *foundDevices = (inquiry_info*) malloc(maxDevices * sizeof(inquiry_info));
-	int foundDevicesNumber = hci_inquiry(devId, 8, maxDevices, nullptr, &foundDevices, flags);
-
-	if (foundDevicesNumber < 1) {
-		return devices;
-	}
+	int foundDevicesNumber = hci_inquiry(devId, SEARCH_TIME, maxDevices, nullptr, &foundDevices, flags);
 
 	for (int i = 0; i < foundDevicesNumber; i++) {
 		char addr[32];
@@ -73,11 +76,12 @@ std::list<BluetoothDevice*> BluetoothPortBase::search() {
 		ba2str(&foundDevices[i].bdaddr, addr);
 		char name[256];
 		memset(name, 0, 256 * sizeof(char));
-		int res = hci_read_remote_name(fd, &foundDevices[i].bdaddr, sizeof(name), name, 0);
-	       	if (res == 0) {
-			std::string addr1 = std::string(addr);
-			std::string name1 = std::string(name);
-			devices.push_back(new BluetoothDevice(std::string(addr), std::string(name)));
+		if (hci_read_remote_name(fd, &foundDevices[i].bdaddr, sizeof(name), name, 0) == 0) {
+			uint32_t type = 0;
+			type |= foundDevices[i].dev_class[2];
+			type |= foundDevices[i].dev_class[1] << 8;
+			type |= foundDevices[i].dev_class[0] << 16;
+			devices.push_back(new BluetoothDevice(std::string(addr), std::string(name), type));
 		}
 	}
 

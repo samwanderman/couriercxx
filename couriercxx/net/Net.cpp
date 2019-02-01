@@ -1,4 +1,4 @@
-/*
+/**
  * Net.cpp
  *
  *  Created on: Oct 16, 2018
@@ -8,10 +8,9 @@
 
 #include "Net.h"
 
+#include <ifaddrs.h>
 #include <netdb.h>
 #include <sys/socket.h>
-#include <ifaddrs.h>
-#include <cstdint>
 #include <cstdio>
 #include <cstring>
 
@@ -20,6 +19,24 @@
 
 int Net::getLocalIPAddr(std::string& addr) {
 	addr = "";
+
+	Addr address;
+	if (get(address) == -1) {
+		return -1;
+	}
+
+	char name[12];
+	memset(name, 0, 12 * sizeof(char));
+	snprintf(name, 12, "%hu.%hu.%hu.%hu", address.ip[0], address.ip[1], address.ip[2], address.ip[3]);
+
+	addr = std::string((char*) name);
+
+	return 0;
+}
+
+int Net::get(Addr &addr) {
+	memset(&addr, 0, sizeof(addr));
+
 	FILE* fd = fopen(DEFAULT_NET_ROUTE, "r");
 	if (fd == nullptr) {
 		return -1;
@@ -62,13 +79,21 @@ int Net::getLocalIPAddr(std::string& addr) {
 
 					return -1;
 				}
+
+				sscanf((const char*) name, "%u.%u.%u.%u", (unsigned int*) &addr.ip[0], (unsigned int*) &addr.ip[1], (unsigned int*) &addr.ip[2], (unsigned int*) &addr.ip[3]);
+
+				if (getnameinfo(ifa->ifa_netmask, sizeof(struct sockaddr_in), (char*) name, BUFFER_SIZE, nullptr, 0, NI_NUMERICHOST) != 0) {
+					freeifaddrs(ifaddr);
+
+					return -1;
+				}
+
+				sscanf((const char*) name, "%u.%u.%u.%u", (unsigned int*) &addr.mask[0], (unsigned int*) &addr.mask[1], (unsigned int*) &addr.mask[2], (unsigned int*) &addr.mask[3]);
 			}
 		}
 	}
 
 	freeifaddrs(ifaddr);
-
-	addr = std::string((char*) name);
 
 	return 0;
 }

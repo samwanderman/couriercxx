@@ -13,7 +13,7 @@
 #include <unistd.h>
 
 int IO::writeTo(std::string path, const uint8_t* buffer, uint32_t bufferSize) {
-	int fd = ::open(path.c_str(), O_WRONLY | O_CREAT);
+	int fd = ::open(path.c_str(), O_WRONLY | O_CREAT, 0200);
 	if (fd == -1) {
 		return -1;
 	}

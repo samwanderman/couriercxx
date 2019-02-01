@@ -15,8 +15,9 @@
 
 #define EXPORT_PATH		"/sys/class/gpio/export"
 #define UNEXPORT_PATH	"/sys/class/gpio/unexport"
-#define DIRECTION_PATH	"/sys/class/gpio/gpio%i/direction"
-#define VALUE_PATH		"/sys/class/gpio/gpio%i/value"
+#define GPIO_PATH		"/sys/class/gpio/gpio%i"
+#define DIRECTION_PATH	GPIO_PATH "/direction"
+#define VALUE_PATH		GPIO_PATH "/value"
 
 #define PATH_MAX_LEN	1024
 #define VALUE_MAX_LEN	8
@@ -36,15 +37,16 @@ int GPIOPortBase::open() {
 		return -1;
 	}
 
-	if (IO::exists(EXPORT_PATH)) {
-		unexportGPIO();
+	char path[32];
+	memset(path, 0, 32 * sizeof(const char));
+	snprintf(path, 32, GPIO_PATH, pid);
+	if (!IO::exists(path)) {
+		if (exportGPIO() == -1) {
+			return -1;
+		}
 	}
 
-	int res = exportGPIO();
-	if (res == -1) {
-		return -1;
-	}
-
+	int res = -1;
 	if (direction != NONE) {
 		res = setDirection(direction);
 	}
