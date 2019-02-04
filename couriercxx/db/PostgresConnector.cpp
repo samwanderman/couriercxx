@@ -96,6 +96,7 @@ int PostgresConnector::addStatement(std::string name, std::string sql) {
 }
 
 pqxx::result PostgresConnector::execStatement(std::string name, ...) {
+	accessMutex.lock();
 	va_list args;
 	va_start(args, name);
 
@@ -146,10 +147,18 @@ pqxx::result PostgresConnector::execStatement(std::string name, ...) {
 
 	va_end(args);
 
+	accessMutex.unlock();
+
 	return res;
 }
 
 pqxx::result PostgresConnector::exec(std::string sql) {
+	accessMutex.lock();
+
 	pqxx::work worker(*connection);
-	return worker.exec(sql);
+	pqxx::result res = worker.exec(sql);
+
+	accessMutex.unlock();
+
+	return res;
 }

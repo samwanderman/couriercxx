@@ -13,9 +13,47 @@
 #include <sys/socket.h>
 #include <cstdio>
 #include <cstring>
+#include <list>
+
+#include "../util/String.h"
+
+class String;
 
 #define DEFAULT_NET_ROUTE		"/proc/net/route"
 #define BUFFER_SIZE				32
+
+int getGateway(uint8_t gateway[4]) {
+	FILE *fp = popen("ip route show", "r");
+
+	char line[256];
+	memset(line, 0, 256 * sizeof(char));
+
+	bool parsed = false;
+	while ((fgets(line, sizeof(line), fp) != nullptr) && !parsed) {
+		std::list<std::string> parts = String::split(line, " ");
+		std::list<std::string>::iterator it = parts.begin();
+		int i = 0;
+		while (it != parts.end()) {
+			std::string part = *it;
+			if ((i == 0) && (part == "default")) {
+				parsed = true;
+			}
+
+			if (i == 2) {
+				sscanf(part.c_str(), "%hu.%hu.%hu.%hu", (short unsigned int*) &gateway[0], (short unsigned int*) &gateway[1], (short unsigned int*) &gateway[2], (short unsigned int*) &gateway[3]);
+
+				break;
+			}
+
+			i++;
+			it++;
+		}
+	}
+
+	pclose(fp);
+
+	return 0;
+}
 
 int Net::getLocalIPAddr(std::string& addr) {
 	addr = "";
@@ -25,9 +63,9 @@ int Net::getLocalIPAddr(std::string& addr) {
 		return -1;
 	}
 
-	char name[12];
-	memset(name, 0, 12 * sizeof(char));
-	snprintf(name, 12, "%hu.%hu.%hu.%hu", address.ip[0], address.ip[1], address.ip[2], address.ip[3]);
+	char name[15];
+	memset(name, 0, 15 * sizeof(char));
+	snprintf(name, 15, "%hu.%hu.%hu.%hu", address.ip[0], address.ip[1], address.ip[2], address.ip[3]);
 
 	addr = std::string((char*) name);
 
@@ -89,6 +127,8 @@ int Net::get(Addr &addr) {
 				}
 
 				sscanf((const char*) name, "%u.%u.%u.%u", (unsigned int*) &addr.mask[0], (unsigned int*) &addr.mask[1], (unsigned int*) &addr.mask[2], (unsigned int*) &addr.mask[3]);
+
+				getGateway(addr.gateway);
 			}
 		}
 	}

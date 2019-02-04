@@ -1,3 +1,4 @@
 #!/bin/sh
 
 g++ -o PortTest PortTest.cpp -lCourierCXX -lpthread
+g++ -o PortObserverTest PortObserverTest.cpp -lCourierCXX -lpthread

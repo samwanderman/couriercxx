@@ -8,6 +8,8 @@
 
 #include "String.h"
 
+#include <cstring>
+
 uint8_t hex2asciiOne(uint8_t hex) {
 	hex = hex & 0xf;
 	return (hex < 0xa ? 0x30 : 0x37) + hex;
@@ -46,4 +48,17 @@ int String::ascii2hex(const uint8_t* asciiData, uint32_t asciiDataLen, uint8_t* 
 	}
 
 	return hexDataLen;
+}
+
+std::list<std::string> String::split(std::string str, std::string delim) {
+	std::list<std::string> parts;
+
+	char* srcStr = (char*) str.c_str(), *token = strtok(srcStr, delim.c_str());
+
+	while (token != nullptr) {
+		parts.push_back(std::string(token));
+		token = strtok(nullptr, delim.c_str());
+	}
+
+	return parts;
 }

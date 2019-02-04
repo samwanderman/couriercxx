@@ -7,5 +7,6 @@ g++ -o SerialPortExample SerialPortExample.cpp -lCourierCXX -lpthread
 g++ -o ServerExample ServerExample.cpp -lCourierCXX -lpthread -levent
 g++ -o SPIPortExample SPIPortExample.cpp -lCourierCXX -lpthread
 g++ -o SPIExample SPIExample.cpp -lCourierCXX -lpthread
-g++ -o BluetoothPortExample BluetoothPortExample.cpp -lCourierCXX -lpthread -lbluetooth
+g++ -o NetExample NetExample.cpp -lCourierCXX -lpthread
+g++ -o BluetoothPortExample BluetoothPortExample.cpp -lCourierCXX -lpthread -lbluetooth -fpermissive
 g++ -o SnifferExample SnifferExample.cpp -DDEBUG -lCourierCXX -lpthread -lpcap

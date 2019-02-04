@@ -10,6 +10,8 @@
 #define COURIERCXX_UTIL_STRING_H_
 
 #include <cstdint>
+#include <list>
+#include <string>
 
 /**
  * Class for string operations
@@ -39,6 +41,16 @@ public:
 	 * \return int size of hexData buffer
 	 */
 	static int ascii2hex(const uint8_t* asciiData, uint32_t asciiDataLen, uint8_t* hexData, uint32_t hexDataLen);
+
+	/**
+	 * Split string and return it's parts
+	 *
+	 * \param[in] string str - source string
+	 * \param[in] string delim - delimeter string
+	 *
+	 * \return pars of splitted string
+	 */
+	static std::list<std::string> split(std::string str, std::string delim);
 };
 
 #endif /* COURIERCXX_UTIL_STRING_H_ */
