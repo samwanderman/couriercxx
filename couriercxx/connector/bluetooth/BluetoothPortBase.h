@@ -1,7 +1,7 @@
 /*
  * BluetoothPortBase.h
  *
- *  Created on: 28 янв. 2019 г.
+ *  Created on: 28.01.2019 г.
  *      Author: Potapov Sergei
  *       Email: sam-wanderman@yandex.ru
  */
