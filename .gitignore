@@ -5,5 +5,3 @@
 docs
 examples/*Example
 utils/*Test
-/Debug/
-/Release/
