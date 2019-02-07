@@ -1,5 +1,5 @@
 # CourierCXX
-##### v0.3.0 (28.01.2019)
+##### v0.3.0 (07.02.2019)
 C++ framework for standart operations simplification
 
 ### Requirements
@@ -21,4 +21,13 @@ To generate documentation, execute command:
 $ doxygen config.doxygen
 
 After generation it will be placed in /docs folder
+
+### Makefile commands
+- clean - clean files
+- all - make all files
+- install - install library
+- uninstall - uninstall library
+- examples - make examples
+- utils - make utils
+- docs - generate docs
  
