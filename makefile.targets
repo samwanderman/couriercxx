@@ -1,6 +1,5 @@
 DIR=couriercxx
 LIB_NAME=libCourierCXX.a
-CURRENT_DIR=$(shell pwd)
 
 install: uninstall
 	sudo mkdir -p /usr/local/include/$(DIR)
@@ -12,10 +11,10 @@ uninstall:
 	sudo rm -f /usr/local/lib/$(LIB_NAME)
 	
 examples:	
-	cd ../examples && ./make && cd ${CURRENT_DIR}
+	cd ../examples && ./make
 
 utils:
-	cd ../utils && ./make && cd ${CURRENT_DIR}
+	cd ../utils && ./make
 	
 docs:
 	cd ../ && doxygen config.doxygen
