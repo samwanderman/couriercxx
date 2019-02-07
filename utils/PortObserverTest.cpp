@@ -112,6 +112,7 @@ int main(int ac, char**av) {
 	while (it != ports.end()) {
 		GPIOPortBase* port = *it;
 		port->close();
+		delete port;
 
 		it++;
 	}

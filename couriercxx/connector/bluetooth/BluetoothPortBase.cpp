@@ -11,10 +11,14 @@
 #include <bluetooth/bluetooth.h>
 #include <bluetooth/hci.h>
 #include <bluetooth/hci_lib.h>
+#include <bluetooth/sdp.h>
+#include <bluetooth/sdp_lib.h>
 #include <unistd.h>
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
+
+#include "../../logger/Log.h"
 
 #define MAX_DEVICES	16
 #define SEARCH_TIME	8
@@ -88,4 +92,106 @@ std::list<BluetoothDevice*> BluetoothPortBase::search() {
 	free(foundDevices);
 
 	return devices;
+}
+
+int BluetoothPortBase::connect(std::string addr, uint8_t svcUUIDInt[16]) {
+	Log::debug("BluetoothPortBase.connect()");
+
+	bdaddr_t target;
+	str2ba(addr.c_str(), &target);
+
+	// connect to SDP server on remote device
+	bdaddr_t addrANY;
+	memset(&addrANY, 0, sizeof(addrANY));
+	sdp_session_t* session = sdp_connect(&addrANY, &target, SDP_RETRY_IF_BUSY);
+
+	uuid_t svcUUID;
+
+	// specify service UUID
+	sdp_uuid128_create(&svcUUID, &svcUUIDInt);
+
+	sdp_list_t* searchList = sdp_list_append(nullptr, &svcUUID);
+
+	// specify that we want list of all attributes
+	uint32_t range = 0x0000ffff;
+	sdp_list_t* attridList = sdp_list_append(nullptr, &range);
+
+	// get all services than have UUID 0xabcd
+	sdp_list_t* responseList = NULL;
+	int status = sdp_service_search_attr_req(session, searchList, SDP_ATTR_REQ_RANGE, attridList, &responseList);
+	if (status == -1) {
+		sdp_close(session);
+
+		Log::error("sdp_service_search_attr_req() error");
+
+		return -1;
+	}
+	Log::info("sdp_service_search_attr_req() %i", status);
+
+	sdp_list_t* service = responseList;
+
+	// iterate through services
+	while (service != nullptr) {
+		// get service record
+		sdp_record_t* record = (sdp_record_t*) service->data;
+		sdp_list_t* protoList = nullptr;
+		Log::debug("Check service");
+
+		// get protos for record
+		if (sdp_get_access_protos(record, &protoList) == 0) {
+			Log::debug("sdp_get_access_protos() success");
+	        sdp_list_t *proto = protoList;
+
+	        // iterate through protos
+	        while (proto) {
+	            sdp_list_t *pds = (sdp_list_t*) proto->data;
+	            Log::debug("Check proto");
+
+	            // iterate through sequences
+	            while (pds) {
+	            	Log::debug("Check pds");
+	                // check the protocol attributes
+	                sdp_data_t *d = (sdp_data_t*) pds->data;
+	                int protoType = 0;
+	                while (d) {
+	                	Log::debug("d %i", d->dtd);
+	                    switch (d->dtd) {
+	                        case SDP_UUID16:
+	                        case SDP_UUID32:
+	                        case SDP_UUID128:
+	                            protoType = sdp_uuid_to_proto(&d->val.uuid);
+
+	                            break;
+
+	                        case SDP_UINT8:
+	                            if (protoType == RFCOMM_UUID) {
+	                                Log::debug("rfcomm channel: %d\n", d->val.int8);
+	                            }
+
+	                            break;
+	                    }
+
+	                	d = d->next;
+	                }
+
+	            	pds = pds->next;
+	            }
+
+	            sdp_list_free((sdp_list_t*) proto->data, 0);
+
+	        	proto = proto->next;
+	        }
+
+	        sdp_list_free(protoList, 0);
+		}
+
+		Log::debug("found service record 0x%x\n", record->handle);
+
+		sdp_record_free(record);
+		service = service->next;
+	}
+
+	sdp_close(session);
+
+	return 0;
 }

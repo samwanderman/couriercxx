@@ -58,6 +58,16 @@ public:
 	 */
 	std::list<BluetoothDevice*> search();
 
+	/**
+	 * Try connect to service
+	 *
+	 * \param[in] string addr - device addr
+	 * \param[in] uint8_t[16] svcUUIDInt - service UUID
+	 *
+	 * \return 0 if success, -1 if error
+	 */
+	int connect(std::string addr, uint8_t svcUUIDInt[16]);
+
 private:
 	std::string addr = "";
 	int fd = -1;

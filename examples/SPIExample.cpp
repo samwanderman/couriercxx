@@ -1,8 +1,9 @@
-#include <fcntl.h>
 #include <linux/spi/spidev.h>
+#include <fcntl.h>
 #include <stdint.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
+#include <cstdio>
 #include <cstring>
 
 #include "../couriercxx/logger/Log.h"
@@ -124,6 +125,8 @@ int main(int ac, char** av) {
 	if (spi->open() == -1) {
 		Log::error("SPI.open() error");
 
+		delete spi;
+
 		return -1;
 	}
 	Log::info("SPI.open() success");
@@ -182,9 +185,13 @@ int main(int ac, char** av) {
 	if (spi->close() == -1) {
 		Log::error("SPI.close() error");
 
+		delete spi;
+
 		return -1;
 	}
 	Log::info("SPI.close() success");
+
+	delete spi;
 
 	return 0;
 }

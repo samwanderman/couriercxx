@@ -41,5 +41,7 @@ int main(int ac, char** av) {
 	}
 	Log::debug("Server.stop() success");
 
+	delete server;
+
 	return 0;
 }

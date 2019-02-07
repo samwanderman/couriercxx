@@ -8,6 +8,8 @@ int main(int ac, char** av) {
 	if (pwm->open() == -1) {
 		Log::error("PWM.open() error");
 
+		delete pwm;
+
 		return -1;
 	}
 	Log::debug("PWM.open() success");
@@ -21,9 +23,13 @@ int main(int ac, char** av) {
 	if (pwm->close() == -1) {
 		Log::error("PWM.close() error");
 
+		delete pwm;
+
 		return -1;
 	}
 	Log::debug("PWM.close() success");
+
+	delete pwm;
 
 	return 0;
 }

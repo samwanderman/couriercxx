@@ -159,6 +159,8 @@ int main(int ac, char** av) {
 	if (sniffer->enable() == -1) {
 		Log::error("Sniffer.enable() error");
 
+		delete sniffer;
+
 		return -1;
 	}
 	Log::info("Sniffer.enable() success");
@@ -168,9 +170,13 @@ int main(int ac, char** av) {
 	if (sniffer->disable() == -1) {
 		Log::error("Sniffer.disable() error");
 
+		delete sniffer;
+
 		return -1;
 	}
 	Log::info("Sniffer.disable() success");
+
+	delete sniffer;
 
 	return 0;
 }

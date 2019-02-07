@@ -19,6 +19,8 @@ int testPort(const char* portName) {
 	if (port->open() == -1) {
 		Log::error("SerialPortBase.open() error");
 
+		delete port;
+
 		return -1;
 	}
 	Log::debug("SerialPort.open() success");
@@ -31,6 +33,8 @@ int testPort(const char* portName) {
 
 		port->close();
 
+		delete port;
+
 		return -1;
 	}
 	Log::debug("SerialPortBase.write('%s', %i) success", testWrite, 17);
@@ -42,12 +46,16 @@ int testPort(const char* portName) {
 
 		port->close();
 
+		delete port;
+
 		return -1;
 	}
 	Log::debug("SerialPortBase.read('%s', %i) success", testRead, res);
 
 	if (res != 17) {
 		port->close();
+
+		delete port;
 
 		return -1;
 	}
@@ -56,6 +64,8 @@ int testPort(const char* portName) {
 		if (testWrite[i] != testRead[i]) {
 			port->close();
 
+			delete port;
+
 			return -1;
 		}
 	}
@@ -63,9 +73,13 @@ int testPort(const char* portName) {
 	if (port->close() == -1) {
 		Log::error("SerialPortBase.close() error");
 
+		delete port;
+
 		return -1;
 	}
 	Log::debug("SerialPortBase.close() success");
+
+	delete port;
 
 	return 0;
 }
