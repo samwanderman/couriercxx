@@ -29,6 +29,15 @@ public:
 	typedef enum Direction Direction;
 
 	/**
+	 * Pin value
+	 */
+	enum Value {
+		ZERO = 0x30,
+		ONE = 0x31
+	};
+	typedef enum Value Value;
+
+	/**
 	 * Construtor
 	 *
 	 * \param[in] uint8_t pid - pin id

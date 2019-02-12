@@ -15,7 +15,11 @@
 #include <pqxx/transaction.hxx>
 #include <cstdarg>
 #include <cstdio>
+#include <cstring>
+#include <exception>
 #include <utility>
+
+
 
 #define BUFFER_SIZE	1024
 
@@ -44,17 +48,21 @@ int PostgresConnector::open() {
 		return -1;
 	}
 
-	char buffer[BUFFER_SIZE];
-	sprintf(buffer, "host=%s port=%u user=%s password=%s dbname=%s\r\n", host.c_str(), port, username.c_str(), password.c_str(), dbName.c_str());
-	connection = new pqxx::connection(buffer);
-	if (!connection->is_open()) {
-		close();
+	try {
+		char buffer[BUFFER_SIZE];
+		sprintf(buffer, "host=%s port=%u user=%s password=%s dbname=%s\r\n", host.c_str(), port, username.c_str(), password.c_str(), dbName.c_str());
+		connection = new pqxx::connection(buffer);
+		if (!connection->is_open()) {
+			close();
 
+			return -1;
+		}
+		connection->set_client_encoding(encoding);
+
+		opened = true;
+	} catch (const std::exception& e) {
 		return -1;
 	}
-	connection->set_client_encoding(encoding);
-
-	opened = true;
 
 	return 0;
 }
@@ -103,6 +111,7 @@ pqxx::result PostgresConnector::execStatement(std::string name, ...) {
 	pqxx::work worker(*connection);
 	pqxx::prepare::invocation invoke = worker.prepared(name);
 	pqxx::result res;
+	memset(&res, 0, sizeof(res));
 
 	std::list<std::type_index> types;
 	std::map<std::string, std::list<std::type_index>>::iterator it = preparedStatements.find(name);
@@ -140,9 +149,17 @@ pqxx::result PostgresConnector::execStatement(std::string name, ...) {
 			it2++;
 		}
 
-		res = invoke.exec();
+		try {
+			res = invoke.exec();
 
-		worker.commit();
+			worker.commit();
+		} catch (const std::exception& e) {
+			va_end(args);
+
+			accessMutex.unlock();
+
+			throw;
+		}
 	}
 
 	va_end(args);
@@ -153,12 +170,18 @@ pqxx::result PostgresConnector::execStatement(std::string name, ...) {
 }
 
 pqxx::result PostgresConnector::exec(std::string sql) {
-	accessMutex.lock();
+	try {
+		accessMutex.lock();
 
-	pqxx::work worker(*connection);
-	pqxx::result res = worker.exec(sql);
+		pqxx::work worker(*connection);
+		pqxx::result res = worker.exec(sql);
 
-	accessMutex.unlock();
+		accessMutex.unlock();
 
-	return res;
+		return res;
+	} catch (const std::exception& e) {
+		accessMutex.unlock();
+
+		throw e;
+	}
 }
