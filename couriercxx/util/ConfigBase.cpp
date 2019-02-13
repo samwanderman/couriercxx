@@ -14,6 +14,9 @@
 #include <regex>
 #include <stdexcept>
 #include <utility>
+#include <cinttypes>
+
+#include "../logger/Log.h"
 
 ConfigBase::ConfigBase(std::string path) {
 	this->path = path;
@@ -98,6 +101,17 @@ T ConfigBase::get(std::string propertyName) {
 	throw std::invalid_argument("Not Found");
 }
 
+template<typename T>
+T ConfigBase::getIfExists(std::string propertyName, T defaultValue) {
+	try {
+		return get<T>(propertyName);
+	} catch (const std::exception& e) {
+		Log::warn("Param '%s' not found, set default", propertyName.c_str());
+	}
+
+	return defaultValue;
+}
+
 template<>
 int ConfigBase::get<int>(std::string propertyName) {
 	std::map<std::string, std::string>::iterator it = properties.find(propertyName);
@@ -112,6 +126,17 @@ int ConfigBase::get<int>(std::string propertyName) {
 	}
 
 	throw std::invalid_argument("Not Found");
+}
+
+template<>
+int ConfigBase::getIfExists<int>(std::string propertyName, int defaultValue) {
+	try {
+		return get<int>(propertyName);
+	} catch (const std::exception& e) {
+		Log::warn("Param '%s' not found, set default %i", propertyName.c_str(), defaultValue);
+	}
+
+	return defaultValue;
 }
 
 template<>
@@ -131,6 +156,17 @@ uint8_t ConfigBase::get<uint8_t>(std::string propertyName) {
 }
 
 template<>
+uint8_t ConfigBase::getIfExists<uint8_t>(std::string propertyName, uint8_t defaultValue) {
+	try {
+		return get<uint8_t>(propertyName);
+	} catch (const std::exception& e) {
+		Log::warn("Param '%s' not found, set default %u", propertyName.c_str(), defaultValue);
+	}
+
+	return defaultValue;
+}
+
+template<>
 uint16_t ConfigBase::get<uint16_t>(std::string propertyName) {
 	std::map<std::string, std::string>::iterator it = properties.find(propertyName);
 	if (it != properties.end()) {
@@ -144,6 +180,17 @@ uint16_t ConfigBase::get<uint16_t>(std::string propertyName) {
 	}
 
 	throw std::invalid_argument("Not Found");
+}
+
+template<>
+uint16_t ConfigBase::getIfExists<uint16_t>(std::string propertyName, uint16_t defaultValue) {
+	try {
+		return get<uint16_t>(propertyName);
+	} catch (const std::exception& e) {
+		Log::warn("Param '%s' not found, set default %u", propertyName.c_str(), defaultValue);
+	}
+
+	return defaultValue;
 }
 
 template<>
@@ -163,6 +210,17 @@ uint32_t ConfigBase::get<uint32_t>(std::string propertyName) {
 }
 
 template<>
+uint32_t ConfigBase::getIfExists<uint32_t>(std::string propertyName, uint32_t defaultValue) {
+	try {
+		return get<uint32_t>(propertyName);
+	} catch (const std::exception& e) {
+		Log::warn("Param '%s' not found, set default %u", propertyName.c_str(), defaultValue);
+	}
+
+	return defaultValue;
+}
+
+template<>
 uint64_t ConfigBase::get<uint64_t>(std::string propertyName) {
 	std::map<std::string, std::string>::iterator it = properties.find(propertyName);
 	if (it != properties.end()) {
@@ -179,6 +237,17 @@ uint64_t ConfigBase::get<uint64_t>(std::string propertyName) {
 }
 
 template<>
+uint64_t ConfigBase::getIfExists<uint64_t>(std::string propertyName, uint64_t defaultValue) {
+	try {
+		return get<uint64_t>(propertyName);
+	} catch (const std::exception& e) {
+		Log::warn("Param '%s' not found, set default " PRIu64, propertyName.c_str(), defaultValue);
+	}
+
+	return defaultValue;
+}
+
+template<>
 float ConfigBase::get<float>(std::string propertyName) {
 	std::map<std::string, std::string>::iterator it = properties.find(propertyName);
 	if (it != properties.end()) {
@@ -186,6 +255,17 @@ float ConfigBase::get<float>(std::string propertyName) {
 	}
 
 	throw std::invalid_argument("Not Found");
+}
+
+template<>
+float ConfigBase::getIfExists<float>(std::string propertyName, float defaultValue) {
+	try {
+		return get<float>(propertyName);
+	} catch (const std::exception& e) {
+		Log::warn("Param '%s' not found, set default %f", propertyName.c_str(), defaultValue);
+	}
+
+	return defaultValue;
 }
 
 template<>
@@ -198,3 +278,13 @@ std::string ConfigBase::get<std::string>(std::string propertyName) {
 	throw std::invalid_argument("Not Found");
 }
 
+template<>
+std::string ConfigBase::getIfExists<std::string>(std::string propertyName, std::string defaultValue) {
+	try {
+		return get<std::string>(propertyName);
+	} catch (const std::exception& e) {
+		Log::warn("Param '%s' not found, set default '%s'", propertyName.c_str(), defaultValue.c_str());
+	}
+
+	return defaultValue;
+}

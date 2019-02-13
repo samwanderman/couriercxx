@@ -9,6 +9,7 @@
 #include "IEvent.h"
 
 EVENT_T IEvent::nextEventId = 0;
+const EVENT_T IEvent::EVENT_TIMEOUT = IEvent::genEventId();
 
 IEvent::IEvent(EVENT_T type) {
 	this->type = type;

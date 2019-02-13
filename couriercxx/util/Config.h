@@ -31,6 +31,19 @@ public:
 	static T get(std::string propertyName);
 
 	/**
+	 * Get property value by name and set default value if not exist
+	 *
+	 * <T> - property type
+	 *
+	 * \param[in] string propertyName - name of property
+	 * \param[in] T defaultValue - default value if param propertyName doesn't exist
+	 *
+	 * \return <T> - property value
+	 */
+	template<typename T>
+	static T getIfExists(std::string propertyName, T defaultValue);
+
+	/**
 	 * Set property
 	 *
 	 * \param[in] std::string name - name of property

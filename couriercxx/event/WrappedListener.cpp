@@ -13,6 +13,11 @@ WrappedListener::WrappedListener(std::function<void (const IEvent*, const Wrappe
 	enable();
 }
 
+WrappedListener::WrappedListener(ListenerParams params, std::function<void (const IEvent*, const WrappedListener*)> listener) : IListener(params) {
+	this->listener = listener;
+	enable();
+}
+
 WrappedListener::~WrappedListener() {
 	if (listener == nullptr) {
 		listener = nullptr;

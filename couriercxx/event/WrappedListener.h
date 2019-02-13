@@ -27,6 +27,14 @@ public:
 	WrappedListener(std::function<void (const IEvent*, const WrappedListener*)> listener);
 
 	/**
+	 * Constructor
+	 *
+	 * \param[in] ListenerParams params - params
+	 * \param[in] listener - callback function
+	 */
+	WrappedListener(ListenerParams params, std::function<void (const IEvent*, const WrappedListener*)> listener);
+
+	/**
 	 * Destructor
 	 */
 	virtual ~WrappedListener();

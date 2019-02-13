@@ -9,6 +9,7 @@
 #ifndef COURIERCXX_EVENT_DISPATCHERBASE_H_
 #define COURIERCXX_EVENT_DISPATCHERBASE_H_
 
+#include <functional>
 #include <list>
 #include <map>
 #include <mutex>
@@ -34,8 +35,8 @@ public:
 	/**
 	 * Add listener
 	 *
-	 * \param[in] eventType - event type
-	 * \param[in] listener - event listener
+	 * \param[in] EVENT_T eventType - type
+	 * \param[in] IListener* listener - listener
 	 *
 	 * \return 0 if success, -1 if error
 	 */
@@ -44,8 +45,8 @@ public:
 	/**
 	 * Remove listener
 	 *
-	 * \param[in] eventType - event type
-	 * \param[in] listener - event listener
+	 * \param[in] EVENT_T eventType - type
+	 * \param[in] IListener* listener - listener
 	 *
 	 * \return 0 if success, -1 if error
 	 */
@@ -57,6 +58,24 @@ public:
 	 * \param[in] const IEvent* event - event to send
 	 */
 	void trigger(const IEvent* event);
+
+	/**
+	 * Wait for event
+	 *
+	 * \param[in] EVENT_T eventType - type
+	 * \param[in] function(const IEvent*) listener - listener
+	 */
+	void wait(EVENT_T eventType, std::function<void (const IEvent*)> listener);
+
+	/**
+	 * Wait for event
+	 *
+	 * \param[in] EVENT_T eventType - type
+	 * \param[in] function(const IEvent*) listener - listener
+	 * \param[in] uint64_t timeout - timeout
+	 */
+	void wait(EVENT_T eventType, std::function<void (const IEvent*)> listener, uint64_t timeout);
+
 
 private:
 	std::map<EVENT_T, std::list<IListener*>*> listeners;
@@ -70,6 +89,7 @@ private:
 	 * \return list of listeners if success, nullptr if error
 	 */
 	std::list<IListener*>* getListeners(EVENT_T eventType);
+	bool running = false;
 };
 
 #endif /* COURIERCXX_EVENT_DISPATCHERBASE_H_ */

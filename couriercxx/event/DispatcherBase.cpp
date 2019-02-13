@@ -8,14 +8,61 @@
 
 #include "DispatcherBase.h"
 
+#include <unistd.h>
 #include <algorithm>
+#include <cstdint>
+#include <thread>
 #include <utility>
 
 #include "../logger/Log.h"
+#include "../util/Clock.h"
+#include "event/EventTimeout.h"
+#include "ListenerParams.h"
+#include "WrappedListener.h"
 
-DispatcherBase::DispatcherBase() { }
+DispatcherBase::DispatcherBase() {
+	running = true;
+
+	// timeout watcher
+	auto func = [this]() {
+		const EventTimeout eventTimeout;
+
+		while (running) {
+			uint64_t now = Clock::getTimestamp();
+
+			// iterate through listeners for different events
+			std::map<EVENT_T, std::list<IListener*>*>::iterator it = listeners.begin();
+			while (it != listeners.end()) {
+				std::list<IListener*>* listeners2 = it->second;
+
+				std::list<IListener*> l(*listeners2);
+				std::list<IListener*>::iterator it2 = l.begin();
+
+				// iterate through listeners for same event
+				while (it2 != l.end()) {
+					IListener* listener = *it2;
+					ListenerParams params = listener->getParams();
+
+					if (params.timeout < now) {
+						listener->on(&eventTimeout);
+					}
+
+					it2++;
+				}
+
+				it++;
+			}
+
+			usleep(1000000);
+		}
+	};
+	std::thread th(func);
+	th.detach();
+}
 
 DispatcherBase::~DispatcherBase() {
+	running = false;
+
 	listenerMutex.lock();
 
 	std::map<EVENT_T, std::list<IListener*>*>::iterator it = listeners.begin();
@@ -119,4 +166,20 @@ std::list<IListener*>* DispatcherBase::getListeners(EVENT_T eventType) {
 	} else {
 		return it->second;
 	}
+}
+
+void DispatcherBase::wait(EVENT_T eventType, std::function<void (const IEvent*)> listener) {
+	addListener(eventType, new WrappedListener([this, eventType, listener](const IEvent* event, const WrappedListener* self) {
+		listener(event);
+		removeListener(eventType, (IListener*) self);
+	}));
+}
+
+void DispatcherBase::wait(EVENT_T eventType, std::function<void (const IEvent*)> listener, uint64_t timeout) {
+	ListenerParams param;
+	param.timeout = Clock::getTimestamp() + timeout;
+	addListener(eventType, new WrappedListener(param, [this, eventType, listener](const IEvent* event, const WrappedListener* self) {
+		listener(event);
+		removeListener(eventType, (IListener*) self);
+	}));
 }

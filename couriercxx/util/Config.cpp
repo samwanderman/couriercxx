@@ -9,7 +9,11 @@
 #include "Config.h"
 
 #include <cstdint>
+#include <exception>
+#include <map>
+#include <utility>
 
+#include "../logger/Log.h"
 #include "ConfigBase.h"
 
 Config::Config() { }
@@ -56,9 +60,19 @@ T Config::get(std::string propertyName) {
 	return getInstance().config->get<T>(propertyName);
 }
 
+template<typename T>
+T Config::getIfExists(std::string propertyName, T defaultValue) {
+	return getInstance().config->getIfExists<T>(propertyName, defaultValue);
+}
+
 template<>
 int Config::get<int>(std::string propertyName) {
 	return getInstance().config->get<int>(propertyName);
+}
+
+template<>
+int Config::getIfExists<int>(std::string propertyName, int defaultValue) {
+	return getInstance().config->getIfExists<int>(propertyName, defaultValue);
 }
 
 template<>
@@ -67,8 +81,18 @@ uint8_t Config::get<uint8_t>(std::string propertyName) {
 }
 
 template<>
+uint8_t Config::getIfExists<uint8_t>(std::string propertyName, uint8_t defaultValue) {
+	return getInstance().config->getIfExists<uint8_t>(propertyName, defaultValue);
+}
+
+template<>
 uint16_t Config::get<uint16_t>(std::string propertyName) {
 	return getInstance().config->get<uint16_t>(propertyName);
+}
+
+template<>
+uint16_t Config::getIfExists<uint16_t>(std::string propertyName, uint16_t defaultValue) {
+	return getInstance().config->getIfExists<uint16_t>(propertyName, defaultValue);
 }
 
 template<>
@@ -77,8 +101,18 @@ uint32_t Config::get<uint32_t>(std::string propertyName) {
 }
 
 template<>
+uint32_t Config::getIfExists<uint32_t>(std::string propertyName, uint32_t defaultValue) {
+	return getInstance().config->getIfExists<uint32_t>(propertyName, defaultValue);
+}
+
+template<>
 uint64_t Config::get<uint64_t>(std::string propertyName) {
 	return getInstance().config->get<uint64_t>(propertyName);
+}
+
+template<>
+uint64_t Config::getIfExists<uint64_t>(std::string propertyName, uint64_t defaultValue) {
+	return getInstance().config->getIfExists<uint64_t>(propertyName, defaultValue);
 }
 
 template<>
@@ -87,6 +121,16 @@ float Config::get<float>(std::string propertyName) {
 }
 
 template<>
+float Config::getIfExists<float>(std::string propertyName, float defaultValue) {
+	return getInstance().config->getIfExists<float>(propertyName, defaultValue);
+}
+
+template<>
 std::string Config::get<std::string>(std::string propertyName) {
 	return getInstance().config->get<std::string>(propertyName);
+}
+
+template<>
+std::string Config::getIfExists(std::string propertyName, std::string defaultValue) {
+	return getInstance().config->getIfExists<std::string>(propertyName, defaultValue);
 }

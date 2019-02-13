@@ -56,6 +56,19 @@ public:
 	T get(std::string name);
 
 	/**
+	 * Get property value by name and if not exists set defaultValue
+	 *
+	 * <T> - property type
+	 *
+	 * \param[in] string name - property name
+	 * \param[in] T defaultValue - default value
+	 *
+	 * \return <T> - property value
+	 */
+	template<typename T>
+	T getIfExists(std::string name, T defaultValue);
+
+	/**
 	 * Get all properties
 	 *
 	 * \return map of properties

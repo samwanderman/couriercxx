@@ -9,6 +9,8 @@
 #ifndef COURIERCXX_EVENT_DISPATCHER_H_
 #define COURIERCXX_EVENT_DISPATCHER_H_
 
+#include <functional>
+
 #include "IEvent.h"
 
 class DispatcherBase;
@@ -53,6 +55,23 @@ public:
 	 * \param[in] IListener* listener - listener
 	 */
 	static void trigger(IEvent* event, EVENT_T responseEventType, IListener* listener);
+
+	/**
+	 * Wait for event
+	 *
+	 * \param[in] EVENT_T eventType - type
+	 * \param[in] function(const IEvent*) listener - listener
+	 */
+	static void wait(EVENT_T eventType, std::function<void (const IEvent*)> listener);
+
+	/**
+	 * Wait for event
+	 *
+	 * \param[in] EVENT_T eventType - type
+	 * \param[in] function(const IEvent*) listener - listener
+	 * \param[in] uint64_t timeout
+	 */
+	static void wait(EVENT_T eventType, std::function<void (const IEvent*)> listener, uint64_t timeout);
 
 private:
 	/**

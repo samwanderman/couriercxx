@@ -10,6 +10,10 @@
 
 IListener::IListener() { }
 
+IListener::IListener(ListenerParams params) {
+	this->params = params;
+}
+
 IListener::~IListener() { }
 
 bool IListener::operator==(const IListener& listener) {
@@ -36,4 +40,8 @@ int IListener::disable() {
 
 bool IListener::isEnabled() {
 	return enabled;
+}
+
+ListenerParams IListener::getParams() {
+	return params;
 }

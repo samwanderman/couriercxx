@@ -28,6 +28,11 @@ struct Time {
 	Time(uint64_t timestamp);
 
 	/**
+	 *
+	 */
+	uint16_t msecond = 0;
+
+	/**
 	 * Seconds
 	 */
 	uint8_t second = 0;

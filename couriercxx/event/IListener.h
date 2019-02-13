@@ -9,6 +9,9 @@
 #ifndef COURIERCXX_EVENT_ILISTENER_H_
 #define COURIERCXX_EVENT_ILISTENER_H_
 
+#include "ListenerParams.h"
+
+struct ListenerParams;
 class IEvent;
 
 /**
@@ -20,6 +23,13 @@ public:
 	 * Constructor
 	 */
 	IListener();
+
+	/**
+	 * Constructor
+	 *
+	 * \param[in] ListenerParams params - listener params
+	 */
+	IListener(ListenerParams params);
 
 	/**
 	 * Destructor
@@ -68,8 +78,16 @@ public:
 	 */
 	virtual bool isEnabled();
 
+	/**
+	 * Get listener params
+	 *
+	 * \return ListenerParams params
+	 */
+	ListenerParams getParams();
+
 protected:
 	bool enabled = false;
+	ListenerParams params;
 };
 
 #endif /* COURIERCXX_EVENT_ILISTENER_H_ */

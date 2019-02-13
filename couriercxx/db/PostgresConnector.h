@@ -99,6 +99,13 @@ public:
 	 */
 	pqxx::result exec(std::string sql);
 
+	/**
+	 * Clear caches for requests - needed when field type has changed during work
+	 *
+	 * \return int 0 if success, -1 if error
+	 */
+	int clearCaches();
+
 private:
 	pqxx::connection *connection = nullptr;
 	std::map<std::string, std::list<std::type_index>> preparedStatements;

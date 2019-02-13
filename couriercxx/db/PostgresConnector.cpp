@@ -19,8 +19,6 @@
 #include <exception>
 #include <utility>
 
-
-
 #define BUFFER_SIZE	1024
 
 template<class T>
@@ -182,6 +180,10 @@ pqxx::result PostgresConnector::exec(std::string sql) {
 	} catch (const std::exception& e) {
 		accessMutex.unlock();
 
-		throw e;
+		throw;
 	}
+}
+
+int PostgresConnector::clearCaches() {
+	return 0;
 }

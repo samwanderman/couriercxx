@@ -23,6 +23,8 @@ typedef uint32_t EVENT_T;
  */
 class IEvent {
 public:
+	static const EVENT_T EVENT_TIMEOUT;
+
 	/**
 	 * Constructor
 	 *

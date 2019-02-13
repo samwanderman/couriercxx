@@ -31,6 +31,14 @@ void Dispatcher::trigger(IEvent* event, EVENT_T responseEventType, IListener* li
 	Dispatcher::trigger(event);
 }
 
+void Dispatcher::wait(EVENT_T eventType, std::function<void (const IEvent*)> listener) {
+	Dispatcher::getInstance().wait(eventType, listener);
+}
+
+void Dispatcher::wait(EVENT_T eventType, std::function<void (const IEvent*)> listener, uint64_t timeout) {
+	Dispatcher::getInstance().wait(eventType, listener, timeout);
+}
+
 DispatcherBase& Dispatcher::getInstance() {
 	static DispatcherBase dispatcher;
 	return dispatcher;

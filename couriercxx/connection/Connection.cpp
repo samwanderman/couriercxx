@@ -23,9 +23,9 @@
 
 namespace Connection {
 
-const EVENT_T Connection::EVENT_READ = IEvent::genEventId();
-const EVENT_T Connection::EVENT_WRITE = IEvent::genEventId();
-const EVENT_T Connection::EVENT_STATUS = IEvent::genEventId();
+const EVENT_T Connection::EVENT_READ	= IEvent::genEventId();
+const EVENT_T Connection::EVENT_WRITE	= IEvent::genEventId();
+const EVENT_T Connection::EVENT_STATUS	= IEvent::genEventId();
 
 Connection::Connection(const Info* info, IConnectorBase* connector) {
 	this->info = info;

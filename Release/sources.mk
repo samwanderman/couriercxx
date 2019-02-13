@@ -37,6 +37,7 @@ couriercxx/db \
 couriercxx/device \
 couriercxx/device/bluetooth \
 couriercxx/event \
+couriercxx/event/event \
 couriercxx/logger \
 couriercxx/net \
 couriercxx/server \
