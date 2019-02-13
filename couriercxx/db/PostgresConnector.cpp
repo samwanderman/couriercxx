@@ -84,6 +84,11 @@ int PostgresConnector::close() {
 	return 0;
 }
 
+int PostgresConnector::reopen() {
+	close();
+	return open();
+}
+
 bool PostgresConnector::isOpen() {
 	return opened && connection->is_open();
 }
@@ -182,8 +187,4 @@ pqxx::result PostgresConnector::exec(std::string sql) {
 
 		throw;
 	}
-}
-
-int PostgresConnector::clearCaches() {
-	return 0;
 }

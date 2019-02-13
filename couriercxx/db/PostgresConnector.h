@@ -54,6 +54,13 @@ public:
 	int close();
 
 	/**
+	 * Reopen database
+	 *
+	 * \return 0 if success, -1 if error
+	 */
+	int reopen();
+
+	/**
 	 * Check if database if open
 	 *
 	 * \return true if open, false if closed
@@ -98,13 +105,6 @@ public:
 	 * \return pqxx result
 	 */
 	pqxx::result exec(std::string sql);
-
-	/**
-	 * Clear caches for requests - needed when field type has changed during work
-	 *
-	 * \return int 0 if success, -1 if error
-	 */
-	int clearCaches();
 
 private:
 	pqxx::connection *connection = nullptr;
