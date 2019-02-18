@@ -13,9 +13,9 @@
 #include <cstdint>
 #include <list>
 #include <map>
+#include <mutex>
 #include <string>
 #include <typeindex>
-#include <mutex>
 
 /**
  * Postgresql database connector

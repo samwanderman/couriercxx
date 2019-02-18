@@ -23,6 +23,7 @@ Time::Time() {
 }
 
 Time::Time(uint64_t time) {
+	time /= 1000;
 	struct tm* t = localtime((time_t*) &time);
 	msecond = 0;
 	second = t->tm_sec;
@@ -45,5 +46,5 @@ uint64_t Time::getTimestamp() {
 	time.tm_year = year - 1900;
 	time.tm_gmtoff = gmt;
 
-	return (uint64_t) mktime(&time);
+	return (uint64_t) mktime(&time) * 1000;
 }

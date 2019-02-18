@@ -19,11 +19,13 @@
 #include <exception>
 #include <utility>
 
+#include "Value.h"
+
 #define BUFFER_SIZE	1024
 
-template<class T>
-pqxx::prepare::invocation& prep_dynamic(T data, pqxx::prepare::invocation& inv) {
-	inv(data);
+template<typename T>
+pqxx::prepare::invocation& prep_dynamic(T value, pqxx::prepare::invocation& inv) {
+	inv(value);
 	return inv;
 }
 
@@ -124,29 +126,68 @@ pqxx::result PostgresConnector::execStatement(std::string name, ...) {
 
 		std::list<std::type_index>::iterator it2 = types.begin();
 		while (it2 != types.end()) {
-			if ((*it2).hash_code() == std::type_index(typeid(uint8_t)).hash_code()) {
-				int arg = va_arg(args, int);
-				prep_dynamic(arg, invoke);
+			if ((*it2).hash_code() == DB::typeString.hash_code()) {
+				DB::StringValue arg = va_arg(args, DB::StringValue);
+				if (arg.value != nullptr) {
+					prep_dynamic(*arg.value, invoke);
+				} else {
+					prep_dynamic((const char*) nullptr, invoke);
+				}
 			}
 
-			if ((*it2).hash_code() == std::type_index(typeid(uint16_t)).hash_code()) {
-				uint16_t arg = va_arg(args, int);
-				prep_dynamic(arg, invoke);
+			if ((*it2).hash_code() == DB::typeUINT8T.hash_code()) {
+				DB::UInt8Value arg = va_arg(args, DB::UInt8Value);
+				uint16_t val = *arg.value;
+				if (arg.value != nullptr) {
+					prep_dynamic(val, invoke);
+				} else {
+					prep_dynamic((const char*) nullptr, invoke);
+				}
 			}
 
-			if ((*it2).hash_code() == std::type_index(typeid(uint32_t)).hash_code()) {
-				uint32_t arg = va_arg(args, uint32_t);
-				prep_dynamic(arg, invoke);
+			if ((*it2).hash_code() == DB::typeUINT16T.hash_code()) {
+				DB::UInt16Value arg = va_arg(args, DB::UInt16Value);
+				if (arg.value != nullptr) {
+					prep_dynamic(*arg.value, invoke);
+				} else {
+					prep_dynamic((const char*) nullptr, invoke);
+				}
 			}
 
-			if ((*it2).hash_code() == std::type_index(typeid(uint64_t)).hash_code()) {
-				uint64_t arg = va_arg(args, uint64_t);
-				prep_dynamic(arg, invoke);
+			if ((*it2).hash_code() == DB::typeUINT32T.hash_code()) {
+				DB::UInt32Value arg = va_arg(args, DB::UInt32Value);
+				if (arg.value != nullptr) {
+					prep_dynamic(*arg.value, invoke);
+				} else {
+					prep_dynamic((const char*) nullptr, invoke);
+				}
 			}
 
-			if ((*it2).hash_code() == std::type_index(typeid(pqxx::binarystring)).hash_code()) {
-				pqxx::binarystring arg = va_arg(args, pqxx::binarystring);
-				prep_dynamic(arg, invoke);
+			if ((*it2).hash_code() == DB::typeUINT64T.hash_code()) {
+				DB::UInt64Value arg = va_arg(args, DB::UInt64Value);
+				if (arg.value != nullptr) {
+					prep_dynamic(*arg.value, invoke);
+				} else {
+					prep_dynamic((const char*) nullptr, invoke);
+				}
+			}
+
+			if ((*it2).hash_code() == DB::typeINT64T.hash_code()) {
+				DB::Int64Value arg = va_arg(args, DB::Int64Value);
+				if (arg.value != nullptr) {
+					prep_dynamic(*arg.value, invoke);
+				} else {
+					prep_dynamic((const char*) nullptr, invoke);
+				}
+			}
+
+			if ((*it2).hash_code() == DB::typeArray.hash_code()) {
+				DB::ArrayValue arg = va_arg(args, DB::ArrayValue);
+				if (arg.value != nullptr) {
+					prep_dynamic(*arg.value, invoke);
+				} else {
+					prep_dynamic((const char*) nullptr, invoke);
+				}
 			}
 
 			it2++;
@@ -178,6 +219,7 @@ pqxx::result PostgresConnector::exec(std::string sql) {
 
 		pqxx::work worker(*connection);
 		pqxx::result res = worker.exec(sql);
+		worker.commit();
 
 		accessMutex.unlock();
 
