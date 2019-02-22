@@ -29,13 +29,13 @@ public:
 	typedef enum Direction Direction;
 
 	/**
-	 * Pin value
+	 * Signal type
 	 */
-	enum Value {
-		ZERO = 0x30,
-		ONE = 0x31
+	enum Signal {
+		LOW = '0',
+		HIGH = '1'
 	};
-	typedef enum Value Value;
+	typedef enum Signal Signal;
 
 	/**
 	 * Construtor

@@ -45,7 +45,9 @@ typedef Value<uint16_t> UInt16Value;
 typedef Value<uint32_t> UInt32Value;
 typedef Value<uint64_t> UInt64Value;
 typedef Value<int64_t> Int64Value;
+typedef Value<bool> BoolValue;
 
+const std::type_index typeBool(typeid(BoolValue));
 const std::type_index typeUINT8T(typeid(UInt8Value));
 const std::type_index typeUINT16T(typeid(UInt16Value));
 const std::type_index typeUINT32T(typeid(UInt32Value));

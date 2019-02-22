@@ -126,6 +126,15 @@ pqxx::result PostgresConnector::execStatement(std::string name, ...) {
 
 		std::list<std::type_index>::iterator it2 = types.begin();
 		while (it2 != types.end()) {
+			if ((*it2).hash_code() == DB::typeBool.hash_code()) {
+				DB::BoolValue arg = va_arg(args, DB::BoolValue);
+				if (arg.value != nullptr) {
+					prep_dynamic(*arg.value, invoke);
+				} else {
+					prep_dynamic((const char*) nullptr, invoke);
+				}
+			}
+
 			if ((*it2).hash_code() == DB::typeString.hash_code()) {
 				DB::StringValue arg = va_arg(args, DB::StringValue);
 				if (arg.value != nullptr) {

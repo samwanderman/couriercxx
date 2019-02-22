@@ -20,6 +20,8 @@
 #include "ListenerParams.h"
 #include "WrappedListener.h"
 
+#define EVENT_WATCHER_TIMEOUT	1000
+
 DispatcherBase::DispatcherBase() {
 	running = true;
 
@@ -53,7 +55,7 @@ DispatcherBase::DispatcherBase() {
 				it++;
 			}
 
-			usleep(1000000);
+			usleep(EVENT_WATCHER_TIMEOUT * 1000);
 		}
 	};
 	std::thread th(func);

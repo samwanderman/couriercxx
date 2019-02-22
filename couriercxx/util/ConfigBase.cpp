@@ -8,13 +8,13 @@
 
 #include "ConfigBase.h"
 
+#include <cinttypes>
 #include <cstdint>
 #include <cstdlib>
 #include <fstream>
 #include <regex>
 #include <stdexcept>
 #include <utility>
-#include <cinttypes>
 
 #include "../logger/Log.h"
 
@@ -134,6 +134,29 @@ int ConfigBase::getIfExists<int>(std::string propertyName, int defaultValue) {
 		return get<int>(propertyName);
 	} catch (const std::exception& e) {
 		Log::warn("Param '%s' not found, set default %i", propertyName.c_str(), defaultValue);
+	}
+
+	return defaultValue;
+}
+
+template<>
+bool ConfigBase::get<bool>(std::string propertyName) {
+	std::map<std::string, std::string>::iterator it = properties.find(propertyName);
+	if (it != properties.end()) {
+		const char* str = it->second.c_str();
+
+		return (bool) atoi(str);
+	}
+
+	throw std::invalid_argument("Not Found");
+}
+
+template<>
+bool ConfigBase::getIfExists<bool>(std::string propertyName, bool defaultValue) {
+	try {
+		return get<bool>(propertyName);
+	} catch (const std::exception& e) {
+		Log::warn("Param '%s' not found, set default %u", propertyName.c_str(), defaultValue);
 	}
 
 	return defaultValue;

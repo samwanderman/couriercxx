@@ -76,7 +76,7 @@ int main(int ac, char**av) {
 
 			int val = port->getValue();
 			if (val > 0) {
-				val -= 0x30;
+				val -= GPIOPortBase::Signal::LOW;
 			}
 
 			switch (val) {

@@ -119,7 +119,7 @@ int TCPPortBase::open() {
 		}
 
 		struct sockaddr_in servAddr;
-		memset(&servAddr, '0', sizeof(servAddr));
+		memset(&servAddr, 0, sizeof(servAddr));
 		servAddr.sin_family = AF_INET;
 		servAddr.sin_port = htons(port);
 

@@ -4,12 +4,15 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../couriercxx/connector/spi/GPIOSPIPortBase.cpp \
 ../couriercxx/connector/spi/SPIPortBase.cpp 
 
 OBJS += \
+./couriercxx/connector/spi/GPIOSPIPortBase.o \
 ./couriercxx/connector/spi/SPIPortBase.o 
 
 CPP_DEPS += \
+./couriercxx/connector/spi/GPIOSPIPortBase.d \
 ./couriercxx/connector/spi/SPIPortBase.d 
 
 

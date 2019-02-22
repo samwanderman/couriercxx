@@ -76,6 +76,16 @@ int Config::getIfExists<int>(std::string propertyName, int defaultValue) {
 }
 
 template<>
+bool Config::get<bool>(std::string propertyName) {
+	return getInstance().config->get<bool>(propertyName);
+}
+
+template<>
+bool Config::getIfExists<bool>(std::string propertyName, bool defaultValue) {
+	return getInstance().config->getIfExists<bool>(propertyName, defaultValue);
+}
+
+template<>
 uint8_t Config::get<uint8_t>(std::string propertyName) {
 	return getInstance().config->get<uint8_t>(propertyName);
 }

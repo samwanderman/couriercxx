@@ -18,8 +18,9 @@
 #include "event/EventRead.h"
 #include "Info.h"
 
-#define BUFFER_MAX_SIZE	1024
-#define MAX_EVENTS		128
+#define BUFFER_MAX_SIZE			1024
+#define MAX_EVENTS				128
+#define CONNECTION_READ_TIMEOUT	100
 
 namespace Connection {
 
@@ -76,7 +77,7 @@ int Connection::enable() {
 				Dispatcher::trigger(event);
 			}
 
-			usleep(100000);
+			usleep(CONNECTION_READ_TIMEOUT * 1000);
 		}
 	};
 	std::thread readThread(readThreadFunc);
