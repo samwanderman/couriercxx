@@ -10,6 +10,7 @@
 
 #include <cstring>
 
+
 uint8_t hex2asciiOne(uint8_t hex) {
 	hex = hex & 0xf;
 	return (hex < 0xa ? 0x30 : 0x37) + hex;

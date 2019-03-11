@@ -13,7 +13,9 @@ C++ framework for standart operations simplification
 
 [5] libbluetooth-dev
 
-[6] doxygen
+[6] libghc-iconv-dev
+
+[7] doxygen
 
 ### Documentation
 To generate documentation, execute command:
