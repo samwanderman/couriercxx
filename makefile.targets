@@ -16,6 +16,9 @@ examples:
 utils:
 	cd ../utils && ./make
 	
+tests:
+	cd ../tests && ./make
+	
 docs:
 	cd ../ && doxygen config.doxygen
 	

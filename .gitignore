@@ -4,4 +4,6 @@
 .settings
 docs
 examples/*Example
-utils/*Test
+utils/*Util
+tests/*Test
+

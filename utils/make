@@ -1,4 +1,4 @@
 #!/bin/sh
 
-g++ -o PortTest PortTest.cpp -std=c++11 -lCourierCXX -lpthread
-g++ -o PortObserverTest PortObserverTest.cpp -std=c++11 -lCourierCXX -lpthread
+g++ -o PortUtil PortUtil.cpp -std=c++11 -lCourierCXX -lpthread
+g++ -o GPIOPinUtil GPIOPinUtil.cpp -std=c++11 -lCourierCXX -lpthread
