@@ -25,17 +25,13 @@ int main(int ac, char** av) {
 	}
 	Log::info("open(%s) success", &av[0][2]);
 
+	uint8_t buffer[BUFFER_SIZE];
+
 	while (true) {
-		uint8_t buffer[BUFFER_SIZE];
 		int res = read(fd, buffer, BUFFER_SIZE);
-		if (res > 0) {
-			Log::debug("read %i bytes", res);
-
-			for (int i = 0; i < res; i++) {
-				Log::log("%c ", buffer[i]);
-			}
-
-			Log::log("\r\n");
+		Log::info("read %i bytes", res);
+		for (int i = 0; i < res; i++) {
+			Log::log("%c", buffer[i]);
 		}
 	}
 

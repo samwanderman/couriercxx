@@ -18,9 +18,7 @@ int System::startService(std::string name) {
 	memset(command, 0, sizeof(command));
 	snprintf(command, 63, "systemctl start %s", name.c_str());
 
-	system(command);
-
-	return 0;
+	return system(command);
 }
 
 int System::stopService(std::string name) {
@@ -28,9 +26,7 @@ int System::stopService(std::string name) {
 	memset(command, 0, sizeof(command));
 	snprintf(command, 63, "systemctl stop %s", name.c_str());
 
-	system(command);
-
-	return 0;
+	return system(command);
 }
 
 int System::restartService(std::string name) {
@@ -38,19 +34,13 @@ int System::restartService(std::string name) {
 	memset(command, 0, sizeof(command));
 	snprintf(command, 63, "systemctl restart %s", name.c_str());
 
-	system(command);
-
-	return 0;
+	return system(command);
 }
 
 int System::restartNetwork() {
-	system("systemctl restart networking");
-
-	return 0;
+	return system("systemctl restart networking");
 }
 
 int System::reboot() {
-	::reboot(RB_AUTOBOOT);
-
-	return 0;
+	return ::reboot(RB_AUTOBOOT);
 }
