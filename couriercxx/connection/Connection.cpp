@@ -73,6 +73,13 @@ int Connection::enable() {
 				Log::error("Connection.read() error");
 			} else if (bytesRead > 0) {
 				Log::debug("Connection.read() %i bytes", bytesRead);
+#ifdef DEBUG
+				Log::log("<< ");
+				for (int i = 0; i < bytesRead; i++) {
+					Log::log("%x ", buffer[i]);
+				}
+				Log::log("\r\n");
+#endif
 				EventRead* event = new EventRead(this->info, buffer, bytesRead);
 				Dispatcher::trigger(event);
 			}
@@ -92,6 +99,13 @@ int Connection::enable() {
 				EventWrite* ev = eventsList.front();
 				int res = this->connector->write(ev->getData(), ev->getDataLen());
 				Log::debug("Connection.write() %i bytes", res);
+#ifdef DEBUG
+				Log::log(">> ");
+				for (int i = 0; i < ev->getDataLen(); i++) {
+					Log::log("%x ", ev->getData()[i]);
+				}
+				Log::log("\r\n");
+#endif
 				eventsList.pop_front();
 				delete ev;
 				usleep(info->getCommandTimeout() * 1000);
