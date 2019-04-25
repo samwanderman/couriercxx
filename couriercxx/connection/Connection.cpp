@@ -101,7 +101,7 @@ int Connection::enable() {
 				Log::debug("Connection.write() %i bytes", res);
 #ifdef DEBUG
 				Log::log(">> ");
-				for (int i = 0; i < ev->getDataLen(); i++) {
+				for (uint32_t i = 0; i < ev->getDataLen(); i++) {
 					Log::log("%x ", ev->getData()[i]);
 				}
 				Log::log("\r\n");

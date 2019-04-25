@@ -29,6 +29,7 @@ couriercxx/connector \
 couriercxx/connector/bluetooth \
 couriercxx/connector/gpio \
 couriercxx/connector/i2c \
+couriercxx/connector/scsi \
 couriercxx/connector/serialport \
 couriercxx/connector/spi \
 couriercxx/connector/tcp \

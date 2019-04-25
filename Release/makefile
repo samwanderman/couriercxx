@@ -22,6 +22,7 @@ RM := rm -rf
 -include couriercxx/connector/tcp/subdir.mk
 -include couriercxx/connector/spi/subdir.mk
 -include couriercxx/connector/serialport/subdir.mk
+-include couriercxx/connector/scsi/subdir.mk
 -include couriercxx/connector/i2c/subdir.mk
 -include couriercxx/connector/gpio/subdir.mk
 -include couriercxx/connector/bluetooth/subdir.mk
