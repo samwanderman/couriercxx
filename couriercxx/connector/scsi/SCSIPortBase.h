@@ -65,6 +65,16 @@ public:
 	 */
 	int write(const uint8_t* buffer, uint32_t bufferSize);
 
+	/**
+	 * Get info from target device
+	 *
+	 * \param[in] bool extended - show extended info
+	 * \param[in] uint8_t pageCode - page code
+	 *
+	 * \return int - status if success, -1 if error
+	 */
+	int getDeviceInfo(bool extended, uint8_t pageCode);
+
 private:
 	std::string port = "";
 	int fd = -1;
