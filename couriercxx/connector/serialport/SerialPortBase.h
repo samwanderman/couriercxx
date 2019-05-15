@@ -20,6 +20,24 @@
 class SerialPortBase: public IConnectorBase {
 public:
 	/**
+	 * Serial port configuration struct
+	 */
+	struct Config {
+		std::string name = "";
+		uint32_t baudrate = 0;
+		bool nonBlock = false;
+		uint32_t timeout = 0;
+	};
+	typedef struct Config Config;
+
+	/**
+	 * Serial port constructor
+	 *
+	 * \param[in] Config config - configuration
+	 */
+	SerialPortBase(Config config);
+
+	/**
 	 * Base serial port constructor
 	 *
 	 * \param[in] string name - port system name
@@ -88,11 +106,25 @@ public:
 	 */
 	int write(const uint8_t* buffer, uint32_t bufferSize);
 
+	/**
+	 * Set port speed
+	 *
+	 * \param[in] uint32_t speed - speed
+	 *
+	 * \return 0 if success, -1 if error
+	 */
+	int setBaudrate(uint32_t baudrate);
+
+	/**
+	 * Get current port speed
+	 *
+	 * \return port speed
+	 */
+	uint32_t getBaudrate();
+
 private:
-	std::string name = "";
-	uint32_t speed = 0;
+	Config config;
 	int fd = -1;
-	uint32_t timeout = ~0;
 
 	void clean();
 };

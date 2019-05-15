@@ -16,6 +16,8 @@
 
 /**
  * SCSI port
+ *
+ * FIXME - not work now
  */
 class SCSIPortBase: public IConnectorBase {
 public:

@@ -1,3 +1,4 @@
 #!/bin/sh
 
 g++ -o LoopPortTest LoopPortTest.cpp -std=c++11 -lCourierCXX -lpthread
+g++ -o NonBlockSerialPortTest NonBlockSerialPortTest.cpp -std=c++11 -lCourierCXX -lpthread

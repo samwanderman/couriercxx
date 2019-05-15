@@ -17,6 +17,8 @@
 
 /**
  * Bluetooth class
+ *
+ * FIXME - not work now
  */
 class BluetoothPortBase : public IConnectorBase {
 public:
