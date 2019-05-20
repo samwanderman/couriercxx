@@ -159,6 +159,12 @@ int SerialPortBase::setBaudrate(uint32_t baudrate) {
 	struct termios tty;
 	memset(&tty, 0, sizeof(tty));
 
+	if (tcgetattr(fd, &tty) != 0) {
+		clean();
+
+		return -1;
+	}
+
 	if (convertedSpeed != 0) {
 		if (cfsetospeed(&tty, convertedSpeed) == -1) {
 			return -1;
@@ -167,12 +173,6 @@ int SerialPortBase::setBaudrate(uint32_t baudrate) {
 		if (cfsetispeed(&tty, convertedSpeed) == -1) {
 			return -1;
 		}
-	}
-
-	if (tcgetattr(fd, &tty) != 0) {
-		clean();
-
-		return -1;
 	}
 
 	tty.c_cflag &= ~PARENB;
