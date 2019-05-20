@@ -33,7 +33,23 @@ SerialPortBase::SerialPortBase(std::string name, uint32_t baudrate, uint32_t tim
 	config.timeout = timeout;
 }
 
+SerialPortBase::SerialPortBase(SerialPortBase&& other) {
+	this->config = other.config;
+	memset(&other.config, 0, sizeof(other.config));
+	this->fd = other.fd;
+	other.fd = -1;
+}
+
 SerialPortBase::~SerialPortBase() { }
+
+SerialPortBase& SerialPortBase::operator=(SerialPortBase&& other) {
+	this->config = other.config;
+	memset(&other.config, 0, sizeof(other.config));
+	this->fd = other.fd;
+	other.fd = -1;
+
+	return *this;
+}
 
 int SerialPortBase::open() {
 	if (isOpen()) {
@@ -128,6 +144,7 @@ int SerialPortBase::write(const uint8_t* buffer, uint32_t bufferSize) {
 }
 
 int SerialPortBase::setBaudrate(uint32_t baudrate) {
+	config.baudrate = baudrate;
 	uint32_t convertedSpeed = 0;
 	switch (baudrate) {
 	case 9600:

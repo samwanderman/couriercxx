@@ -61,16 +61,30 @@ public:
 	 */
 	SerialPortBase(std::string name, uint32_t speed, uint32_t timeout);
 
+	/**
+	 * Copy constructor
+	 */
 	SerialPortBase(const SerialPortBase& port) = default;
-	SerialPortBase(SerialPortBase&& port) = default;
+
+	/**
+	 * Move constructor
+	 */
+	SerialPortBase(SerialPortBase&& port);
 
 	/**
 	 * Base serial port destructor
 	 */
 	~SerialPortBase();
 
+	/**
+	 * Copy operator
+	 */
 	SerialPortBase& operator=(const SerialPortBase& port) = default;
-	SerialPortBase& operator=(SerialPortBase&& port) = default;
+
+	/**
+	 * Move operator
+	 */
+	SerialPortBase& operator=(SerialPortBase&& port);
 
 	/**
 	 * Open serial port
