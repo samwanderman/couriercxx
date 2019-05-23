@@ -10,6 +10,15 @@
 
 IConnectorBase::IConnectorBase() { }
 
+IConnectorBase::IConnectorBase(IConnectorBase&& other) {
+	this->opened = other.opened;
+}
+
+IConnectorBase& IConnectorBase::operator=(IConnectorBase&& other) {
+	this->opened = other.opened;
+	return *this;
+}
+
 IConnectorBase::~IConnectorBase() { }
 
 int IConnectorBase::open() {

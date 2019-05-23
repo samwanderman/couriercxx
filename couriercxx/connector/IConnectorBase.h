@@ -20,14 +20,30 @@ public:
 	 * Empty construtor
 	 */
 	IConnectorBase();
+
+	/**
+	 * Copy-constructor
+	 */
 	IConnectorBase(const IConnectorBase& connector) = default;
-	IConnectorBase(IConnectorBase&& connector) = default;
+
+	/**
+	 * Move constructor
+	 */
+	IConnectorBase(IConnectorBase&& connector);
 	/**
 	 * Destructor
 	 */
 	virtual ~IConnectorBase();
+
+	/**
+	 * Copy oprtator
+	 */
 	IConnectorBase& operator=(const IConnectorBase& connector) = default;
-	IConnectorBase& operator=(IConnectorBase&& connector) = default;
+
+	/**
+	 * Move operator
+	 */
+	IConnectorBase& operator=(IConnectorBase&& connector);
 
 	/**
 	 * Open connector

@@ -33,7 +33,7 @@ SerialPortBase::SerialPortBase(std::string name, uint32_t baudrate, uint32_t tim
 	config.timeout = timeout;
 }
 
-SerialPortBase::SerialPortBase(SerialPortBase&& other) {
+SerialPortBase::SerialPortBase(SerialPortBase&& other) : IConnectorBase(other) {
 	this->config = other.config;
 	memset(&other.config, 0, sizeof(other.config));
 	this->fd = other.fd;
@@ -43,6 +43,7 @@ SerialPortBase::SerialPortBase(SerialPortBase&& other) {
 SerialPortBase::~SerialPortBase() { }
 
 SerialPortBase& SerialPortBase::operator=(SerialPortBase&& other) {
+	IConnectorBase::operator=(other);
 	this->config = other.config;
 	memset(&other.config, 0, sizeof(other.config));
 	this->fd = other.fd;
