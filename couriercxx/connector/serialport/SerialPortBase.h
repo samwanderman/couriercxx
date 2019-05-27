@@ -111,6 +111,17 @@ public:
 	int read(uint8_t* buffer, uint32_t bufferSize);
 
 	/**
+	 * Read data from serial port
+	 *
+	 * \param[out] uint8_t* buffer - buffer to store data
+	 * \param[in] uint32_t bufferSize - size of buffer
+	 * \param[in] int32_t timeout - timeout in msec
+	 *
+	 * \return number of read bytes if success, -1 if error
+	 */
+	int read(uint8_t* buffer, uint32_t bufferSize, int32_t timeout);
+
+	/**
 	 * Write data to serial port
 	 *
 	 * \param[in] const uint8_t* buffer - buffer with data

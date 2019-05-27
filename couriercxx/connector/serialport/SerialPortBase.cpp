@@ -95,8 +95,16 @@ void SerialPortBase::clean() {
 }
 
 int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize) {
+	return read(buffer, bufferSize, -1);
+}
+
+int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize, int32_t timeout) {
 	if (!isOpen()) {
 		return -1;
+	}
+
+	if (timeout == -1) {
+		timeout = config.timeout;
 	}
 
 	if (config.nonBlock) {
@@ -104,7 +112,7 @@ int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize) {
 
 		uint64_t lastOperationTime = Clock::getTimestamp();
 
-		while ((lastOperationTime + config.timeout > Clock::getTimestamp()) && ((uint32_t) bytesRead < bufferSize)) {
+		while ((lastOperationTime + timeout > Clock::getTimestamp()) && ((uint32_t) bytesRead < bufferSize)) {
 			int res = ::read(fd, &buffer[bytesRead], bufferSize - bytesRead);
 			if (res != -1) {
 				bytesRead += res;
@@ -114,7 +122,7 @@ int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize) {
 
 		return bytesRead;
 	} else {
-		if (config.timeout > 0) {
+		if (timeout > 0) {
 			fd_set set;
 			struct timeval timeoutVal;
 
@@ -122,7 +130,7 @@ int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize) {
 			FD_SET(fd, &set);
 
 			timeoutVal.tv_sec = 0;
-			timeoutVal.tv_usec = config.timeout;
+			timeoutVal.tv_usec = timeout * 1000;
 
 			int rv = select(fd + 1, &set, NULL, NULL, &timeoutVal);
 			if (rv == -1) {
