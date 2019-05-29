@@ -4,6 +4,7 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../couriercxx/util/ByteOrder.cpp \
 ../couriercxx/util/Clock.cpp \
 ../couriercxx/util/Config.cpp \
 ../couriercxx/util/ConfigBase.cpp \
@@ -15,6 +16,7 @@ CPP_SRCS += \
 ../couriercxx/util/Time.cpp 
 
 OBJS += \
+./couriercxx/util/ByteOrder.o \
 ./couriercxx/util/Clock.o \
 ./couriercxx/util/Config.o \
 ./couriercxx/util/ConfigBase.o \
@@ -26,6 +28,7 @@ OBJS += \
 ./couriercxx/util/Time.o 
 
 CPP_DEPS += \
+./couriercxx/util/ByteOrder.d \
 ./couriercxx/util/Clock.d \
 ./couriercxx/util/Config.d \
 ./couriercxx/util/ConfigBase.d \
