@@ -20,6 +20,12 @@ uint64_t Clock::getTimestamp() {
 	return ms.count();
 }
 
+uint64_t Clock::getTimestampExt() {
+	microseconds ms = duration_cast<microseconds>(system_clock::now().time_since_epoch());
+
+	return ms.count();
+}
+
 Time Clock::getTime() {
 	return Time(getTimestamp());
 }

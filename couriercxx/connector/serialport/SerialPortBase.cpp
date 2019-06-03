@@ -17,6 +17,8 @@
 
 #include "../../util/Clock.h"
 
+#define READ_TIMEOUT	100000
+
 SerialPortBase::SerialPortBase(Config config) : IConnectorBase() {
 	this->config = config;
 }
@@ -110,13 +112,43 @@ int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize, int32_t timeout) 
 	if (config.nonBlock) {
 		int bytesRead = 0;
 
-		uint64_t lastOperationTime = Clock::getTimestamp();
+//		uint64_t lastOperationTime = Clock::getTimestamp();
+//
+//		while ((lastOperationTime + timeout > Clock::getTimestamp()) && ((uint32_t) bytesRead <= bufferSize)) {
+//			int res = ::read(fd, &buffer[bytesRead], bufferSize - bytesRead);
+//			if (res != -1) {
+//				bytesRead += res;
+//				lastOperationTime = Clock::getTimestamp();
+//			}
+//		}
 
-		while ((lastOperationTime + timeout > Clock::getTimestamp()) && ((uint32_t) bytesRead < bufferSize)) {
+		// operation hard timeout
+		uint64_t endTimeout = Clock::getTimestampExt() + timeout * 1000;
+		uint64_t lastOperationTime = 0;
+
+		while (true) {
+			// get current time in microsecs
+			uint64_t currentTime = Clock::getTimestampExt();
+
+			// check end timeout exceed
+			if (currentTime >= endTimeout) {
+				break;
+			}
+
+			// check byte buffer exceed
+			if ((uint32_t) bytesRead >= bufferSize) {
+				break;
+			}
+
+			// Check if last read operation was too long ago
+			if ((lastOperationTime != 0) && (currentTime - lastOperationTime > READ_TIMEOUT)) {
+				break;
+			}
+
 			int res = ::read(fd, &buffer[bytesRead], bufferSize - bytesRead);
 			if (res != -1) {
 				bytesRead += res;
-				lastOperationTime = Clock::getTimestamp();
+				lastOperationTime = Clock::getTimestampExt();
 			}
 		}
 

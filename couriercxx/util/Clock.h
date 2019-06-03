@@ -26,6 +26,13 @@ public:
 	static uint64_t getTimestamp();
 
 	/**
+	 * Get current timstamp
+	 *
+	 * \return uint64_t timestamp in microsec
+	 */
+	static uint64_t getTimestampExt();
+
+	/**
 	 * Get current time
 	 *
 	 * \return Time
