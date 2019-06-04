@@ -17,7 +17,7 @@
 
 #include "../../util/Clock.h"
 
-#define READ_TIMEOUT	100000
+#define READ_TIMEOUT	50000
 
 SerialPortBase::SerialPortBase(Config config) : IConnectorBase() {
 	this->config = config;
