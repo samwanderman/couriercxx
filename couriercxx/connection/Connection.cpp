@@ -8,13 +8,13 @@
 
 #include "Connection.h"
 
-#include <unistd.h>
 #include <cstdint>
 #include <thread>
 
 #include "../connector/IConnectorBase.h"
 #include "../event/Dispatcher.h"
 #include "../logger/Log.h"
+#include "../util/System.h"
 #include "event/EventRead.h"
 #include "Info.h"
 
@@ -84,7 +84,7 @@ int Connection::enable() {
 				Dispatcher::trigger(event);
 			}
 
-			usleep(CONNECTION_READ_TIMEOUT * 1000);
+			System::sleep(CONNECTION_READ_TIMEOUT);
 		}
 	};
 	std::thread readThread(readThreadFunc);
@@ -108,7 +108,7 @@ int Connection::enable() {
 #endif
 				eventsList.pop_front();
 				delete ev;
-				usleep(info->getCommandTimeout() * 1000);
+				System::sleep(info->getCommandTimeout());
 			}
 			eventsListMutex.unlock();
 		}

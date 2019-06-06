@@ -6,12 +6,13 @@
  *       Email: sam-wanderman@yandex.ru
  */
 
-#include <unistd.h>
+#include "GPIOSPIPortBase.h"
+
 #include <cstring>
 #include <thread>
 
+#include "../../util/System.h"
 #include "../gpio/GPIOPortBase.h"
-#include "GPIOSPIPortBase.h"
 
 #define TIMEOUT		20
 
@@ -222,5 +223,5 @@ uint8_t GPIOSPIPortBase::readMISO() {
 }
 
 void GPIOSPIPortBase::delay(uint32_t timeout) {
-	usleep(timeout * 1000);
+	System::sleep(timeout);
 }

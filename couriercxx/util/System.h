@@ -9,6 +9,7 @@
 #ifndef COURIERCXX_UTIL_SYSTEM_H_
 #define COURIERCXX_UTIL_SYSTEM_H_
 
+#include <cstdint>
 #include <string>
 
 /**
@@ -56,6 +57,20 @@ public:
 	 * \return 0 if success, -1 if error
 	 */
 	static int reboot();
+
+	/**
+	 * Sleep for milliseconds
+	 *
+	 * \param[in] uint64_t milliseconds
+	 */
+	static void sleep(uint64_t milliseconds);
+
+	/**
+	 * Sleep for microseconds
+	 *
+	 * \param[in] uint64_t microseconds
+	 */
+	static void usleep(uint64_t microseconds);
 };
 
 #endif /* COURIERCXX_UTIL_SYSTEM_H_ */

@@ -10,9 +10,9 @@
 
 #include <cstdio>
 #include <cstring>
-#include <unistd.h>
 
 #include "../util/IO.h"
+#include "../util/System.h"
 
 #define PATH_BASE		"/sys/class/pwm/pwmchip%u"
 #define PATH_EXPORT		PATH_BASE "/export"
@@ -98,7 +98,7 @@ int PWM::play(uint32_t duration) {
 		return -1;
 	}
 
-	usleep(duration * 1000);
+	System::sleep(duration);
 
 	enable = 0;
 

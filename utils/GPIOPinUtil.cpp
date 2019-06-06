@@ -1,10 +1,12 @@
-#include <unistd.h>
 #include <csignal>
+#include <cstdint>
+#include <cstdlib>
 #include <cstring>
 #include <list>
 
 #include "../couriercxx/connector/gpio/GPIOPortBase.h"
 #include "../couriercxx/logger/Log.h"
+#include "../couriercxx/util/System.h"
 
 class GPIOPortBase;
 
@@ -105,7 +107,7 @@ int main(int ac, char**av) {
 		}
 		Log::log("\r\n");
 
-		sleep(5);
+		System::sleep(5000);
 	}
 
 	std::list<GPIOPortBase*>::iterator it = ports.begin();

@@ -8,7 +8,6 @@
 
 #include "DispatcherBase.h"
 
-#include <unistd.h>
 #include <algorithm>
 #include <cstdint>
 #include <thread>
@@ -16,6 +15,7 @@
 
 #include "../logger/Log.h"
 #include "../util/Clock.h"
+#include "../util/System.h"
 #include "event/EventTimeout.h"
 #include "ListenerParams.h"
 #include "WrappedListener.h"
@@ -55,7 +55,7 @@ DispatcherBase::DispatcherBase() {
 				it++;
 			}
 
-			usleep(EVENT_WATCHER_TIMEOUT * 1000);
+			System::sleep(EVENT_WATCHER_TIMEOUT);
 		}
 	};
 	std::thread th(func);

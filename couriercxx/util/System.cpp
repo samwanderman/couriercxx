@@ -9,6 +9,7 @@
 #include "System.h"
 
 #include <sys/reboot.h>
+#include <unistd.h>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -43,4 +44,12 @@ int System::restartNetwork() {
 
 int System::reboot() {
 	return ::reboot(RB_AUTOBOOT);
+}
+
+void System::sleep(uint64_t milliseconds) {
+	usleep(milliseconds * 1000);
+}
+
+void System::usleep(uint64_t microseconds) {
+	::usleep(microseconds);
 }

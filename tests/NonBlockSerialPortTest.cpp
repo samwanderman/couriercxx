@@ -6,6 +6,7 @@
 
 #include "../couriercxx/connector/serialport/SerialPortBase.h"
 #include "../couriercxx/logger/Log.h"
+#include "../couriercxx/util/System.h"
 
 #define BUFFER_SIZE	256
 
@@ -32,7 +33,7 @@ void test1(const char* path) {
 		}
 		Log::log("\r\n");
 
-		sleep(1);
+		System::sleep(1000);
 	}
 
 	close(fd);
@@ -63,7 +64,7 @@ void test2(const char* path) {
 		}
 		Log::log("\r\n");
 
-		sleep(1);
+		System::sleep(1000);
 	}
 
 	if (port.close() == -1) {
