@@ -12,11 +12,9 @@
 
 #include "../Connection.h"
 
-class ConnectionInfo;
-
 namespace Connection {
 
-EventRead::EventRead(const Info* info, const uint8_t* data, uint32_t dataLen) : IEvent(Connection::EVENT_READ), EventConnection(info) {
+EventRead::EventRead(const Info info, const uint8_t* data, uint32_t dataLen) : IEvent(Connection::EVENT_READ), EventConnection(info) {
 	if ((data != nullptr) && (dataLen > 0)) {
 		this->data = new uint8_t[dataLen];
 		this->dataLen = dataLen;
@@ -27,7 +25,7 @@ EventRead::EventRead(const Info* info, const uint8_t* data, uint32_t dataLen) : 
 	}
 }
 
-EventRead::EventRead(const Info* info, const uint8_t* data, uint32_t dataLen, IListener* source, IListener* target) : IEvent(Connection::EVENT_READ, source, target), EventConnection(info) {
+EventRead::EventRead(const Info info, const uint8_t* data, uint32_t dataLen, IListener* source, IListener* target) : IEvent(Connection::EVENT_READ, source, target), EventConnection(info) {
 	if ((data != nullptr) && (dataLen > 0)) {
 		this->data = new uint8_t[dataLen];
 		this->dataLen = dataLen;
@@ -42,7 +40,7 @@ EventRead::EventRead(const EventRead& other) : IEvent(other), EventConnection(ot
 	dataLen = other.dataLen;
 	if (dataLen > 0) {
 		data = new uint8_t[dataLen];
-		memmove(data, &other, sizeof(uint8_t) * dataLen);
+		memmove(data, &other.data, sizeof(uint8_t) * dataLen);
 	} else {
 		data = nullptr;
 	}
@@ -69,7 +67,7 @@ EventRead& EventRead::operator=(const EventRead& other) {
 		dataLen = other.dataLen;
 		if (dataLen > 0) {
 			data = new uint8_t[dataLen];
-			memmove(data, &other, sizeof(uint8_t) * dataLen);
+			memmove(data, &other.data, sizeof(uint8_t) * dataLen);
 		} else {
 			data = nullptr;
 		}
@@ -106,7 +104,7 @@ int EventRead::getData(uint8_t* buffer, uint32_t bufferSize) const {
 	return 0;
 }
 
-uint8_t* EventRead::getData() const {
+const uint8_t* EventRead::getData() const {
 	return this->data;
 }
 

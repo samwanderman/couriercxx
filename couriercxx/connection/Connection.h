@@ -15,12 +15,9 @@
 #include "../event/IEvent.h"
 #include "../event/IListener.h"
 #include "event/EventWrite.h"
+#include "Info.h"
 
 class IConnectorBase;
-
-namespace Connection {
-class Info;
-} /* namespace Connection */
 
 namespace Connection {
 
@@ -36,10 +33,10 @@ public:
 	/**
 	 * Constructor
 	 *
-	 * \param[in] info - connection info
-	 * \param[in] connector - connector
+	 * \param[in] const Info info - connection info
+	 * \param[in] IConnectorBase* connector - connector
 	 */
-	Connection(const Info* info, IConnectorBase* connector);
+	Connection(const Info info, IConnectorBase* connector);
 
 	/**
 	 * Destructor
@@ -48,25 +45,27 @@ public:
 
 	/**
 	 * Event callback
+	 *
+	 * \param[in] const IEvent* event
 	 */
 	void on(const IEvent* event);
 
 	/**
 	 * Enable event catching
 	 *
-	 * \return 0 if success, -1 if error
+	 * \return int - 0 if success, -1 if error
 	 */
 	int enable();
 
 	/**
 	 * Disable event catching
 	 *
-	 * \return 0 if success, -1 if error
+	 * \return int - 0 if success, -1 if error
 	 */
 	int disable();
 
 private:
-	const Info* info = nullptr;
+	Info info;
 	IConnectorBase* connector = nullptr;
 	bool readThreadRunning = false;
 	bool eventsThreadRunning = false;

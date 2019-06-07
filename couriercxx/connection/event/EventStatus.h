@@ -12,6 +12,7 @@
 #include <cstdint>
 
 #include "../../event/IEvent.h"
+#include "../Info.h"
 #include "EventConnection.h"
 
 namespace Connection {
@@ -24,20 +25,20 @@ public:
 	/**
 	 * Constructor
 	 *
-	 * \param[in] info - connection info
-	 * \param[in] status - connection status
+	 * \param[in] const Info info - connection info
+	 * \param[in] uint8_t status - connection status
 	 */
-	EventStatus(const Info* info, uint8_t status);
+	EventStatus(const Info info, uint8_t status);
 
 	/**
 	 * Constructor
 	 *
-	 * \param[in] info - connection info
-	 * \param[in] status - connection status
-	 * \param[in] source - event source
-	 * \param[in] target - event target
+	 * \param[in] const Info info - connection info
+	 * \param[in] uint8_t status - connection status
+	 * \param[in] IListener* source - event source
+	 * \param[in] IListener* target - event target
 	 */
-	EventStatus(const Info* info, uint8_t status, IListener* source, IListener* target);
+	EventStatus(const Info info, uint8_t status, IListener* source, IListener* target);
 
 	/**
 	 * Destructor
@@ -45,29 +46,9 @@ public:
 	virtual ~EventStatus();
 
 	/**
-	 * Copy-constructor
-	 */
-	EventStatus(const EventStatus& other);
-
-	/**
-	 * Move-constructor
-	 */
-	EventStatus(EventStatus&& other);
-
-	/**
-	 * Copy-operator
-	 */
-	EventStatus& operator=(const EventStatus& other);
-
-	/**
-	 * Move-operator
-	 */
-	EventStatus& operator=(EventStatus&& other);
-
-	/**
 	 * Get connection status
 	 *
-	 * \return status
+	 * \return uint8_t - status
 	 */
 	uint8_t getStatus();
 

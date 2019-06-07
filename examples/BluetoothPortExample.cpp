@@ -8,18 +8,16 @@
 int main(int argc, char **argv) {
 	Log::setAppName(&argv[0][2]);
 	Log::info("Program has started");
-	BluetoothPortBase* port = new BluetoothPortBase();
+	BluetoothPortBase port;
 
-	if (port->open() == -1) {
+	if (port.open() == -1) {
 		Log::error("BluetoothPortBase.open() error");
-
-		delete port;
 
 		return -1;
 	}
 	Log::info("BluetoothPortBase.open() success");
 
-	std::list<BluetoothDevice*> foundDevices = port->search();
+	std::list<BluetoothDevice*> foundDevices = port.search();
 	Log::info("Found %i devices", foundDevices.size());
 
 	std::list<BluetoothDevice*>::iterator it = foundDevices.begin();
@@ -28,7 +26,7 @@ int main(int argc, char **argv) {
 		Log::info("%s %s", device->getName().c_str(), device->getAddr().c_str());
 
 		uint8_t uuid[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xab, 0xcd };
-		port->connect(device->getAddr(), uuid);
+		port.connect(device->getAddr(), uuid);
 
 		it++;
 	}
@@ -41,9 +39,7 @@ int main(int argc, char **argv) {
 		it++;
 	}
 
-	port->close();
-
-	delete port;
+	port.close();
 
 	return 0;
 }

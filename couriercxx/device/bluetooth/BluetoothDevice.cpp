@@ -128,12 +128,12 @@ void BluetoothDevice::test() {
         		sdp_list_free((sdp_list_t*) p->data, 0);
         	}
 
-        	sdp_list_free( proto_list, 0 );
+        	sdp_list_free(proto_list, 0);
         }
 
         Log::debug("found service record 0x%x\n", rec->handle);
 
-        sdp_record_free( rec );
+        sdp_record_free(rec);
 	}
 
 	sdp_close(session);

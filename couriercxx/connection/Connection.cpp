@@ -16,7 +16,6 @@
 #include "../logger/Log.h"
 #include "../util/System.h"
 #include "event/EventRead.h"
-#include "Info.h"
 
 #define BUFFER_MAX_SIZE			1024
 #define MAX_EVENTS				128
@@ -28,7 +27,7 @@ const EVENT_T Connection::EVENT_READ	= IEvent::genEventId();
 const EVENT_T Connection::EVENT_WRITE	= IEvent::genEventId();
 const EVENT_T Connection::EVENT_STATUS	= IEvent::genEventId();
 
-Connection::Connection(const Info* info, IConnectorBase* connector) {
+Connection::Connection(const Info info, IConnectorBase* connector) {
 	this->info = info;
 	this->connector = connector;
 	readThreadRunning = false;
@@ -41,11 +40,6 @@ Connection::~Connection() {
 	if (connector != nullptr) {
 		delete connector;
 		connector = nullptr;
-	}
-
-	if (info != nullptr) {
-		delete info;
-		info = nullptr;
 	}
 }
 
@@ -80,8 +74,7 @@ int Connection::enable() {
 				}
 				Log::log("\r\n");
 #endif
-				EventRead* event = new EventRead(this->info, buffer, bytesRead);
-				Dispatcher::trigger(event);
+				Dispatcher::trigger(new EventRead(this->info, buffer, bytesRead));
 			}
 
 			System::sleep(CONNECTION_READ_TIMEOUT);
@@ -108,7 +101,7 @@ int Connection::enable() {
 #endif
 				eventsList.pop_front();
 				delete ev;
-				System::sleep(info->getCommandTimeout());
+				System::sleep(info.commandTimeout);
 			}
 			eventsListMutex.unlock();
 		}

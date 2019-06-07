@@ -61,11 +61,11 @@ int main(int ac, char**av) {
 	std::list<GPIOPortBase*> ports;
 
 	for (int i = offset; i < offset + limit; i++) {
-		GPIOPortBase* port = new GPIOPortBase(i, GPIOPortBase::Direction::IN);
-		if (port->open() == -1) {
+		GPIOPortBase port(i, GPIOPortBase::Direction::IN);
+		if (port.open() == -1) {
 			Log::error("PID %i GPIOPortBase.open() error", i);
 		}
-		ports.push_back(port);
+		ports.push_back(&port);
 	}
 
 	running = true;
@@ -74,26 +74,26 @@ int main(int ac, char**av) {
 		std::list<GPIOPortBase*>::iterator it = ports.begin();
 		Log::log("--------------------------\r\n");
 		while (it != ports.end()) {
-			GPIOPortBase* port = *it;
+			GPIOPortBase port = *(*it);
 
-			int val = port->getValue();
+			int val = port.getValue();
 			if (val > 0) {
 				val -= GPIOPortBase::Signal::LOW;
 			}
 
 			switch (val) {
 			case -1:
-				Log::log("%4i (" COLOR_ERROR "%4i" COLOR_RESET ")", port->getPID(), val);
+				Log::log("%4i (" COLOR_ERROR "%4i" COLOR_RESET ")", port.getPID(), val);
 
 				break;
 
 			case 0:
-				Log::log("%4i (%4i)", port->getPID(), val);
+				Log::log("%4i (%4i)", port.getPID(), val);
 
 				break;
 
 			case 1:
-				Log::log("%4i (" COLOR_LOG "%4i" COLOR_RESET ")", port->getPID(), val);
+				Log::log("%4i (" COLOR_LOG "%4i" COLOR_RESET ")", port.getPID(), val);
 
 				break;
 			}
@@ -112,9 +112,8 @@ int main(int ac, char**av) {
 
 	std::list<GPIOPortBase*>::iterator it = ports.begin();
 	while (it != ports.end()) {
-		GPIOPortBase* port = *it;
-		port->close();
-		delete port;
+		GPIOPortBase port = *(*it);
+		port.close();
 
 		it++;
 	}

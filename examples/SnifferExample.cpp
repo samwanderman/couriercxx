@@ -154,12 +154,10 @@ int main(int ac, char** av) {
 			}
 		}
 	};
-	Sniffer* sniffer = new Sniffer("ip", func);
+	Sniffer sniffer("ip", func);
 
-	if (sniffer->enable() == -1) {
+	if (sniffer.enable() == -1) {
 		Log::error("Sniffer.enable() error");
-
-		delete sniffer;
 
 		return -1;
 	}
@@ -167,16 +165,12 @@ int main(int ac, char** av) {
 
 	while (true) { }
 
-	if (sniffer->disable() == -1) {
+	if (sniffer.disable() == -1) {
 		Log::error("Sniffer.disable() error");
-
-		delete sniffer;
 
 		return -1;
 	}
 	Log::info("Sniffer.disable() success");
-
-	delete sniffer;
 
 	return 0;
 }

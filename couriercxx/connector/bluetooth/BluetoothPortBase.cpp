@@ -71,7 +71,7 @@ std::list<BluetoothDevice*> BluetoothPortBase::search() {
 	int flags = IREQ_CACHE_FLUSH;
 	int maxDevices = MAX_DEVICES;
 
-	inquiry_info *foundDevices = (inquiry_info*) malloc(maxDevices * sizeof(inquiry_info));
+	inquiry_info *foundDevices = new inquiry_info[maxDevices];
 	int foundDevicesNumber = hci_inquiry(devId, SEARCH_TIME, maxDevices, nullptr, &foundDevices, flags);
 
 	for (int i = 0; i < foundDevicesNumber; i++) {
@@ -89,7 +89,7 @@ std::list<BluetoothDevice*> BluetoothPortBase::search() {
 		}
 	}
 
-	free(foundDevices);
+	delete[] foundDevices;
 
 	return devices;
 }

@@ -9,9 +9,7 @@
 #ifndef COURIERCXX_CONNECTION_EVENT_EVENTCONNECTION_H_
 #define COURIERCXX_CONNECTION_EVENT_EVENTCONNECTION_H_
 
-namespace Connection {
-class Info;
-} /* namespace Connection */
+#include "../Info.h"
 
 namespace Connection {
 
@@ -25,7 +23,7 @@ public:
 	 *
 	 * \param info - connection info
 	 */
-	EventConnection(const Info* info);
+	EventConnection(const Info info);
 
 	/**
 	 * Destructor
@@ -33,34 +31,14 @@ public:
 	virtual ~EventConnection();
 
 	/**
-	 * Copy-constructor
-	 */
-	EventConnection(const EventConnection& other);
-
-	/**
-	 * Move-constructor
-	 */
-	EventConnection(EventConnection&& other);
-
-	/**
-	 * Copy-operator
-	 */
-	EventConnection& operator=(const EventConnection& other);
-
-	/**
-	 * Move-operator
-	 */
-	EventConnection& operator=(EventConnection&& other);
-
-	/**
 	 * Get connection info
 	 *
-	 * \return connection info
+	 * \return const Info - connection info
 	 */
-	const Info* getInfo() const;
+	const Info getInfo() const;
 
 private:
-	const Info* info = nullptr;
+	Info info;
 };
 
 }

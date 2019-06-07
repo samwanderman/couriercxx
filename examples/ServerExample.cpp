@@ -20,28 +20,22 @@ int main(int ac, char** av) {
 	Server::ServerConfig config;
 	config.host = "127.0.0.1";
 	config.port = 8888;
-	Server* server = new Server(config, func);
-	int res = server->start();
+	Server server(config, func);
+	int res = server.start();
 
 	if (res == -1) {
 		Log::error("Server.start() error");
-
-		delete server;
 
 		return -1;
 	}
 	Log::debug("Server.start() success");
 
-	if (server->stop() == -1) {
+	if (server.stop() == -1) {
 		Log::error("Server.stop() error");
-
-		delete server;
 
 		return -1;
 	}
 	Log::debug("Server.stop() success");
-
-	delete server;
 
 	return 0;
 }

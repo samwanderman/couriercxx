@@ -15,15 +15,14 @@
 namespace Connection {
 
 /**
- * Class for connection info data
+ * Connection info struct
  */
-class Info {
-public:
+struct Info {
 	/**
 	 * Constructor
 	 *
 	 * \param[in] int32_t id - connection id
-	 * \param[in] string name - conenction name
+	 * \param[in] string name - connection name
 	 * \param[in] uint64_t commandTimeout - command timeout
 	 */
 	Info(int32_t id, std::string name, uint64_t commandTimeout);
@@ -36,30 +35,10 @@ public:
 	Info(int32_t id);
 
 	/**
-	 * Destructor
+	 * Constructor
 	 */
-	virtual ~Info();
+	Info();
 
-	/**
-	 * Get connection id
-	 *
-	 * \return connection id
-	 */
-	int32_t getId() const;
-
-	/**
-	 * Get connection name
-	 *
-	 * \return connection name
-	 */
-	std::string getName() const;
-
-	/**
-	 * Get fommand timeout for some types of connection
-	 */
-	uint64_t getCommandTimeout() const;
-
-private:
 	int32_t id = -1;
 	std::string name = "";
 	uint64_t commandTimeout = 0;

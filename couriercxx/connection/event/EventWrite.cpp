@@ -12,11 +12,9 @@
 
 #include "../Connection.h"
 
-class ConnectionInfo;
-
 namespace Connection {
 
-EventWrite::EventWrite(const Info* info, const uint8_t* data, uint32_t dataLen) : IEvent(Connection::EVENT_WRITE), EventConnection(info) {
+EventWrite::EventWrite(const Info info, const uint8_t* data, uint32_t dataLen) : IEvent(Connection::EVENT_WRITE), EventConnection(info) {
 	if ((data != nullptr) && (dataLen > 0)) {
 		this->data = new uint8_t[dataLen];
 		this->dataLen = dataLen;
@@ -27,7 +25,7 @@ EventWrite::EventWrite(const Info* info, const uint8_t* data, uint32_t dataLen) 
 	}
 }
 
-EventWrite::EventWrite(const Info* info, const uint8_t* data, uint32_t dataLen, IListener* source, IListener* target) : IEvent(Connection::EVENT_WRITE, source, target), EventConnection(info) {
+EventWrite::EventWrite(const Info info, const uint8_t* data, uint32_t dataLen, IListener* source, IListener* target) : IEvent(Connection::EVENT_WRITE, source, target), EventConnection(info) {
 	if ((data != nullptr) && (dataLen > 0)) {
 		this->data = new uint8_t[dataLen];
 		this->dataLen = dataLen;
@@ -107,7 +105,7 @@ int EventWrite::getData(uint8_t* data, uint32_t dataLen) const {
 	return 0;
 }
 
-uint8_t* EventWrite::getData() const {
+const uint8_t* EventWrite::getData() const {
 	return this->data;
 }
 
