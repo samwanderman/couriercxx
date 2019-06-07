@@ -1,4 +1,8 @@
-# Version 0.3.0 (current)
+# Version 0.4.0 (current)
+[*] bugfixes
+[*] optimization
+
+# Version 0.3.0
 [+] added bluetooth support
 [+] added mutex for PostgresConnector
 [*] bugfixes
