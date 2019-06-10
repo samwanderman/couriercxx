@@ -9,10 +9,11 @@
 #include "System.h"
 
 #include <sys/reboot.h>
-#include <unistd.h>
+#include <chrono>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <thread>
 
 int System::startService(std::string name) {
 	char command[64];
@@ -51,5 +52,6 @@ void System::sleep(uint64_t milliseconds) {
 }
 
 void System::usleep(uint64_t microseconds) {
-	::usleep(microseconds);
+//	::usleep(microseconds);
+	std::this_thread::sleep_for(std::chrono::microseconds(microseconds));
 }
