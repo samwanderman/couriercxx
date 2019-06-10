@@ -1,4 +1,4 @@
 #!/bin/sh
 
-g++ -o PortUtil PortUtil.cpp -std=c++11 -lCourierCXX -lpthread
-g++ -o GPIOPinUtil GPIOPinUtil.cpp -std=c++11 -lCourierCXX -lpthread
+g++ -o PortUtil PortUtil.cpp -std=c++14 -lCourierCXX -lpthread
+g++ -o GPIOPinUtil GPIOPinUtil.cpp -std=c++14 -lCourierCXX -lpthread
