@@ -9,6 +9,7 @@
 #ifndef COURIERCXX_EVENT_DISPATCHERBASE_H_
 #define COURIERCXX_EVENT_DISPATCHERBASE_H_
 
+#include <cstdint>
 #include <functional>
 #include <list>
 #include <map>
@@ -68,7 +69,7 @@ public:
 	void wait(EVENT_T eventType, std::function<void (const IEvent*)> listener);
 
 	/**
-	 * Wait for event
+	 * Wait for event with timeout
 	 *
 	 * \param[in] EVENT_T eventType - type
 	 * \param[in] function(const IEvent*) listener - listener

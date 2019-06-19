@@ -52,6 +52,5 @@ void System::sleep(uint64_t milliseconds) {
 }
 
 void System::usleep(uint64_t microseconds) {
-//	::usleep(microseconds);
 	std::this_thread::sleep_for(std::chrono::microseconds(microseconds));
 }

@@ -8,7 +8,10 @@
 
 #include "Dispatcher.h"
 
+#include <cstdint>
+
 #include "DispatcherBase.h"
+#include "WrappedListener.h"
 
 int Dispatcher::addListener(EVENT_T eventType, IListener* listener) {
 	return Dispatcher::getInstance().addListener(eventType, listener);
@@ -23,8 +26,17 @@ void Dispatcher::trigger(const IEvent* event) {
 }
 
 void Dispatcher::trigger(IEvent* event, EVENT_T responseEventType, IListener* listener) {
-	event->setSource(listener);
-	if (Dispatcher::addListener(responseEventType, listener) == -1) {
+	WrappedListener* wListener = new WrappedListener([listener, responseEventType](const IEvent* event, const WrappedListener* self) {
+		listener->on(event);
+
+		Dispatcher::removeListener(responseEventType, (IListener*) self);
+
+		delete self;
+	});
+
+	event->setSource(wListener);
+
+	if (Dispatcher::addListener(responseEventType, wListener) == -1) {
 		return;
 	}
 

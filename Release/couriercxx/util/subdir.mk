@@ -12,8 +12,7 @@ CPP_SRCS += \
 ../couriercxx/util/Hardware.cpp \
 ../couriercxx/util/IO.cpp \
 ../couriercxx/util/String.cpp \
-../couriercxx/util/System.cpp \
-../couriercxx/util/Time.cpp 
+../couriercxx/util/System.cpp 
 
 OBJS += \
 ./couriercxx/util/ByteOrder.o \
@@ -24,8 +23,7 @@ OBJS += \
 ./couriercxx/util/Hardware.o \
 ./couriercxx/util/IO.o \
 ./couriercxx/util/String.o \
-./couriercxx/util/System.o \
-./couriercxx/util/Time.o 
+./couriercxx/util/System.o 
 
 CPP_DEPS += \
 ./couriercxx/util/ByteOrder.d \
@@ -36,8 +34,7 @@ CPP_DEPS += \
 ./couriercxx/util/Hardware.d \
 ./couriercxx/util/IO.d \
 ./couriercxx/util/String.d \
-./couriercxx/util/System.d \
-./couriercxx/util/Time.d 
+./couriercxx/util/System.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
