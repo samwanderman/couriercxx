@@ -57,6 +57,16 @@ public:
 	static void trigger(IEvent* event, EVENT_T responseEventType, IListener* listener);
 
 	/**
+	 * Trigger an event and catch response
+	 *
+	 * \param[in] IEvent* event - event
+	 * \param[in] EVENT_T responseEventType - response event type
+	 * \param[in] IListener* listener - listener
+	 * \param[in] uint32_t timeout - timeout in milliseconds
+	 */
+	static void trigger(IEvent* event, EVENT_T responseEventType, IListener* listener, uint32_t timeout);
+
+	/**
 	 * Wait for event
 	 *
 	 * \param[in] EVENT_T eventType - type

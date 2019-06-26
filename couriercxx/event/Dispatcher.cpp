@@ -10,7 +10,9 @@
 
 #include <cstdint>
 
+#include "../util/Clock.h"
 #include "DispatcherBase.h"
+#include "ListenerParams.h"
 #include "WrappedListener.h"
 
 int Dispatcher::addListener(EVENT_T eventType, IListener* listener) {
@@ -27,6 +29,26 @@ void Dispatcher::trigger(const IEvent* event) {
 
 void Dispatcher::trigger(IEvent* event, EVENT_T responseEventType, IListener* listener) {
 	WrappedListener* wListener = new WrappedListener([listener, responseEventType](const IEvent* event, const WrappedListener* self) {
+		listener->on(event);
+
+		Dispatcher::removeListener(responseEventType, (IListener*) self);
+
+		delete self;
+	});
+
+	event->setSource(wListener);
+
+	if (Dispatcher::addListener(responseEventType, wListener) == -1) {
+		return;
+	}
+
+	Dispatcher::trigger(event);
+}
+
+void Dispatcher::trigger(IEvent* event, EVENT_T responseEventType, IListener* listener, uint32_t timeout) {
+	ListenerParams params;
+	params.timeout = Clock::getTimestamp() + timeout;
+	WrappedListener* wListener = new WrappedListener(params, [listener, responseEventType](const IEvent* event, const WrappedListener* self) {
 		listener->on(event);
 
 		Dispatcher::removeListener(responseEventType, (IListener*) self);

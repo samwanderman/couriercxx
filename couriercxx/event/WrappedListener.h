@@ -48,6 +48,8 @@ public:
 
 private:
 	std::function<void (const IEvent*, const WrappedListener*)> listener = nullptr;
+
+	bool running = false;
 };
 
 #endif /* COURIERCXX_EVENT_WRAPPEDLISTENER_H_ */

@@ -8,6 +8,16 @@
 
 #include "WrappedListener.h"
 
+#include <cstdint>
+#include <thread>
+
+#include "../util/Clock.h"
+#include "../util/System.h"
+#include "event/EventTimeout.h"
+#include "ListenerParams.h"
+
+#define TIMEOUT	200
+
 WrappedListener::WrappedListener(std::function<void (const IEvent*, const WrappedListener*)> listener) : IListener() {
 	this->listener = listener;
 	enable();
@@ -16,15 +26,37 @@ WrappedListener::WrappedListener(std::function<void (const IEvent*, const Wrappe
 WrappedListener::WrappedListener(ListenerParams params, std::function<void (const IEvent*, const WrappedListener*)> listener) : IListener(params) {
 	this->listener = listener;
 	enable();
+
+	if (params.timeout != (uint64_t) ~0) {
+		running = true;
+
+		auto timeoutWatcher = [this, params]() {
+			while (!!this && running) {
+				if (Clock::getTimestamp() >= params.timeout) {
+					this->on(new EventTimeout());
+
+					break;
+				}
+
+				System::sleep(TIMEOUT);
+			}
+		};
+
+		std::thread th(timeoutWatcher);
+		th.detach();
+	}
 }
 
 WrappedListener::~WrappedListener() {
+	running = false;
+
 	if (listener == nullptr) {
 		listener = nullptr;
 	}
 }
 
 void WrappedListener::on(const IEvent* event) {
+	running = false;
 	disable();
 
 	if (listener != nullptr) {

@@ -13,7 +13,9 @@
 #include <sys/time.h>
 #include <termios.h>
 #include <unistd.h>
+#include <cstdint>
 #include <cstring>
+#include <string>
 
 #include "../../util/Clock.h"
 
@@ -161,10 +163,11 @@ int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize, int32_t timeout) 
 			FD_ZERO(&set);
 			FD_SET(fd, &set);
 
-			timeoutVal.tv_sec = 0;
-			timeoutVal.tv_usec = timeout * 1000;
+			uint64_t t = timeout * 1000;
+			timeoutVal.tv_sec = t / 1000000;
+			timeoutVal.tv_usec = t % 1000000;
 
-			int rv = select(fd + 1, &set, NULL, NULL, &timeoutVal);
+			int rv = select(fd + 1, &set, nullptr, nullptr, &timeoutVal);
 			if (rv == -1) {
 				return -1;
 			} else if (rv == 0) {

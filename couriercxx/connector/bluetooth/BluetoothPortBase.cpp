@@ -117,7 +117,7 @@ int BluetoothPortBase::connect(std::string addr, uint8_t svcUUIDInt[16]) {
 	sdp_list_t* attridList = sdp_list_append(nullptr, &range);
 
 	// get all services than have UUID 0xabcd
-	sdp_list_t* responseList = NULL;
+	sdp_list_t* responseList = nullptr;
 	int status = sdp_service_search_attr_req(session, searchList, SDP_ATTR_REQ_RANGE, attridList, &responseList);
 	if (status == -1) {
 		sdp_close(session);
