@@ -31,7 +31,9 @@ WrappedListener::WrappedListener(ListenerParams params, std::function<void (cons
 		running = true;
 
 		auto timeoutWatcher = [this, params]() {
-			while (!!this && running) {
+			stopLock.lock();
+
+			while (running) {
 				if (Clock::getTimestamp() >= params.timeout) {
 					this->on(new EventTimeout());
 
@@ -40,6 +42,8 @@ WrappedListener::WrappedListener(ListenerParams params, std::function<void (cons
 
 				System::sleep(TIMEOUT);
 			}
+
+			stopLock.unlock();
 		};
 
 		std::thread th(timeoutWatcher);
@@ -49,6 +53,9 @@ WrappedListener::WrappedListener(ListenerParams params, std::function<void (cons
 
 WrappedListener::~WrappedListener() {
 	running = false;
+
+	// If timeout thread running - wait while it complete
+	stopLock.lock();
 
 	if (listener == nullptr) {
 		listener = nullptr;

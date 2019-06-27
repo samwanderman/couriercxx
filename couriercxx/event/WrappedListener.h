@@ -10,6 +10,7 @@
 #define COURIERCXX_EVENT_WRAPPEDLISTENER_H_
 
 #include <functional>
+#include <mutex>
 
 #include "IEvent.h"
 #include "IListener.h"
@@ -50,6 +51,7 @@ private:
 	std::function<void (const IEvent*, const WrappedListener*)> listener = nullptr;
 
 	bool running = false;
+	std::mutex stopLock;
 };
 
 #endif /* COURIERCXX_EVENT_WRAPPEDLISTENER_H_ */
