@@ -30,12 +30,11 @@ const EVENT_T Connection::EVENT_STATUS	= IEvent::genEventId();
 Connection::Connection(const Info info, IConnectorBase* connector) {
 	this->info = info;
 	this->connector = connector;
-	readThreadRunning = false;
-	eventsThreadRunning = false;
+	running = false;
 }
 
 Connection::~Connection() {
-	readThreadRunning = false;
+	running = false;
 
 	if (connector != nullptr) {
 		delete connector;
@@ -57,10 +56,10 @@ int Connection::enable() {
 
 	Dispatcher::addListener(Connection::EVENT_WRITE, this);
 
-	readThreadRunning = true;
+	running = true;
 
 	auto readThreadFunc = [this]() {
-		while (this->readThreadRunning) {
+		while (running) {
 			uint8_t buffer[BUFFER_MAX_SIZE];
 			int bytesRead = this->connector->read(buffer, BUFFER_MAX_SIZE);
 			if (bytesRead == -1) {
@@ -83,10 +82,8 @@ int Connection::enable() {
 	std::thread readThread(readThreadFunc);
 	readThread.detach();
 
-	eventsThreadRunning = true;
-
 	auto eventsThreadFunc = [this]() {
-		while (eventsThreadRunning) {
+		while (running) {
 			eventsListMutex.lock();
 			if (eventsList.size() > 0) {
 				EventWrite* ev = eventsList.front();
@@ -119,7 +116,7 @@ int Connection::disable() {
 
 	Log::debug("Connection.disable()");
 
-	readThreadRunning = false;
+	running = false;
 
 	Dispatcher::removeListener(Connection::EVENT_WRITE, this);
 	int res = connector->close();

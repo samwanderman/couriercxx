@@ -67,8 +67,7 @@ public:
 private:
 	Info info;
 	IConnectorBase* connector = nullptr;
-	bool readThreadRunning = false;
-	bool eventsThreadRunning = false;
+	bool running = false;
 	std::list<EventWrite*> eventsList;
 	std::mutex eventsListMutex;
 };
