@@ -112,6 +112,8 @@ private:
 	uint32_t outputBufferLen = 0;
 	std::mutex outputBufferMutex;
 
+	std::mutex stopMutex;
+
 	void clean();
 
 	void setMOSI();

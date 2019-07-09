@@ -59,6 +59,8 @@ int Connection::enable() {
 	running = true;
 
 	auto readThreadFunc = [this]() {
+		readMutex.lock();
+
 		while (running) {
 			uint8_t buffer[BUFFER_MAX_SIZE];
 			int bytesRead = this->connector->read(buffer, BUFFER_MAX_SIZE);
@@ -78,11 +80,15 @@ int Connection::enable() {
 
 			System::sleep(CONNECTION_READ_TIMEOUT);
 		}
+
+		readMutex.unlock();
 	};
 	std::thread readThread(readThreadFunc);
 	readThread.detach();
 
 	auto eventsThreadFunc = [this]() {
+		eventMutex.lock();
+
 		while (running) {
 			eventsListMutex.lock();
 			if (eventsList.size() > 0) {
@@ -102,6 +108,8 @@ int Connection::enable() {
 			}
 			eventsListMutex.unlock();
 		}
+
+		eventMutex.unlock();
 	};
 	std::thread thEvents(eventsThreadFunc);
 	thEvents.detach();
@@ -116,9 +124,13 @@ int Connection::disable() {
 
 	Log::debug("Connection.disable()");
 
+	Dispatcher::removeListener(Connection::EVENT_WRITE, this);
+
 	running = false;
 
-	Dispatcher::removeListener(Connection::EVENT_WRITE, this);
+	eventMutex.lock();
+	readMutex.lock();
+
 	int res = connector->close();
 	IListener::disable();
 

@@ -29,6 +29,8 @@ DispatcherBase::DispatcherBase() {
 	auto func = [this]() {
 		const EventTimeout eventTimeout;
 
+		stopMutex.lock();
+
 		while (running) {
 			uint64_t now = Clock::getTimestamp();
 
@@ -57,6 +59,8 @@ DispatcherBase::DispatcherBase() {
 
 			System::sleep(EVENT_WATCHER_TIMEOUT);
 		}
+
+		stopMutex.unlock();
 	};
 	std::thread th(func);
 	th.detach();
@@ -64,6 +68,8 @@ DispatcherBase::DispatcherBase() {
 
 DispatcherBase::~DispatcherBase() {
 	running = false;
+
+	stopMutex.lock();
 
 	listenerMutex.lock();
 

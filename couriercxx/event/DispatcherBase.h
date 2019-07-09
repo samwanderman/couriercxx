@@ -91,6 +91,8 @@ private:
 	 */
 	std::list<IListener*>* getListeners(EVENT_T eventType);
 	bool running = false;
+
+	std::mutex stopMutex;
 };
 
 #endif /* COURIERCXX_EVENT_DISPATCHERBASE_H_ */

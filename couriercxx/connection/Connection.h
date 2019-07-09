@@ -70,6 +70,8 @@ private:
 	bool running = false;
 	std::list<EventWrite*> eventsList;
 	std::mutex eventsListMutex;
+	std::mutex readMutex;
+	std::mutex eventMutex;
 };
 
 } /* namespace Connection */
