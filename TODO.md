@@ -1,0 +1,1 @@
+- add stop mutex for classes which use threads

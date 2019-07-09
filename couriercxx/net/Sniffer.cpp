@@ -71,6 +71,8 @@ int Sniffer::enable() {
 	running = true;
 
 	auto func = [this]() {
+		stopMutex.lock();
+
 		while (running) {
 			struct pcap_pkthdr header;
 			const uint8_t* packet = pcap_next(handle, &header);
@@ -153,6 +155,8 @@ int Sniffer::enable() {
 		}
 
 		pcap_close(handle);
+
+		stopMutex.unlock();
 	};
 	std::thread th(func);
 	th.detach();
@@ -166,6 +170,8 @@ int Sniffer::disable() {
 	}
 
 	running = false;
+
+	stopMutex.lock();
 
 	return 0;
 }
