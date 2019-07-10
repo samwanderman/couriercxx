@@ -1,7 +1,7 @@
 /*
  * Clock.cpp
  *
- *  Created on: 13.02.2019 г.
+ *  Created on: 13.02.2019
  *      Author: Potapov Sergei
  *       Email: sam-wanderman@yandex.ru
  */
@@ -32,17 +32,38 @@ Time::Time(uint64_t time) {
 }
 
 uint64_t Time::getTimestamp() {
-	struct tm time;
-	memset(&time, 0, sizeof(time));
-	time.tm_sec = second;
-	time.tm_min = minute;
-	time.tm_hour = hour;
-	time.tm_mday = date;
-	time.tm_mon = month - 1;
-	time.tm_year = year - 1900;
-	time.tm_gmtoff = gmt * 3600;
+    uint16_t year = this->year - 1900;
+    uint8_t hour = this->hour;
+    uint8_t date = this->date;
 
-	return mktime(&time) * 1000;
+    // fix for some cases
+    if (year < 70) {
+            year = 70;
+    }
+
+    if ((year == 70) && (month == 1) && (date <= 1)) {
+            time_t t = time(nullptr);
+            struct tm lt = { 0 };
+
+            localtime_r(&t, &lt);
+
+            if (hour < lt.tm_gmtoff) {
+                    hour = lt.tm_gmtoff / 3600;
+            }
+            date = 1;
+    }
+
+    struct tm time;
+    memset(&time, 0, sizeof(time));
+    time.tm_sec = second;
+    time.tm_min = minute;
+    time.tm_hour = hour;
+    time.tm_mday = date;
+    time.tm_mon = month - 1;
+    time.tm_year = year;
+    time.tm_gmtoff = gmt * 3600;
+
+	return mktime(&time) * 1000 + msecond;
 }
 
 uint64_t Clock::getTimestamp() {

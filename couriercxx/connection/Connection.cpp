@@ -59,7 +59,8 @@ int Connection::enable() {
 	running = true;
 
 	auto readThreadFunc = [this]() {
-		readMutex.lock();
+		// FIXME
+		// readMutex.lock();
 
 		while (running) {
 			uint8_t buffer[BUFFER_MAX_SIZE];
@@ -81,7 +82,7 @@ int Connection::enable() {
 			System::sleep(CONNECTION_READ_TIMEOUT);
 		}
 
-		readMutex.unlock();
+		// readMutex.unlock();
 	};
 	std::thread readThread(readThreadFunc);
 	readThread.detach();

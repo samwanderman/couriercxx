@@ -77,6 +77,17 @@ public:
 	virtual int read(uint8_t* buffer, uint32_t bufferSize);
 
 	/**
+	 * Read data from connector, wait for timeout msec
+	 *
+	 * \param[out] uint8_t* buffer - buffer to store data
+	 * \param[in] uint32_t bufferSize - buffer size
+	 * \param[in] uint32_t timeout - read timeout (msec)
+	 *
+	 * \return number of read bytes if success, -1 if error or timeout reached
+	 */
+	virtual int read(uint8_t* buffer, uint32_t bufferSize, uint32_t timeout);
+
+	/**
 	 * Write data to connector
 	 *
 	 * \param[in] const uint8_t* buffer - buffer with data
