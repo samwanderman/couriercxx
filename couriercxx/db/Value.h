@@ -41,16 +41,22 @@ struct Value {
 typedef Value<const char*> StringValue;
 typedef Value<pqxx::binarystring> ArrayValue;
 typedef Value<uint8_t> UInt8Value;
+typedef Value<int8_t> Int8Value;
 typedef Value<uint16_t> UInt16Value;
+typedef Value<int16_t> Int16Value;
 typedef Value<uint32_t> UInt32Value;
+typedef Value<int32_t> Int32Value;
 typedef Value<uint64_t> UInt64Value;
 typedef Value<int64_t> Int64Value;
 typedef Value<bool> BoolValue;
 
 const std::type_index typeBool(typeid(BoolValue));
 const std::type_index typeUINT8T(typeid(UInt8Value));
+const std::type_index typeINT8T(typeid(Int8Value));
 const std::type_index typeUINT16T(typeid(UInt16Value));
+const std::type_index typeINT16T(typeid(Int16Value));
 const std::type_index typeUINT32T(typeid(UInt32Value));
+const std::type_index typeINT32T(typeid(Int32Value));
 const std::type_index typeUINT64T(typeid(UInt64Value));
 const std::type_index typeINT64T(typeid(Int64Value));
 const std::type_index typeArray(typeid(ArrayValue));
