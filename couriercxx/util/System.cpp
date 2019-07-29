@@ -54,3 +54,11 @@ void System::sleep(uint64_t milliseconds) {
 void System::usleep(uint64_t microseconds) {
 	std::this_thread::sleep_for(std::chrono::microseconds(microseconds));
 }
+
+int System::mkdir(std::string path) {
+	char command[256];
+	memset(command, 0, sizeof(command));
+	snprintf(command, 255, "mkdir -p %s", path.c_str());
+
+	return system(command);
+}

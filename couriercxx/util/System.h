@@ -71,6 +71,15 @@ public:
 	 * \param[in] uint64_t microseconds
 	 */
 	static void usleep(uint64_t microseconds);
+
+	/**
+	 * Make directory
+	 *
+	 * \param[in] string path - path
+	 *
+	 * \return int - 0 if success, -1 if error
+	 */
+	static int mkdir(std::string path);
 };
 
 #endif /* COURIERCXX_UTIL_SYSTEM_H_ */
