@@ -19,6 +19,7 @@
 #include <exception>
 #include <utility>
 
+#include "../logger/Log.h"
 #include "Value.h"
 
 #define BUFFER_SIZE	1024
@@ -61,6 +62,7 @@ int PostgresConnector::open() {
 
 		opened = true;
 	} catch (const std::exception& e) {
+		Log::error("%s", e.what());
 		return -1;
 	}
 
