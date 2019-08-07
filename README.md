@@ -1,5 +1,5 @@
 # CourierCXX
-##### v0.3.0 (07.02.2019)
+##### v0.4.1 (07.08.2019)
 C++ framework for standart operations simplification
 
 ### Requirements
