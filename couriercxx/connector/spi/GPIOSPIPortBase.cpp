@@ -62,6 +62,7 @@ int GPIOSPIPortBase::open() {
 	}
 	setCS();
 
+	stopMutex.unlock();
 	running = true;
 	auto func = [this]() {
 		stopMutex.lock();

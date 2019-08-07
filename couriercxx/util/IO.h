@@ -47,6 +47,15 @@ public:
 	 * \return true - file exists, false - file not exists
 	 */
 	static bool exists(std::string path);
+
+	/**
+	 * Get file size
+	 *
+	 * \param[in] std::string path - path to file
+	 *
+	 * \return int - size of file if success, -1 if error
+	 */
+	static int getSize(std::string path);
 };
 
 #endif /* COURIERCXX_UTIL_IO_H_ */

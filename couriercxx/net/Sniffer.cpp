@@ -68,6 +68,7 @@ int Sniffer::enable() {
 		return -1;
 	}
 
+	stopMutex.unlock();
 	running = true;
 
 	auto func = [this]() {
@@ -76,6 +77,9 @@ int Sniffer::enable() {
 		while (running) {
 			struct pcap_pkthdr header;
 			const uint8_t* packet = pcap_next(handle, &header);
+			if (packet == nullptr) {
+				continue;
+			}
 
 #ifdef DEBUG
 			Log::debug("total packet len is %d", header.len);

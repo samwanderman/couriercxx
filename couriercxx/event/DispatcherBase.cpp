@@ -23,6 +23,7 @@
 #define EVENT_WATCHER_TIMEOUT	1000
 
 DispatcherBase::DispatcherBase() {
+	stopMutex.unlock();
 	running = true;
 
 	// timeout watcher
@@ -150,6 +151,9 @@ void DispatcherBase::trigger(const IEvent* event) {
 	std::list<IListener*>* foundListeners = getListeners(event->getType());
 	if ((foundListeners == nullptr) || (foundListeners->size() == 0)) {
 //		Log::error("Listener not found");
+
+		delete event;
+
 		return;
 	}
 

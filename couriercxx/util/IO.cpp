@@ -11,6 +11,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <cstdio>
 
 int IO::writeTo(std::string path, const uint8_t* buffer, uint32_t bufferSize) {
 	int fd = ::open(path.c_str(), O_WRONLY | O_CREAT, 0200);
@@ -55,4 +56,23 @@ int IO::readFrom(std::string path, uint8_t* buffer, uint32_t bufferSize) {
 bool IO::exists(std::string path) {
 	struct stat buffer;
 	return stat(path.c_str(), &buffer) == 0;
+}
+
+int IO::getSize(std::string path) {
+	FILE* fd = fopen(path.c_str(), "r");
+	if (fd == nullptr) {
+		return -1;
+	}
+
+	int size = -1;
+
+	fseek(fd, 0, SEEK_END);
+	size = ftell(fd);
+
+
+	if (fclose(fd) == -1) {
+		return -1;
+	}
+
+	return size;
 }

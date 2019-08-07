@@ -56,6 +56,7 @@ int Connection::enable() {
 
 	Dispatcher::addListener(Connection::EVENT_WRITE, this);
 
+	eventMutex.unlock();
 	running = true;
 
 	auto readThreadFunc = [this]() {

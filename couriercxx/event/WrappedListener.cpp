@@ -28,6 +28,7 @@ WrappedListener::WrappedListener(ListenerParams params, std::function<void (cons
 	enable();
 
 	if (params.timeout != (uint64_t) ~0) {
+		stopMutex.unlock();
 		running = true;
 
 		auto timeoutWatcher = [this, params]() {
