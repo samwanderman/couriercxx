@@ -146,6 +146,16 @@ pqxx::result PostgresConnector::execStatement(std::string name, ...) {
 				}
 			}
 
+			if ((*it2).hash_code() == DB::typeINT8T.hash_code()) {
+				DB::Int8Value arg = va_arg(args, DB::Int8Value);
+				int16_t val = *arg.value;
+				if (arg.value != nullptr) {
+					prep_dynamic(val, invoke);
+				} else {
+					prep_dynamic((const char*) nullptr, invoke);
+				}
+			}
+
 			if ((*it2).hash_code() == DB::typeUINT8T.hash_code()) {
 				DB::UInt8Value arg = va_arg(args, DB::UInt8Value);
 				uint16_t val = *arg.value;
@@ -165,8 +175,26 @@ pqxx::result PostgresConnector::execStatement(std::string name, ...) {
 				}
 			}
 
+			if ((*it2).hash_code() == DB::typeINT16T.hash_code()) {
+				DB::Int16Value arg = va_arg(args, DB::Int16Value);
+				if (arg.value != nullptr) {
+					prep_dynamic(*arg.value, invoke);
+				} else {
+					prep_dynamic((const char*) nullptr, invoke);
+				}
+			}
+
 			if ((*it2).hash_code() == DB::typeUINT32T.hash_code()) {
 				DB::UInt32Value arg = va_arg(args, DB::UInt32Value);
+				if (arg.value != nullptr) {
+					prep_dynamic(*arg.value, invoke);
+				} else {
+					prep_dynamic((const char*) nullptr, invoke);
+				}
+			}
+
+			if ((*it2).hash_code() == DB::typeINT32T.hash_code()) {
+				DB::Int32Value arg = va_arg(args, DB::Int32Value);
 				if (arg.value != nullptr) {
 					prep_dynamic(*arg.value, invoke);
 				} else {
