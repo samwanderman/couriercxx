@@ -54,7 +54,7 @@ int BMP::toBin(uint8_t* buffer, uint32_t bufferSize) {
 			uint32_t newStride = makeStrideAligned(4);
 			std::vector<uint8_t> paddingRow(newStride - rowStride);
 
-			int idx = writeHeaders(&buffer[idx], bufferSize);
+			int idx = writeHeaders(buffer, bufferSize);
 			if (idx == -1) {
 				return -1;
 			}
