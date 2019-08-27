@@ -1,4 +1,4 @@
-# Version 0.0.5.1 (current)
+# Version 0.0.6.0 (current)
 ### 27.08.2019
 [+] add binary data convertion to JPG
 
