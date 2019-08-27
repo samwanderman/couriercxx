@@ -34,7 +34,6 @@ BMP::BMP(uint32_t width, uint32_t height, uint32_t rowStride, const uint8_t* _da
 			}
 		}
 	}
-//	data = std::vector<uint8_t>(_data, _data + height * rowStride);
 
 	infoHeader.size = sizeof(InfoHeader);
 	infoHeader.bitCount = 24;

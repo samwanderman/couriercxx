@@ -1,4 +1,8 @@
-# Version 0.0.5.0 (current)
+# Version 0.0.5.1 (current)
+### 27.08.2019
+[+] add binary data convertion to JPG
+
+# Version 0.0.5.0
 ### 22.08.2019
 [+] add binary data convertion to BMP
 

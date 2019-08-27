@@ -1,5 +1,5 @@
 # CourierCXX
-##### v0.0.5.0 (22.08.2019)
+##### v0.0.5.1 (27.08.2019)
 C++ framework for standart operations simplification
 
 ### Requirements
@@ -15,7 +15,9 @@ C++ framework for standart operations simplification
 
 [6] libghc-iconv-dev
 
-[7] doxygen
+[7] libjpeg-dev
+
+[8] doxygen
 
 ### Documentation
 To generate documentation, execute command:

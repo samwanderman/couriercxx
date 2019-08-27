@@ -2,6 +2,8 @@
 *.o
 *.d
 *.bmp
+*.jpg
+*.bin
 .settings
 docs
 examples/*Example
