@@ -154,11 +154,13 @@ int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize, int32_t timeout) 
 			int res = ::read(fd, &buffer[bytesRead], bufferSize - bytesRead);
 
 #ifdef DEBUG
-			Log::log("< ");
-			for (int i = 0; i < res; i++) {
-				Log::log("%02x ", buffer[i]);
+			if (res > 0) {
+				Log::log("< ");
+				for (int i = 0; i < res; i++) {
+					Log::log("%02x ", buffer[bytesRead + i]);
+				}
+				Log::log("\r\n");
 			}
-			Log::log("\r\n");
 #endif
 
 			if (res != -1) {
@@ -191,11 +193,13 @@ int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize, int32_t timeout) 
 		int res = ::read(fd, buffer, bufferSize);
 
 #ifdef DEBUG
-		Log::log("< ");
-		for (int i = 0; i < res; i++) {
-			Log::log("%02x ", buffer[i]);
+		if (res > 0) {
+			Log::log("< ");
+			for (int i = 0; i < res; i++) {
+				Log::log("%02x ", buffer[i]);
+			}
+			Log::log("\r\n");
 		}
-		Log::log("\r\n");
 #endif
 
 		return res;
@@ -210,11 +214,13 @@ int SerialPortBase::write(const uint8_t* buffer, uint32_t bufferSize) {
 	int res = ::write(fd, buffer, bufferSize);
 
 #ifdef DEBUG
-	Log::log("> ");
-	for (int i = 0; i < (int) bufferSize; i++) {
-		Log::log("%02x ", buffer[i]);
+	if (res > 0) {
+		Log::log("> ");
+		for (int i = 0; i < (int) bufferSize; i++) {
+			Log::log("%02x ", buffer[i]);
+		}
+		Log::log("\r\n");
 	}
-	Log::log("\r\n");
 #endif
 
 	return res;

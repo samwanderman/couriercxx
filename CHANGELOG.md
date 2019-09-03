@@ -1,6 +1,7 @@
 # Version 0.0.6.0 (current)
 ### 27.08.2019
 [+] add binary data convertion to JPG
+[*] fixed debug info for serial port
 
 # Version 0.0.5.0
 ### 22.08.2019
