@@ -1,5 +1,5 @@
 # CourierCXX
-##### v0.0.6.0 (27.08.2019)
+##### v0.0.6.0 (Released 27.08.2019)
 C++ framework for standart operations simplification
 
 ### Requirements
@@ -22,7 +22,7 @@ C++ framework for standart operations simplification
 ### Documentation
 To generate documentation, execute command:
 
-$ doxygen config.doxygen
+	$ doxygen config.doxygen
 
 After generation it will be placed in /docs folder
 
