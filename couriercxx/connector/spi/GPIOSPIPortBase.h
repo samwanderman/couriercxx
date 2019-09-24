@@ -23,10 +23,10 @@ class GPIOPortBase;
  */
 class GPIOSPIPortBase : public IConnectorBase {
 public:
-	const static uint16_t MODE0;
-	const static uint16_t MODE1;
-	const static uint16_t MODE2;
-	const static uint16_t MODE3;
+	static const uint16_t MODE0;
+	static const uint16_t MODE1;
+	static const uint16_t MODE2;
+	static const uint16_t MODE3;
 
 	/**
 	 * Constructor

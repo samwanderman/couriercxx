@@ -3,6 +3,8 @@
 
 [*] fixed debug info for serial port
 
+[*] minor refactoring
+
 ### Version 0.0.5.0 (Released 22.08.2019)
 [+] add binary data convertion to BMP
 
