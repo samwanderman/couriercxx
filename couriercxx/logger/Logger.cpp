@@ -21,6 +21,12 @@
 
 #define STRING_MAX_LEN	1024
 
+const uint8_t Logger::LEVEL_LOG		= 0;
+const uint8_t Logger::LEVEL_INFO	= 1;
+const uint8_t Logger::LEVEL_DEBUG	= 2;
+const uint8_t Logger::LEVEL_WARNING	= 3;
+const uint8_t Logger::LEVEL_ERROR	= 4;
+
 Logger::Logger() {
 	open();
 }

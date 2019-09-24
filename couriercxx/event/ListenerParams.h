@@ -15,8 +15,8 @@
  * Params from IListener
  */
 struct ListenerParams {
-	uint64_t timeout = ~0;
-	bool execOnce = false;
+	uint64_t timeout	= ~0;
+	bool execOnce		= false;
 };
 typedef struct ListenerParams ListenerParams;
 

@@ -16,6 +16,11 @@
 
 #define TIMEOUT		20
 
+const uint16_t GPIOSPIPortBase::MODE0 = 0;
+const uint16_t GPIOSPIPortBase::MODE1 = 1;
+const uint16_t GPIOSPIPortBase::MODE2 = 2;
+const uint16_t GPIOSPIPortBase::MODE3 = 3;
+
 GPIOSPIPortBase::GPIOSPIPortBase(int16_t mosi, int16_t miso, int16_t clk, int16_t cs, uint16_t mode) : IConnectorBase() {
 	this->mosi = mosi;
 	this->miso = miso;

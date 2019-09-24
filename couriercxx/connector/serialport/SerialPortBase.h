@@ -23,10 +23,10 @@ public:
 	 * Serial port configuration struct
 	 */
 	struct Config {
-		std::string name = "";
-		uint32_t baudrate = 0;
-		bool nonBlock = false;
-		uint32_t timeout = 0;
+		std::string name	= "";
+		uint32_t baudrate	= 0;
+		bool nonBlock		= false;
+		uint32_t timeout	= 0;
 	};
 	typedef struct Config Config;
 

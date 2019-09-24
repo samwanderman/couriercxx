@@ -20,11 +20,11 @@ public:
 	/**
 	 * Log level
 	 */
-	static const uint8_t LEVEL_LOG = 0;
-	static const uint8_t LEVEL_INFO = 1;
-	static const uint8_t LEVEL_DEBUG = 2;
-	static const uint8_t LEVEL_WARNING = 3;
-	static const uint8_t LEVEL_ERROR = 4;
+	static const uint8_t LEVEL_LOG;
+	static const uint8_t LEVEL_INFO;
+	static const uint8_t LEVEL_DEBUG;
+	static const uint8_t LEVEL_WARNING;
+	static const uint8_t LEVEL_ERROR;
 
 	/**
 	 * Empty constructor
