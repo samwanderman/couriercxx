@@ -9,7 +9,7 @@ int main(int ac, char** av) {
 	Log::setAppName(&av[0][2]);
 
 	SerialPortBase::Config config;
-	config.name = "/dev/ttyUSB0";
+	config.path = "/dev/ttyUSB0";
 	config.baudrate = 38400;
 	config.timeout = 500;
 	SerialPortBase port(config);

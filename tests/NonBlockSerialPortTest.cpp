@@ -43,7 +43,7 @@ void test2(const char* path) {
 	SerialPortBase::Config config;
 	config.nonBlock = true;
 	config.timeout = 200;
-	config.name = path;
+	config.path = path;
 
 	SerialPortBase port(config);
 	if (port.open() == -1) {

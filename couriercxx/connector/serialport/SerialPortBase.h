@@ -23,10 +23,14 @@ public:
 	 * Serial port configuration struct
 	 */
 	struct Config {
-		std::string name	= "";
+		std::string path	= "";
 		uint32_t baudrate	= 0;
 		bool nonBlock		= false;
 		uint32_t timeout	= 0;
+		bool parityCheck	= false;
+		bool stopBit		= false;
+		bool startBit		= false;
+		uint8_t dateBits	= 8;
 	};
 	typedef struct Config Config;
 
@@ -40,26 +44,26 @@ public:
 	/**
 	 * Base serial port constructor
 	 *
-	 * \param[in] string name - port system name
+	 * \param[in] string path - path to port
 	 */
-	SerialPortBase(std::string name);
+	SerialPortBase(std::string path);
 
 	/**
 	 * Base serial port constructor
 	 *
-	 * \param[in] string name - port system name
+	 * \param[in] string path - path to port
 	 * \param[in] uint32_t speed - port speed
 	 */
-	SerialPortBase(std::string name, uint32_t speed);
+	SerialPortBase(std::string path, uint32_t speed);
 
 	/**
 	 * Base serial port constructor
 	 *
-	 * \param[in] string name - port system name
+	 * \param[in] string path - path to port
 	 * \param[in] uint32_t speed - port speed
 	 * \param[in] uint32_t timeout - port IO timeout
 	 */
-	SerialPortBase(std::string name, uint32_t speed, uint32_t timeout);
+	SerialPortBase(std::string path, uint32_t speed, uint32_t timeout);
 
 	/**
 	 * Copy constructor

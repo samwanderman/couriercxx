@@ -29,15 +29,15 @@ SerialPortBase::SerialPortBase(Config config) : IConnectorBase() {
 	this->config = config;
 }
 
-SerialPortBase::SerialPortBase(std::string name) {
-	config.name = name;
+SerialPortBase::SerialPortBase(std::string path) {
+	config.path = path;
 }
 
-SerialPortBase::SerialPortBase(std::string name, uint32_t baudrate) : SerialPortBase(name) {
+SerialPortBase::SerialPortBase(std::string path, uint32_t baudrate) : SerialPortBase(path) {
 	config.baudrate = baudrate;
 }
 
-SerialPortBase::SerialPortBase(std::string name, uint32_t baudrate, uint32_t timeout) : SerialPortBase(name, baudrate) {
+SerialPortBase::SerialPortBase(std::string path, uint32_t baudrate, uint32_t timeout) : SerialPortBase(path, baudrate) {
 	config.timeout = timeout;
 }
 
@@ -65,7 +65,7 @@ int SerialPortBase::open() {
 		return -1;
 	}
 
-	fd = ::open(config.name.c_str(), O_RDWR | O_NOCTTY);
+	fd = ::open(config.path.c_str(), O_RDWR | O_NOCTTY);
 	if (fd == -1) {
 		return -1;
 	}
@@ -275,10 +275,34 @@ int SerialPortBase::setBaudrate(uint32_t baudrate) {
 		}
 	}
 
-	tty.c_cflag &= ~PARENB;
-	tty.c_cflag &= ~CSTOPB;
+	uint8_t dateBits = 0;
+	switch (config.dateBits) {
+	case 5:
+		dateBits = CS5;
+
+		break;
+
+	case 6:
+		dateBits = CS6;
+
+		break;
+
+	case 7:
+		dateBits = CS7;
+
+		break;
+
+	case 8:
+	default:
+		dateBits = CS8;
+
+		break;
+	}
+
+	tty.c_cflag &= config.parityCheck ? PARENB : ~PARENB;
+	tty.c_cflag &= config.stopBit ? CSTOPB : ~CSTOPB;
 	tty.c_cflag &= ~CSIZE;
-	tty.c_cflag |= CS8;
+	tty.c_cflag |= dateBits;
 	tty.c_cflag &= ~CRTSCTS;
 	tty.c_cc[VMIN] = 1;
 	tty.c_cc[VTIME] = 5;
