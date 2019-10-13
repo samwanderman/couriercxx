@@ -1,7 +1,7 @@
 /*
  * System.cpp
  *
- *  Created on: 14.02.2019 г.
+ *  Created on: 14.02.2019
  *      Author: Potapov Sergei
  *       Email: sam-wanderman@yandex.ru
  */

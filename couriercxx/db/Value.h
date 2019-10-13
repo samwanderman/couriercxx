@@ -1,7 +1,7 @@
 /*
  * Value.h
  *
- *  Created on: 15.02.2019 г.
+ *  Created on: 15.02.2019
  *      Author: Potapov Sergei
  *       Email: sam-wanderman@yandex.ru
  */
