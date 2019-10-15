@@ -20,6 +20,19 @@
  */
 class PropertyFile: public IProperty {
 public:
+	using IProperty::getUInt8;
+	using IProperty::getInt8;
+	using IProperty::getUInt16;
+	using IProperty::getInt16;
+	using IProperty::getUInt32;
+	using IProperty::getInt32;
+	using IProperty::getUInt64;
+	using IProperty::getInt64;
+	using IProperty::getFloat;
+	using IProperty::getDouble;
+	using IProperty::getBool;
+	using IProperty::getString;
+
 	/**
 	 * Constructor
 	 *
