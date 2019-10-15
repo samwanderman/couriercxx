@@ -24,7 +24,9 @@ int PropertyFile::open() {
 }
 
 int PropertyFile::close() {
-	return save();
+	properties.clear();
+
+	return 0;
 }
 
 int PropertyFile::save() {
