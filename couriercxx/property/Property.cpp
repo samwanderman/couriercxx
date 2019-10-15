@@ -42,7 +42,7 @@ uint8_t* Property::getUInt8(std::string propertyName) {
 	return getInstance().property->getUInt8(propertyName);
 }
 
-uint8_t* Property::getUInt8(std::string propertyName, uint8_t defaultValue) {
+uint8_t Property::getUInt8(std::string propertyName, uint8_t defaultValue) {
 	return getInstance().property->getUInt8(propertyName, defaultValue);
 }
 
@@ -55,7 +55,7 @@ int8_t* Property::getInt8(std::string propertyName) {
 	return getInstance().property->getInt8(propertyName);
 }
 
-int8_t* Property::getInt8(std::string propertyName, int8_t defaultValue) {
+int8_t Property::getInt8(std::string propertyName, int8_t defaultValue) {
 	return getInstance().property->getInt8(propertyName, defaultValue);
 }
 
@@ -68,7 +68,7 @@ uint16_t* Property::getUInt16(std::string propertyName) {
 	return getInstance().property->getUInt16(propertyName);
 }
 
-uint16_t* Property::getUInt16(std::string propertyName, uint16_t defaultValue) {
+uint16_t Property::getUInt16(std::string propertyName, uint16_t defaultValue) {
 	return getInstance().property->getUInt16(propertyName, defaultValue);
 }
 
@@ -81,7 +81,7 @@ int16_t* Property::getInt16(std::string propertyName) {
 	return getInstance().property->getInt16(propertyName);
 }
 
-int16_t* Property::getInt16(std::string propertyName, int16_t defaultValue) {
+int16_t Property::getInt16(std::string propertyName, int16_t defaultValue) {
 	return getInstance().property->getInt16(propertyName, defaultValue);
 }
 
@@ -94,7 +94,7 @@ uint32_t* Property::getUInt32(std::string propertyName) {
 	return getInstance().property->getUInt32(propertyName);
 }
 
-uint32_t* Property::getUInt32(std::string propertyName, uint32_t defaultValue) {
+uint32_t Property::getUInt32(std::string propertyName, uint32_t defaultValue) {
 	return getInstance().property->getUInt32(propertyName, defaultValue);
 }
 
@@ -107,7 +107,7 @@ int32_t* Property::getInt32(std::string propertyName) {
 	return getInstance().property->getInt32(propertyName);
 }
 
-int32_t* Property::getInt32(std::string propertyName, int32_t defaultValue) {
+int32_t Property::getInt32(std::string propertyName, int32_t defaultValue) {
 	return getInstance().property->getInt32(propertyName, defaultValue);
 }
 
@@ -120,7 +120,7 @@ uint64_t* Property::getUInt64(std::string propertyName) {
 	return getInstance().property->getUInt64(propertyName);
 }
 
-uint64_t* Property::getUInt64(std::string propertyName, uint64_t defaultValue) {
+uint64_t Property::getUInt64(std::string propertyName, uint64_t defaultValue) {
 	return getInstance().property->getUInt64(propertyName, defaultValue);
 }
 
@@ -133,7 +133,7 @@ int64_t* Property::getInt64(std::string propertyName) {
 	return getInstance().property->getInt64(propertyName);
 }
 
-int64_t* Property::getInt64(std::string propertyName, int64_t defaultValue) {
+int64_t Property::getInt64(std::string propertyName, int64_t defaultValue) {
 	return getInstance().property->getInt64(propertyName, defaultValue);
 }
 
@@ -146,7 +146,7 @@ float* Property::getFloat(std::string propertyName) {
 	return getInstance().property->getFloat(propertyName);
 }
 
-float* Property::getFloat(std::string propertyName, float defaultValue) {
+float Property::getFloat(std::string propertyName, float defaultValue) {
 	return getInstance().property->getFloat(propertyName, defaultValue);
 }
 
@@ -159,7 +159,7 @@ double* Property::getDouble(std::string propertyName) {
 	return getInstance().property->getDouble(propertyName);
 }
 
-double* Property::getDouble(std::string propertyName, double defaultValue) {
+double Property::getDouble(std::string propertyName, double defaultValue) {
 	return getInstance().property->getDouble(propertyName, defaultValue);
 }
 
@@ -172,7 +172,7 @@ std::string* Property::getString(std::string propertyName) {
 	return getInstance().property->getString(propertyName);
 }
 
-std::string* Property::getString(std::string propertyName, std::string defaultValue) {
+std::string Property::getString(std::string propertyName, std::string defaultValue) {
 	return getInstance().property->getString(propertyName, defaultValue);
 }
 
@@ -185,7 +185,7 @@ bool* Property::getBool(std::string propertyName) {
 	return getInstance().property->getBool(propertyName);
 }
 
-bool* Property::getBool(std::string propertyName, bool defaultValue) {
+bool Property::getBool(std::string propertyName, bool defaultValue) {
 	return getInstance().property->getBool(propertyName, defaultValue);
 }
 

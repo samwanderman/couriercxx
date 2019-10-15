@@ -46,7 +46,7 @@ public:
 	 *
 	 * \param[in] string paramName - param name
 	 *
-	 * \return uint8_t* - value
+	 * \return uint8_t* - value (if not null, should me deleted manually)
 	 */
 	virtual uint8_t* getUInt8(std::string paramName);
 
@@ -56,9 +56,9 @@ public:
 	 * \param[in] string paramName - param name
 	 * \param[in] uint8_t defaultValue - default value
 	 *
-	 * \return uint8_t* - value
+	 * \return uint8_t - value
 	 */
-	virtual uint8_t* getUInt8(std::string paramName, uint8_t defaultValue);
+	virtual uint8_t getUInt8(std::string paramName, uint8_t defaultValue);
 
 	/**
 	 * Set uint8_t param
@@ -73,7 +73,7 @@ public:
 	 *
 	 * \param[in] string paramName - param name
 	 *
-	 * \return int8_t* - value
+	 * \return int8_t* - value (if not null, should me deleted manually)
 	 */
 	virtual int8_t* getInt8(std::string paramName);
 
@@ -83,9 +83,9 @@ public:
 	 * \param[in] string paramName - param name
 	 * \param[in] int8_t defaultValue - default value
 	 *
-	 * \return int8_t* - value
+	 * \return int8_t - value
 	 */
-	virtual int8_t* getInt8(std::string paramName, int8_t defaultValue);
+	virtual int8_t getInt8(std::string paramName, int8_t defaultValue);
 
 	/**
 	 * Set int8_t param
@@ -100,7 +100,7 @@ public:
 	 *
 	 * \param[in] string paramName - param name
 	 *
-	 * \return uint16_t* - value
+	 * \return uint16_t* - value (if not null, should me deleted manually)
 	 */
 	virtual uint16_t* getUInt16(std::string paramName);
 
@@ -110,9 +110,9 @@ public:
 	 * \param[in] string paramName - param name
 	 * \param[in] uint16_t defaultValue - default value
 	 *
-	 * \return uint16_t* - value
+	 * \return uint16_t - value
 	 */
-	virtual uint16_t* getUInt16(std::string paramName, uint16_t defaultValue);
+	virtual uint16_t getUInt16(std::string paramName, uint16_t defaultValue);
 
 	/**
 	 * Set uint16_t param
@@ -127,7 +127,7 @@ public:
 	 *
 	 * \param[in] string paramName - param name
 	 *
-	 * \return int16_t* - value
+	 * \return int16_t* - value (if not null, should me deleted manually)
 	 */
 	virtual int16_t* getInt16(std::string paramName);
 
@@ -137,9 +137,9 @@ public:
 	 * \param[in] string paramName - param name
 	 * \param[in] int16_t defaultValue - default value
 	 *
-	 * \return int16_t* - value
+	 * \return int16_t - value
 	 */
-	virtual int16_t* getInt16(std::string paramName, int16_t defaultValue);
+	virtual int16_t getInt16(std::string paramName, int16_t defaultValue);
 
 	/**
 	 * Set int16_t param
@@ -154,7 +154,7 @@ public:
 	 *
 	 * \param[in] string paramName - param name
 	 *
-	 * \return uint32_t* - value
+	 * \return uint32_t* - value (if not null, should me deleted manually)
 	 */
 	virtual uint32_t* getUInt32(std::string paramName);
 
@@ -164,9 +164,9 @@ public:
 	 * \param[in] string paramName - param name
 	 * \param[in] uint32_t defaultValue - default value
 	 *
-	 * \return uint32_t* - value
+	 * \return uint32_t - value
 	 */
-	virtual uint32_t* getUInt32(std::string paramName, uint32_t defaultValue);
+	virtual uint32_t getUInt32(std::string paramName, uint32_t defaultValue);
 
 	/**
 	 * Set uint32_t param
@@ -181,7 +181,7 @@ public:
 	 *
 	 * \param[in] string paramName - param name
 	 *
-	 * \return int32_t* - value
+	 * \return int32_t* - value (if not null, should me deleted manually)
 	 */
 	virtual int32_t* getInt32(std::string paramName);
 
@@ -191,9 +191,9 @@ public:
 	 * \param[in] string paramName - param name
 	 * \param[in] int32_t defaultValue - default value
 	 *
-	 * \return int32_t* - value
+	 * \return int32_t - value
 	 */
-	virtual int32_t* getInt32(std::string paramName, int32_t defaultValue);
+	virtual int32_t getInt32(std::string paramName, int32_t defaultValue);
 
 	/**
 	 * Set int32_t param
@@ -208,7 +208,7 @@ public:
 	 *
 	 * \param[in] string paramName - param name
 	 *
-	 * \return uint64_t* - value
+	 * \return uint64_t* - value (if not null, should me deleted manually)
 	 */
 	virtual uint64_t* getUInt64(std::string paramName);
 
@@ -218,9 +218,9 @@ public:
 	 * \param[in] string paramName - param name
 	 * \param[in] uint64_t defaultValue - default value
 	 *
-	 * \return uint64_t* - value
+	 * \return uint64_t - value
 	 */
-	virtual uint64_t* getUInt64(std::string paramName, uint64_t defaultValue);
+	virtual uint64_t getUInt64(std::string paramName, uint64_t defaultValue);
 
 	/**
 	 * Set uint64_t param
@@ -235,7 +235,7 @@ public:
 	 *
 	 * \param[in] string paramName - param name
 	 *
-	 * \return int64_t* - value
+	 * \return int64_t* - value (if not null, should me deleted manually)
 	 */
 	virtual int64_t* getInt64(std::string paramName);
 
@@ -245,9 +245,9 @@ public:
 	 * \param[in] string paramName - param name
 	 * \param[in] int64_t defaultValue - default value
 	 *
-	 * \return int64_t* - value
+	 * \return int64_t - value
 	 */
-	virtual int64_t* getInt64(std::string paramName, int64_t defaultValue);
+	virtual int64_t getInt64(std::string paramName, int64_t defaultValue);
 
 	/**
 	 * Set int64_t param
@@ -262,7 +262,7 @@ public:
 	 *
 	 * \param[in] string paramName - param name
 	 *
-	 * \return float* - value
+	 * \return float* - value (if not null, should me deleted manually)
 	 */
 	virtual float* getFloat(std::string paramName);
 
@@ -272,9 +272,9 @@ public:
 	 * \param[in] string paramName - param name
 	 * \param[in] float defaultValue - default value
 	 *
-	 * \return float* - value
+	 * \return float - value
 	 */
-	virtual float* getFloat(std::string paramName, float defaultValue);
+	virtual float getFloat(std::string paramName, float defaultValue);
 
 	/**
 	 * Set float param
@@ -289,7 +289,7 @@ public:
 	 *
 	 * \param[in] string paramName - param name
 	 *
-	 * \return double* - value
+	 * \return double* - value (if not null, should me deleted manually)
 	 */
 	virtual double* getDouble(std::string paramName);
 
@@ -299,9 +299,9 @@ public:
 	 * \param[in] string paramName - param name
 	 * \param[in] double defaultValue - default value
 	 *
-	 * \return double* - value
+	 * \return double - value
 	 */
-	virtual double* getDouble(std::string paramName, double defaultValue);
+	virtual double getDouble(std::string paramName, double defaultValue);
 
 	/**
 	 * Set double param
@@ -316,7 +316,7 @@ public:
 	 *
 	 * \param[in] string paramName - param name
 	 *
-	 * \return string* - value
+	 * \return string* - value (if not null, should me deleted manually)
 	 */
 	virtual std::string* getString(std::string paramName);
 
@@ -326,9 +326,9 @@ public:
 	 * \param[in] string paramName - param name
 	 * \param[in] string defaultValue - default value
 	 *
-	 * \return string* - value
+	 * \return string - value
 	 */
-	virtual std::string* getString(std::string paramName, std::string defaultValue);
+	virtual std::string getString(std::string paramName, std::string defaultValue);
 
 	/**
 	 * Set string param
@@ -343,7 +343,7 @@ public:
 	 *
 	 * \param[in] string paramName - param name
 	 *
-	 * \return bool* - value
+	 * \return bool* - value (if not null, should me deleted manually)
 	 */
 	virtual bool* getBool(std::string paramName);
 
@@ -353,9 +353,9 @@ public:
 	 * \param[in] string paramName - param name
 	 * \param[in] bool defaultValue - default value
 	 *
-	 * \return bool* - value
+	 * \return bool - value
 	 */
-	virtual bool* getBool(std::string paramName, bool defaultValue);
+	virtual bool getBool(std::string paramName, bool defaultValue);
 
 	/**
 	 * Set bool param

@@ -51,7 +51,7 @@ public:
 	 *
 	 * \param[in] string paramName - param name
 	 *
-	 * \return uint8_t* - value
+	 * \return uint8_t* - value (if not null, should me deleted manually)
 	 */
 	uint8_t* getUInt8(std::string paramName);
 
@@ -68,7 +68,7 @@ public:
 	 *
 	 * \param[in] string paramName - param name
 	 *
-	 * \return int8_t* - value
+	 * \return int8_t* - value (if not null, should me deleted manually)
 	 */
 	int8_t* getInt8(std::string paramName);
 
@@ -85,7 +85,7 @@ public:
 	 *
 	 * \param[in] string paramName - param name
 	 *
-	 * \return uint16_t* - value
+	 * \return uint16_t* - value (if not null, should me deleted manually)
 	 */
 	uint16_t* getUInt16(std::string paramName);
 
@@ -102,7 +102,7 @@ public:
 	 *
 	 * \param[in] string paramName - param name
 	 *
-	 * \return int16_t* - value
+	 * \return int16_t* - value (if not null, should me deleted manually)
 	 */
 	int16_t* getInt16(std::string paramName);
 
@@ -119,7 +119,7 @@ public:
 	 *
 	 * \param[in] string paramName - param name
 	 *
-	 * \return uint32_t* - value
+	 * \return uint32_t* - value (if not null, should me deleted manually)
 	 */
 	uint32_t* getUInt32(std::string paramName);
 
@@ -136,7 +136,7 @@ public:
 	 *
 	 * \param[in] string paramName - param name
 	 *
-	 * \return int32_t* - value
+	 * \return int32_t* - value (if not null, should me deleted manually)
 	 */
 	int32_t* getInt32(std::string paramName);
 
@@ -153,7 +153,7 @@ public:
 	 *
 	 * \param[in] string paramName - param name
 	 *
-	 * \return uint64_t* - value
+	 * \return uint64_t* - value (if not null, should me deleted manually)
 	 */
 	uint64_t* getUInt64(std::string paramName);
 
@@ -170,7 +170,7 @@ public:
 	 *
 	 * \param[in] string paramName - param name
 	 *
-	 * \return int64_t* - value
+	 * \return int64_t* - value (if not null, should me deleted manually)
 	 */
 	int64_t* getInt64(std::string paramName);
 
@@ -187,7 +187,7 @@ public:
 	 *
 	 * \param[in] string paramName - param name
 	 *
-	 * \return float* - value
+	 * \return float* - value (if not null, should me deleted manually)
 	 */
 	float* getFloat(std::string paramName);
 
@@ -204,7 +204,7 @@ public:
 	 *
 	 * \param[in] string paramName - param name
 	 *
-	 * \return double* - value
+	 * \return double* - value (if not null, should me deleted manually)
 	 */
 	double* getDouble(std::string paramName);
 
@@ -221,7 +221,7 @@ public:
 	 *
 	 * \param[in] string paramName - param name
 	 *
-	 * \return string* - value
+	 * \return string* - value (if not null, should me deleted manually)
 	 */
 	std::string* getString(std::string paramName);
 
@@ -238,7 +238,7 @@ public:
 	 *
 	 * \param[in] string paramName - param name
 	 *
-	 * \return bool* - value
+	 * \return bool* - value (if not null, should me deleted manually)
 	 */
 	bool* getBool(std::string paramName);
 
