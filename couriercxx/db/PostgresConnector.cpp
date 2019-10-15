@@ -110,6 +110,11 @@ int PostgresConnector::addStatement(std::string name, std::string sql) {
 	return addStatement(name, sql, types);
 }
 
+int PostgresConnector::removeStatement(std::string name) {
+	connection->unprepare(name);
+	return preparedStatements.erase(name) > 0 ? 0 : -1;
+}
+
 pqxx::result PostgresConnector::execStatement(std::string name, ...) {
 	accessMutex.lock();
 	va_list args;

@@ -8,3 +8,4 @@ g++ -o ServerExample ServerExample.cpp -std=c++14 -lCourierCXX -lpthread -levent
 g++ -o NetExample NetExample.cpp -std=c++14 -lCourierCXX -lpthread
 g++ -o BluetoothPortExample BluetoothPortExample.cpp -std=c++14 -lCourierCXX -lpthread -lbluetooth -fpermissive
 g++ -o SnifferExample SnifferExample.cpp -DDEBUG -std=c++14 -lCourierCXX -lpthread -lpcap
+g++ -o ConfigurationDatabaseExample ConfigurationDatabaseExample.cpp -DDEBUG -std=c++14 -lCourierCXX -lpthread -lpqxx

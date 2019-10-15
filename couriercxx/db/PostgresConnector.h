@@ -89,6 +89,15 @@ public:
 	int addStatement(std::string name, std::string sql);
 
 	/**
+	 * Remove prepared statement
+	 *
+	 * \param[in] string name - name of prepared statement
+	 *
+	 * \return - 0 if success, -1 if erroro
+	 */
+	int removeStatement(std::string name);
+
+	/**
 	 * Execute statement
 	 *
 	 * \param[in] string name - name of statement to execute

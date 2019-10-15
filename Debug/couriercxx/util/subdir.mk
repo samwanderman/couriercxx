@@ -6,8 +6,6 @@
 CPP_SRCS += \
 ../couriercxx/util/ByteOrder.cpp \
 ../couriercxx/util/Clock.cpp \
-../couriercxx/util/Config.cpp \
-../couriercxx/util/ConfigBase.cpp \
 ../couriercxx/util/Daemon.cpp \
 ../couriercxx/util/Hardware.cpp \
 ../couriercxx/util/IO.cpp \
@@ -17,8 +15,6 @@ CPP_SRCS += \
 OBJS += \
 ./couriercxx/util/ByteOrder.o \
 ./couriercxx/util/Clock.o \
-./couriercxx/util/Config.o \
-./couriercxx/util/ConfigBase.o \
 ./couriercxx/util/Daemon.o \
 ./couriercxx/util/Hardware.o \
 ./couriercxx/util/IO.o \
@@ -28,8 +24,6 @@ OBJS += \
 CPP_DEPS += \
 ./couriercxx/util/ByteOrder.d \
 ./couriercxx/util/Clock.d \
-./couriercxx/util/Config.d \
-./couriercxx/util/ConfigBase.d \
 ./couriercxx/util/Daemon.d \
 ./couriercxx/util/Hardware.d \
 ./couriercxx/util/IO.d \

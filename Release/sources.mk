@@ -42,6 +42,7 @@ couriercxx/event/event \
 couriercxx/image \
 couriercxx/logger \
 couriercxx/net \
+couriercxx/property \
 couriercxx/server \
 couriercxx/sound \
 couriercxx/util \

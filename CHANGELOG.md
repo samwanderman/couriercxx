@@ -1,3 +1,8 @@
+### Version 0.1.0.0 (Released 15.10.2019)
+[+] added db properties support
+
+[*] configuration/properties work full refactoring
+
 ### Version 0.0.6.0 (Released 27.08.2019)
 [+] add binary data convertion to JPG
 
