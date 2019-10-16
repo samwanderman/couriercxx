@@ -228,30 +228,30 @@ int SerialPortBase::write(const uint8_t* buffer, uint32_t bufferSize) {
 
 int SerialPortBase::setBaudrate(uint32_t baudrate) {
 	config.baudrate = baudrate;
-	uint32_t convertedSpeed = 0;
+	uint32_t convertedBaudrate = 0;
 	switch (baudrate) {
 	case 9600:
-		convertedSpeed = B9600;
+		convertedBaudrate = B9600;
 
 		break;
 
 	case 19200:
-		convertedSpeed = B19200;
+		convertedBaudrate = B19200;
 
 		break;
 
 	case 38400:
-		convertedSpeed = B38400;
+		convertedBaudrate = B38400;
 
 		break;
 
 	case 57600:
-		convertedSpeed = B57600;
+		convertedBaudrate = B57600;
 
 		break;
 
 	case 115200:
-		convertedSpeed = B115200;
+		convertedBaudrate = B115200;
 
 		break;
 	}
@@ -265,12 +265,12 @@ int SerialPortBase::setBaudrate(uint32_t baudrate) {
 		return -1;
 	}
 
-	if (convertedSpeed != 0) {
-		if (cfsetospeed(&tty, convertedSpeed) == -1) {
+	if (convertedBaudrate != 0) {
+		if (cfsetospeed(&tty, convertedBaudrate) == -1) {
 			return -1;
 		}
 
-		if (cfsetispeed(&tty, convertedSpeed) == -1) {
+		if (cfsetispeed(&tty, convertedBaudrate) == -1) {
 			return -1;
 		}
 	}

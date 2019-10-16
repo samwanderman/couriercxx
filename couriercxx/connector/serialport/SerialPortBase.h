@@ -52,18 +52,18 @@ public:
 	 * Base serial port constructor
 	 *
 	 * \param[in] string path - path to port
-	 * \param[in] uint32_t speed - port speed
+	 * \param[in] uint32_t baudrate- port baudrate
 	 */
-	SerialPortBase(std::string path, uint32_t speed);
+	SerialPortBase(std::string path, uint32_t baudrate);
 
 	/**
 	 * Base serial port constructor
 	 *
 	 * \param[in] string path - path to port
-	 * \param[in] uint32_t speed - port speed
+	 * \param[in] uint32_t baudrate- port baudrate
 	 * \param[in] uint32_t timeout - port IO timeout
 	 */
-	SerialPortBase(std::string path, uint32_t speed, uint32_t timeout);
+	SerialPortBase(std::string path, uint32_t baudrate, uint32_t timeout);
 
 	/**
 	 * Copy constructor
@@ -136,18 +136,18 @@ public:
 	int write(const uint8_t* buffer, uint32_t bufferSize);
 
 	/**
-	 * Set port speed
+	 * Set port baudrate
 	 *
-	 * \param[in] uint32_t speed - speed
+	 * \param[in] uint32_t baudrate- baudrate
 	 *
 	 * \return 0 if success, -1 if error
 	 */
 	int setBaudrate(uint32_t baudrate);
 
 	/**
-	 * Get current port speed
+	 * Get current port baudrate
 	 *
-	 * \return port speed
+	 * \return port baudrate
 	 */
 	uint32_t getBaudrate();
 
