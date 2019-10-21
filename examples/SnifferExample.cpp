@@ -135,7 +135,7 @@ int main(int ac, char** av) {
 						Log::info("local ip is %s", localIP.c_str());
 						uint8_t addr[4];
 
-						sscanf(localIP.c_str(), "%u.%u.%u.%u", addr, &addr[1], &addr[2], &addr[3]);
+						sscanf(localIP.c_str(), "%u.%u.%u.%u", (unsigned int*) addr, (unsigned int*) &addr[1], (unsigned int*) &addr[2], (unsigned int*) &addr[3]);
 						memmove(&buffer[bufferSize], addr, 4 * sizeof(uint8_t));
 						bufferSize += 4;
 
