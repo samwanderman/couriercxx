@@ -8,12 +8,12 @@
 
 #include "PropertyDatabase.h"
 
-#include <couriercxx/logger/Log.h>
 #include <pqxx/pqxx>
 #include <exception>
 #include <list>
 #include <typeindex>
 
+#include "../logger/Log.h"
 #include "../db/PostgresConnector.h"
 #include "../db/Value.h"
 
