@@ -1,3 +1,6 @@
+### Version 0.1.1.0
+[+] added write list for TCPPortBase
+
 ### Version 0.1.0.0 (Released 15.10.2019)
 [+] added db properties support
 

@@ -73,6 +73,15 @@ public:
 	/**
 	 * Write data to tcp port
 	 *
+	 * \param[in] list<uint8_t>& buffer - buffer
+	 *
+	 * \return number of written bytes if success, -1 if error
+	 */
+	int write(std::list<uint8_t>& buffer);
+
+	/**
+	 * Write data to tcp port
+	 *
 	 * \param[in] int clientFd - client socket to write
 	 * \param[in] const uint8_t* buffer - pointer to buffer
 	 * \param[in] uint32_t bufferSize - size of buffer
@@ -80,6 +89,16 @@ public:
 	 * \return number of written bytes if success, -1 if error
 	 */
 	int write(int clientFd, const uint8_t* buffer, uint32_t bufferSize);
+
+	/**
+	 * Write data to tcp port
+	 *
+	 * \param[in] int clientFd - client socket to write
+	 * \param[in] list<uint8_t>& buffer - buffer
+	 *
+	 * \return number of written bytes if success, -1 if error
+	 */
+	int write(int clientFd, std::list<uint8_t>& buffer);
 
 	/**
 	 * Read data from tcp port

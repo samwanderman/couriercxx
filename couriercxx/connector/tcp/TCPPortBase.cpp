@@ -21,6 +21,7 @@
 #include <unistd.h>
 #include <cstring>
 #include <thread>
+#include <vector>
 
 #include "../../logger/Log.h"
 
@@ -30,6 +31,7 @@ struct event_base;
 #define BUFFER_SIZE			1024
 
 void echoReadCallback(struct bufferevent *buffEvent, void *arg) {
+	Log::debug("echoReadCallback");
 	TCPPortBase* self = (TCPPortBase*) arg;
 
 	struct evbuffer *inputBuffer = bufferevent_get_input(buffEvent);
@@ -45,26 +47,33 @@ void echoReadCallback(struct bufferevent *buffEvent, void *arg) {
 }
 
 void echoEventCallback(struct bufferevent *buffEvent, short events, void *arg) {
+	Log::debug("echoEventCallback");
+
 	if (events & BEV_EVENT_ERROR) {
 		Log::error("Error of bufferevent object");
 	}
 
 	if (events & (BEV_EVENT_EOF | BEV_EVENT_ERROR)) {
+		Log::debug("Clear events");
 		bufferevent_free(buffEvent);
 	}
 }
 
 void acceptConnectionCallback(struct evconnlistener *listener, evutil_socket_t fd, struct sockaddr *addr, int sockLen, void *arg ) {
-  struct event_base *base = evconnlistener_get_base(listener);
-  struct bufferevent *buffEvent = bufferevent_socket_new(base, fd, BEV_OPT_CLOSE_ON_FREE);
+	Log::debug("acceptConnectionCallback");
 
-  bufferevent_setcb(buffEvent, echoReadCallback, nullptr, echoEventCallback, arg);
-  bufferevent_enable(buffEvent, EV_READ | EV_WRITE);
+	struct event_base *base = evconnlistener_get_base(listener);
+	struct bufferevent *buffEvent = bufferevent_socket_new(base, fd, BEV_OPT_CLOSE_ON_FREE);
+
+	bufferevent_setcb(buffEvent, echoReadCallback, nullptr, echoEventCallback, arg);
+	bufferevent_enable(buffEvent, EV_READ | EV_WRITE);
 }
 
 void acceptErrorCallback(struct evconnlistener *listener, void *arg) {
-  struct event_base *base = evconnlistener_get_base(listener);
-  event_base_loopexit(base, nullptr);
+	Log::debug("acceptErrorCallback");
+
+	struct event_base *base = evconnlistener_get_base(listener);
+	event_base_loopexit(base, nullptr);
 }
 
 TCPPortBase::TCPPortBase(std::string ip, uint16_t port) : IConnectorBase() {
@@ -174,12 +183,24 @@ int TCPPortBase::write(const uint8_t* buffer, uint32_t bufferSize) {
 	return ::write(socketFd, buffer, bufferSize);
 }
 
+int TCPPortBase::write(std::list<uint8_t>& buffer) {
+	std::vector<uint8_t> vec(buffer.begin(), buffer.end());
+
+	return write((const uint8_t*) &vec[0], vec.size());
+}
+
 int TCPPortBase::write(int clientFd, const uint8_t* buffer, uint32_t bufferSize) {
 	if (!isOpen()) {
 		return -1;
 	}
 
 	return ::write(clientFd, buffer, bufferSize);
+}
+
+int TCPPortBase::write(int clientFd, std::list<uint8_t>& buffer) {
+	std::vector<uint8_t> vec(buffer.begin(), buffer.end());
+
+	return write(clientFd, (const uint8_t*) &vec[0], vec.size());
 }
 
 int TCPPortBase::read(uint8_t* buffer, uint32_t bufferSize) {
