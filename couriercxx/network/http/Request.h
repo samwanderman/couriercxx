@@ -6,14 +6,16 @@
  *       Email: sam-wanderman@yandex.ru
  */
 
-#ifndef COURIERCXX_SERVER_REQUEST_H_
-#define COURIERCXX_SERVER_REQUEST_H_
+#ifndef COURIERCXX_NETWORK_HTTP_REQUEST_H_
+#define COURIERCXX_NETWORK_HTTP_REQUEST_H_
 
 #include <cstdint>
 #include <string>
 
 struct evhttp_request;
 struct evbuffer;
+
+namespace HTTP {
 
 /**
  * Request wrapper
@@ -81,4 +83,6 @@ private:
 	const struct evbuffer* inputBuffer = nullptr;
 };
 
-#endif /* COURIERCXX_SERVER_REQUEST_H_ */
+};
+
+#endif /* COURIERCXX_NETWORK_HTTP_REQUEST_H_ */

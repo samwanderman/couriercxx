@@ -6,7 +6,7 @@
  *       Email: sam-wanderman@yandex.ru
  */
 
-#include "Request.h"
+#include "../../network/http/Request.h"
 
 #include <event2/buffer.h>
 #include <event2/buffer_compat.h>
@@ -14,6 +14,8 @@
 #include <event2/http_struct.h>
 #include <cstdarg>
 #include <cstring>
+
+namespace HTTP {
 
 Request::Request(const evhttp_request* request) {
 	this->request = request;
@@ -56,3 +58,5 @@ int Request::getRAWInput(uint8_t* buffer, uint32_t bufferSize) const {
 		return -1;
 	}
 }
+
+};

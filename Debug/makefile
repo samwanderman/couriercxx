@@ -10,9 +10,10 @@ RM := rm -rf
 -include sources.mk
 -include couriercxx/util/subdir.mk
 -include couriercxx/sound/subdir.mk
--include couriercxx/server/subdir.mk
 -include couriercxx/property/subdir.mk
--include couriercxx/net/subdir.mk
+-include couriercxx/network/tcp/subdir.mk
+-include couriercxx/network/http/subdir.mk
+-include couriercxx/network/subdir.mk
 -include couriercxx/logger/subdir.mk
 -include couriercxx/image/subdir.mk
 -include couriercxx/event/event/subdir.mk
@@ -21,7 +22,6 @@ RM := rm -rf
 -include couriercxx/device/subdir.mk
 -include couriercxx/db/subdir.mk
 -include couriercxx/connector/udp/subdir.mk
--include couriercxx/connector/tcp/subdir.mk
 -include couriercxx/connector/spi/subdir.mk
 -include couriercxx/connector/serialport/subdir.mk
 -include couriercxx/connector/scsi/subdir.mk

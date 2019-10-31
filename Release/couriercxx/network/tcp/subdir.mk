@@ -4,17 +4,20 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../couriercxx/connector/tcp/TCPPortBase.cpp 
+../couriercxx/network/tcp/Client.cpp \
+../couriercxx/network/tcp/Server.cpp 
 
 OBJS += \
-./couriercxx/connector/tcp/TCPPortBase.o 
+./couriercxx/network/tcp/Client.o \
+./couriercxx/network/tcp/Server.o 
 
 CPP_DEPS += \
-./couriercxx/connector/tcp/TCPPortBase.d 
+./couriercxx/network/tcp/Client.d \
+./couriercxx/network/tcp/Server.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
-couriercxx/connector/tcp/%.o: ../couriercxx/connector/tcp/%.cpp
+couriercxx/network/tcp/%.o: ../couriercxx/network/tcp/%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: Cross G++ Compiler'
 	g++ -std=c++1y -O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"

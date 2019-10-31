@@ -32,7 +32,6 @@ couriercxx/connector/i2c \
 couriercxx/connector/scsi \
 couriercxx/connector/serialport \
 couriercxx/connector/spi \
-couriercxx/connector/tcp \
 couriercxx/connector/udp \
 couriercxx/db \
 couriercxx/device \
@@ -41,9 +40,10 @@ couriercxx/event \
 couriercxx/event/event \
 couriercxx/image \
 couriercxx/logger \
-couriercxx/net \
+couriercxx/network \
+couriercxx/network/http \
+couriercxx/network/tcp \
 couriercxx/property \
-couriercxx/server \
 couriercxx/sound \
 couriercxx/util \
 

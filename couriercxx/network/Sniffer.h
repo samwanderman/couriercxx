@@ -6,8 +6,8 @@
  *       Email: sam-wanderman@yandex.ru
  */
 
-#ifndef COURIERCXX_NET_SNIFFER_H_
-#define COURIERCXX_NET_SNIFFER_H_
+#ifndef COURIERCXX_NETWORK_SNIFFER_H_
+#define COURIERCXX_NETWORK_SNIFFER_H_
 
 #include <pcap/pcap.h>
 #include <cstdint>
@@ -51,4 +51,4 @@ private:
 	std::function<void (const uint8_t* packet, uint32_t packetSize)> callback = nullptr;
 };
 
-#endif /* COURIERCXX_NET_SNIFFER_H_ */
+#endif /* COURIERCXX_NETWORK_SNIFFER_H_ */

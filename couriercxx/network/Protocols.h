@@ -6,8 +6,8 @@
  *       Email: sam-wanderman@yandex.ru
  */
 
-#ifndef COURIERCXX_NET_PROTOCOLS_H_
-#define COURIERCXX_NET_PROTOCOLS_H_
+#ifndef COURIERCXX_NETWORK_PROTOCOLS_H_
+#define COURIERCXX_NETWORK_PROTOCOLS_H_
 
 #include <cstdint>
 #include <cstring>
@@ -113,4 +113,4 @@ struct UDPPacket {
 	}
 };
 
-#endif /* COURIERCXX_NET_PROTOCOLS_H_ */
+#endif /* COURIERCXX_NETWORK_PROTOCOLS_H_ */

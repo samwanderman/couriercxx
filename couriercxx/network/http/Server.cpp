@@ -6,7 +6,7 @@
  *       Email: sam-wanderman@yandex.ru
  */
 
-#include "Server.h"
+#include "../../network/http/Server.h"
 
 #include <event2/event_compat.h>
 #include <event2/http.h>
@@ -15,7 +15,9 @@
 #include <memory>
 #include <thread>
 
-#include "../logger/Log.h"
+#include "../../logger/Log.h"
+
+namespace HTTP {
 
 Server::Server(ServerConfig config, std::function<void (Request&)> callback) {
 	this->config = config;
@@ -87,3 +89,5 @@ int Server::stop() {
 
 	return 0;
 }
+
+};

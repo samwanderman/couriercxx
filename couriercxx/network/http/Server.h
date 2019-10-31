@@ -6,14 +6,16 @@
  *       Email: sam-wanderman@yandex.ru
  */
 
-#ifndef COURIERCXX_SERVER_SERVER_H_
-#define COURIERCXX_SERVER_SERVER_H_
+#ifndef COURIERCXX_NETWORK_HTTP_SERVER_H_
+#define COURIERCXX_NETWORK_HTTP_SERVER_H_
 
 #include <cstdint>
 #include <functional>
 #include <string>
 
-#include "Request.h"
+#include "../../network/http/Request.h"
+
+namespace HTTP {
 
 /**
  * Simple HTTP Server
@@ -62,4 +64,6 @@ private:
 	std::function<void (Request&)> callback = nullptr;
 };
 
-#endif /* COURIERCXX_SERVER_SERVER_H_ */
+}; /* namespace HTTP */
+
+#endif /* COURIERCXX_NETWORK_HTTP_SERVER_H_ */

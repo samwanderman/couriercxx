@@ -6,14 +6,14 @@
  *       Email: sam-wanderman@yandex.ru
  */
 
-#include "Sniffer.h"
+#include "../network/Sniffer.h"
 
 #include <pcap/bpf.h>
 #include <cstdio>
 #include <thread>
 
 #include "../logger/Log.h"
-#include "Protocols.h"
+#include "../network/Protocols.h"
 
 #define ERROR_BUFFER_SIZE	1024
 

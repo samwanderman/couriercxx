@@ -6,7 +6,7 @@
  *       Email: sam-wanderman@yandex.ru
  */
 
-#include "Net.h"
+#include "../network/Net.h"
 
 #include <ifaddrs.h>
 #include <netdb.h>

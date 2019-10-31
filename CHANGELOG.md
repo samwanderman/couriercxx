@@ -1,3 +1,6 @@
+### Version 0.2.0.0
+[*] connectors and protocols refactoring
+
 ### Version 0.1.1.0
 [+] added write list for TCPPortBase
 

@@ -6,8 +6,8 @@
  *       Email: sam-wanderman@yandex.ru
  */
 
-#ifndef COURIERCXX_NET_NET_H_
-#define COURIERCXX_NET_NET_H_
+#ifndef COURIERCXX_NETWORK_NET_H_
+#define COURIERCXX_NETWORK_NET_H_
 
 #include <cstdint>
 #include <string>
@@ -45,4 +45,4 @@ public:
 	static int get(Addr &addr);
 };
 
-#endif /* COURIERCXX_NET_NET_H_ */
+#endif /* COURIERCXX_NETWORK_NET_H_ */
