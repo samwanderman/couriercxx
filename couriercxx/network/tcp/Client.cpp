@@ -47,10 +47,14 @@ int Client::open() {
 		return -1;
 	}
 
+	running = true;
+
 	return 0;
 }
 
 int Client::close() {
+	running = false;
+
 	if (socketFd != -1) {
 		::close(socketFd);
 	}
@@ -72,6 +76,10 @@ int Client::write(std::list<uint8_t>& buffer) {
 
 int Client::read(uint8_t* buffer, uint32_t bufferSize) {
 	return ::read(socketFd, buffer, bufferSize);
+}
+
+bool Client::isRunning() {
+	return running;
 }
 
 } /* namespace TCP */

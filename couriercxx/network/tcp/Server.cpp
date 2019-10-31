@@ -86,6 +86,8 @@ Server::Server(std::string ip, uint16_t port, std::function<void (Server* self, 
 Server::~Server() { }
 
 int Server::open() {
+	running = true;
+
 	auto func = [this]() {
 		struct event_base* base;
 		struct evconnlistener* listener;
@@ -119,6 +121,8 @@ int Server::open() {
 }
 
 int Server::close() {
+	running = false;
+
 	if (callback != nullptr) {
 		struct timeval time;
 		time.tv_sec = 0;
@@ -169,6 +173,10 @@ std::function<void (Server* self, int32_t clientFd, std::list<uint8_t>& buffer)>
 
 std::map<int32_t, struct bufferevent *>& Server::getConnectedClients() {
 	return connectedClients;
+}
+
+bool Server::isRunning() {
+	return running;
 }
 
 } /* namespace TCP */

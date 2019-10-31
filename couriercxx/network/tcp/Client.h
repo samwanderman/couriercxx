@@ -84,10 +84,19 @@ public:
 	 */
 	int read(uint8_t* buffer, uint32_t bufferSize);
 
+	/**
+	 * Check if process running
+	 *
+	 * \return bool - true if running, false - otherwise
+	 */
+	bool isRunning();
+
 private:
 	std::string ip;
 	uint16_t port = 0;
 	int socketFd = -1;
+
+	bool running = false;
 };
 
 } /* namespace TCP */

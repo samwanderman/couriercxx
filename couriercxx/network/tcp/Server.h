@@ -124,11 +124,19 @@ public:
 	 */
 	std::map<int32_t, struct bufferevent *>& getConnectedClients();
 
+	/**
+	 * Check if server running
+	 *
+	 * \return bool - true of open, false - otherwise
+	 */
+	bool isRunning();
+
 private:
 	std::string ip;
 	uint16_t port = 0;
 	std::function<void (Server* self, int32_t clientFd, std::list<uint8_t>& buffer)> callback = nullptr;
 	std::map<int32_t, struct bufferevent *> connectedClients;
+	bool running = false;
 };
 
 } /* namespace TCP */
