@@ -89,7 +89,7 @@ void Logger::print(uint8_t level, std::string format, va_list args) {
 		char bytes[STRING_MAX_LEN];
 		memset(bytes, 0, STRING_MAX_LEN);
 		vsnprintf(bytes, STRING_MAX_LEN - 1, format.c_str(), args);
-		syslog(logLevel, bytes);
+		syslog(logLevel, (char*) bytes);
 	} else {
 		std::string logLevel = "[INFO]";
 

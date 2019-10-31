@@ -8,6 +8,8 @@
 
 #include "Daemon.h"
 
+#include "../logger/Log.h"
+
 #include <sys/stat.h>
 #include <unistd.h>
 #include <cstdlib>
@@ -21,7 +23,10 @@ void Daemon::daemonize() {
 	} else {
 		umask(0);
 		setsid();
-		chdir("/");
+		const char* dir = "/";
+		if (chdir(dir) == -1) {
+			Log::error("Can't change dir to '%s'", dir);
+		}
 		close(STDIN_FILENO);
 		close(STDOUT_FILENO);
 		close(STDERR_FILENO);
