@@ -5,9 +5,9 @@
 
 #include "../couriercxx/connector/udp/UDPPortBase.h"
 #include "../couriercxx/logger/Log.h"
-#include "../couriercxx/net/Net.h"
-#include "../couriercxx/net/Protocols.h"
-#include "../couriercxx/net/Sniffer.h"
+#include "../couriercxx/network/Net.h"
+#include "../couriercxx/network/Protocols.h"
+#include "../couriercxx/network/Sniffer.h"
 
 class UDPPortBase;
 

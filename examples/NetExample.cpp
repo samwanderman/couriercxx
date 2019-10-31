@@ -1,5 +1,5 @@
 #include "../couriercxx/logger/Log.h"
-#include "../couriercxx/net/Net.h"
+#include "../couriercxx/network/Net.h"
 
 int main(int c, char** av) {
 	Log::setAppName(&av[0][2]);

@@ -2,13 +2,13 @@
 #include <string>
 
 #include "../couriercxx/logger/Log.h"
-#include "../couriercxx/server/Request.h"
-#include "../couriercxx/server/Server.h"
+#include "../couriercxx/network/http/Request.h"
+#include "../couriercxx/network/http/Server.h"
 
 int main(int ac, char** av) {
 	Log::setAppName(&av[0][2]);
 
-	auto func = [] (Request& request) {
+	auto func = [] (HTTP::Request& request) {
 		Log::debug("Server.onRequest()");
 		char str[256];
 		request.getRAWInput((uint8_t*) str, 256);
@@ -17,10 +17,10 @@ int main(int ac, char** av) {
 		request.send(200, "OK");
 	};
 
-	Server::ServerConfig config;
+	HTTP::Server::ServerConfig config;
 	config.host = "127.0.0.1";
 	config.port = 8888;
-	Server server(config, func);
+	HTTP::Server server(config, func);
 	int res = server.start();
 
 	if (res == -1) {
