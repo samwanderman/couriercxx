@@ -10,12 +10,12 @@
 
 #include <cstring>
 
-uint8_t hex2asciiOne(uint8_t hex) {
+uint8_t writeASCII(uint8_t hex) {
 	hex = hex & 0xf;
 	return (hex < 0xa ? 0x30 : 0x37) + hex;
 }
 
-uint8_t ascii2hexOne(uint8_t ascii) {
+uint8_t readASCII(uint8_t ascii) {
 	if ((ascii >= 0x61) && (ascii <= 0x66)) {
 		return ascii - 0x61 + 0xa;
 	} else if ((ascii >= 0x41) && (ascii <= 0x46)) {
@@ -134,15 +134,15 @@ int String::writeInt64LE(int64_t value, uint8_t* buffer, uint32_t pos) {
 }
 
 int String::writeUInt8ASCII(uint8_t value, uint8_t* buffer, uint32_t pos) {
-	buffer[pos++] = hex2asciiOne(value >> 4);
-	buffer[pos++] = hex2asciiOne(value & 0xf);
+	buffer[pos++] = writeASCII(value >> 4);
+	buffer[pos++] = writeASCII(value & 0xf);
 
 	return sizeof(uint8_t) * 2;
 }
 
 int String::writeInt8ASCII(int8_t value, uint8_t* buffer, uint32_t pos) {
-	buffer[pos++] = hex2asciiOne((uint8_t) value >> 4);
-	buffer[pos++] = hex2asciiOne((uint8_t) value & 0xf);
+	buffer[pos++] = writeASCII((uint8_t) value >> 4);
+	buffer[pos++] = writeASCII((uint8_t) value & 0xf);
 
 	return sizeof(int8_t) * 2;
 }
@@ -360,11 +360,11 @@ int64_t String::readInt64LE(const uint8_t* buffer, uint32_t pos) {
 }
 
 uint8_t String::readUInt8ASCII(const uint8_t* buffer, uint32_t pos) {
-	return (ascii2hexOne(buffer[pos]) << 4) | ascii2hexOne(buffer[pos + 1]);
+	return (readASCII(buffer[pos]) << 4) | readASCII(buffer[pos + 1]);
 }
 
 int8_t String::readInt8ASCII(const uint8_t* buffer, uint32_t pos) {
-	return (int8_t) ((ascii2hexOne(buffer[pos]) << 4) | ascii2hexOne(buffer[pos + 1]));
+	return (int8_t) ((readASCII(buffer[pos]) << 4) | readASCII(buffer[pos + 1]));
 }
 
 uint16_t String::readUInt16BEASCII(const uint8_t* buffer, uint32_t pos) {
@@ -487,26 +487,26 @@ int64_t String::readInt64LEASCII(const uint8_t* buffer, uint32_t pos) {
 	return (int64_t) value;
 }
 
-int String::hex2ascii(const uint8_t* hexData, uint32_t hexDataLen, uint8_t* asciiData, uint32_t asciiDataLen) {
+int String::writeBufferASCII(const uint8_t* hexData, uint32_t hexDataLen, uint8_t* asciiData, uint32_t asciiDataLen) {
 	if (hexDataLen * 2 > asciiDataLen) {
 		return -1;
 	}
 
 	for (uint32_t i = 0; i < hexDataLen; i++) {
-		asciiData[i * 2] = hex2asciiOne(hexData[i] >> 4);
-		asciiData[i * 2 + 1] = hex2asciiOne(hexData[i]);
+		asciiData[i * 2] = writeASCII(hexData[i] >> 4);
+		asciiData[i * 2 + 1] = writeASCII(hexData[i]);
 	}
 
 	return hexDataLen * 2;
 }
 
-int String::ascii2hex(const uint8_t* asciiData, uint32_t asciiDataLen, uint8_t* hexData, uint32_t hexDataLen) {
+int String::readBufferASCII(const uint8_t* asciiData, uint32_t asciiDataLen, uint8_t* hexData, uint32_t hexDataLen) {
 	if (hexDataLen * 2 < asciiDataLen) {
 		return -1;
 	}
 
 	for (uint32_t i = 0; i < hexDataLen; i++) {
-		hexData[i] = (ascii2hexOne(asciiData[i * 2]) << 4 | ascii2hexOne(asciiData[i * 2 + 1]));
+		hexData[i] = (readASCII(asciiData[i * 2]) << 4 | readASCII(asciiData[i * 2 + 1]));
 	}
 
 	return hexDataLen;

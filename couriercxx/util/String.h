@@ -616,7 +616,7 @@ public:
 	 *
 	 * \return int size of asciiData buffer
 	 */
-	static int hex2ascii(const uint8_t* hexData, uint32_t hexDataLen, uint8_t* asciiData, uint32_t asciiDataLen);
+	static int writeBufferASCII(const uint8_t* hexData, uint32_t hexDataLen, uint8_t* asciiData, uint32_t asciiDataLen);
 
 	/**
 	 * Convert ASCII HEX string to byte data
@@ -628,7 +628,7 @@ public:
 	 *
 	 * \return int size of hexData buffer
 	 */
-	static int ascii2hex(const uint8_t* asciiData, uint32_t asciiDataLen, uint8_t* hexData, uint32_t hexDataLen);
+	static int readBufferASCII(const uint8_t* asciiData, uint32_t asciiDataLen, uint8_t* hexData, uint32_t hexDataLen);
 
 	/**
 	 * Split string and return it's parts

@@ -3,6 +3,8 @@
 
 [*] connectors and protocols refactoring
 
+[*] renamed hex2ascii -> writeBufferASCII, ascii2hex - readBufferASCII
+
 ### Version 0.1.1.0
 [+] added write list for TCPPortBase
 
