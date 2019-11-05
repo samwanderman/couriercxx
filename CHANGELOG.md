@@ -1,4 +1,6 @@
 ### Version 0.2.0.0
+[+] added buffer read/write functions
+
 [*] connectors and protocols refactoring
 
 ### Version 0.1.1.0
