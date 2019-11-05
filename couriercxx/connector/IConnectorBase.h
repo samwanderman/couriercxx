@@ -17,7 +17,7 @@
 class IConnectorBase {
 public:
 	/**
-	 * Empty construtor
+	 * Empty constructor
 	 */
 	IConnectorBase();
 
@@ -36,7 +36,7 @@ public:
 	virtual ~IConnectorBase();
 
 	/**
-	 * Copy oprtator
+	 * Copy operator
 	 */
 	IConnectorBase& operator=(const IConnectorBase& connector) = default;
 
