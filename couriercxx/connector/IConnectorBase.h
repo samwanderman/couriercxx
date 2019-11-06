@@ -16,6 +16,10 @@
  */
 class IConnectorBase {
 public:
+	static const uint8_t ERR_DEFAULT;
+	static const uint8_t ERR_ALREADY_OPEN;
+	static const uint8_t ERR_NOT_OPEN;
+
 	/**
 	 * Empty constructor
 	 */

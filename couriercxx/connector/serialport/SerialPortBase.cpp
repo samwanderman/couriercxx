@@ -62,18 +62,18 @@ SerialPortBase& SerialPortBase::operator=(SerialPortBase&& other) {
 
 int SerialPortBase::open() {
 	if (isOpen()) {
-		return -1;
+		return ERR_ALREADY_OPEN;
 	}
 
 	fd = ::open(config.path.c_str(), O_RDWR | O_NOCTTY);
 	if (fd == -1) {
-		return -1;
+		return ERR_DEFAULT;
 	}
 
 	if (setBaudrate(config.baudrate) == -1) {
 		clean();
 
-		return -1;
+		return ERR_DEFAULT;
 	}
 
 	if (config.nonBlock) {
@@ -81,7 +81,7 @@ int SerialPortBase::open() {
 		if (fcntl(fd, F_SETFL, flags | O_NONBLOCK) == -1) {
 			clean();
 
-			return -1;
+			return ERR_DEFAULT;
 		}
 	}
 
@@ -90,7 +90,7 @@ int SerialPortBase::open() {
 
 int SerialPortBase::close() {
 	if (!isOpen()) {
-		return -1;
+		return ERR_NOT_OPEN;
 	}
 
 	clean();
@@ -108,7 +108,7 @@ int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize) {
 
 int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize, int32_t timeout) {
 	if (!isOpen()) {
-		return -1;
+		return ERR_DEFAULT;
 	}
 
 	if (timeout == -1) {
@@ -184,9 +184,9 @@ int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize, int32_t timeout) 
 
 			int rv = select(fd + 1, &set, nullptr, nullptr, &timeoutVal);
 			if (rv == -1) {
-				return -1;
+				return ERR_DEFAULT;
 			} else if (rv == 0) {
-				return -1;
+				return ERR_DEFAULT;
 			}
 		}
 
@@ -208,7 +208,7 @@ int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize, int32_t timeout) 
 
 int SerialPortBase::write(const uint8_t* buffer, uint32_t bufferSize) {
 	if (!isOpen()) {
-		return -1;
+		return ERR_DEFAULT;
 	}
 
 	int res = ::write(fd, buffer, bufferSize);
@@ -262,16 +262,16 @@ int SerialPortBase::setBaudrate(uint32_t baudrate) {
 	if (tcgetattr(fd, &tty) != 0) {
 		clean();
 
-		return -1;
+		return ERR_DEFAULT;
 	}
 
 	if (convertedBaudrate != 0) {
 		if (cfsetospeed(&tty, convertedBaudrate) == -1) {
-			return -1;
+			return ERR_DEFAULT;
 		}
 
 		if (cfsetispeed(&tty, convertedBaudrate) == -1) {
-			return -1;
+			return ERR_DEFAULT;
 		}
 	}
 
@@ -313,13 +313,13 @@ int SerialPortBase::setBaudrate(uint32_t baudrate) {
 	if (tcflush(fd, TCIFLUSH) == -1) {
 		clean();
 
-		return -1;
+		return ERR_DEFAULT;
 	}
 
 	if (tcsetattr(fd, TCSANOW, &tty) != 0) {
 		clean();
 
-		return -1;
+		return ERR_DEFAULT;
 	}
 
 	return 0;

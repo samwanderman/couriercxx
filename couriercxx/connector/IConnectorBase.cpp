@@ -8,6 +8,10 @@
 
 #include "IConnectorBase.h"
 
+const uint8_t SerialPortBase::ERR_DEFAULT		= -1;
+const uint8_t SerialPortBase::ERR_ALREADY_OPEN	= -2;
+const uint8_t SerialPortBase::ERR_NOT_OPEN		= -3;
+
 IConnectorBase::IConnectorBase() { }
 
 IConnectorBase::IConnectorBase(IConnectorBase&& other) {
