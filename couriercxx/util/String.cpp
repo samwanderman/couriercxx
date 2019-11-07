@@ -149,7 +149,7 @@ int String::writeInt8ASCII(int8_t value, uint8_t* buffer, uint32_t pos) {
 
 int String::writeUInt16BEASCII(uint16_t value, uint8_t* buffer, uint32_t pos) {
 	for (int i = sizeof(value) - 1; i >= 0; i--) {
-		pos += writeUInt8((uint8_t) (value >> (i * 8)), buffer, pos);
+		pos += writeUInt8ASCII((uint8_t) (value >> (i * 8)), buffer, pos);
 	}
 
 	return sizeof(uint16_t) * 2;
@@ -157,7 +157,7 @@ int String::writeUInt16BEASCII(uint16_t value, uint8_t* buffer, uint32_t pos) {
 
 int String::writeInt16BEASCII(int16_t value, uint8_t* buffer, uint32_t pos) {
 	for (int i = sizeof(value) - 1; i >= 0; i--) {
-		pos += writeUInt8((uint8_t) ((uint16_t) value >> (i * 8)), buffer, pos);
+		pos += writeUInt8ASCII((uint8_t) ((uint16_t) value >> (i * 8)), buffer, pos);
 	}
 
 	return sizeof(int16_t) * 2;
@@ -165,7 +165,7 @@ int String::writeInt16BEASCII(int16_t value, uint8_t* buffer, uint32_t pos) {
 
 int String::writeUInt16LEASCII(uint16_t value, uint8_t* buffer, uint32_t pos) {
 	for (uint8_t i = 0; i <= sizeof(value); i++) {
-		pos += writeUInt8((uint8_t) (value >> (i * 8)), buffer, pos);
+		pos += writeUInt8ASCII((uint8_t) (value >> (i * 8)), buffer, pos);
 	}
 
 	return sizeof(uint16_t) * 2;
@@ -173,7 +173,7 @@ int String::writeUInt16LEASCII(uint16_t value, uint8_t* buffer, uint32_t pos) {
 
 int String::writeInt16LEASCII(int16_t value, uint8_t* buffer, uint32_t pos) {
 	for (uint8_t i = 0; i <= sizeof(value); i++) {
-		pos += writeUInt8((uint8_t) ((uint16_t) value >> (i * 8)), buffer, pos);
+		pos += writeUInt8ASCII((uint8_t) ((uint16_t) value >> (i * 8)), buffer, pos);
 	}
 
 	return sizeof(int16_t) * 2;
@@ -181,7 +181,7 @@ int String::writeInt16LEASCII(int16_t value, uint8_t* buffer, uint32_t pos) {
 
 int String::writeUInt32BEASCII(uint32_t value, uint8_t* buffer, uint32_t pos) {
 	for (int i = sizeof(value) - 1; i >= 0; i--) {
-		pos += writeUInt8((uint8_t) (value >> (i * 8)), buffer, pos);
+		pos += writeUInt8ASCII((uint8_t) (value >> (i * 8)), buffer, pos);
 	}
 
 	return sizeof(uint32_t) * 2;
@@ -189,7 +189,7 @@ int String::writeUInt32BEASCII(uint32_t value, uint8_t* buffer, uint32_t pos) {
 
 int String::writeInt32BEASCII(int32_t value, uint8_t* buffer, uint32_t pos) {
 	for (int i = sizeof(value) - 1; i >= 0; i--) {
-		pos += writeUInt8((uint8_t) ((uint32_t) value >> (i * 8)), buffer, pos);
+		pos += writeUInt8ASCII((uint8_t) ((uint32_t) value >> (i * 8)), buffer, pos);
 	}
 
 	return sizeof(int32_t) * 2;
@@ -197,7 +197,7 @@ int String::writeInt32BEASCII(int32_t value, uint8_t* buffer, uint32_t pos) {
 
 int String::writeUInt32LEASCII(uint32_t value, uint8_t* buffer, uint32_t pos) {
 	for (uint8_t i = 0; i <= sizeof(value); i++) {
-		pos += writeUInt8((uint8_t) (value >> (i * 8)), buffer, pos);
+		pos += writeUInt8ASCII((uint8_t) (value >> (i * 8)), buffer, pos);
 	}
 
 	return sizeof(uint32_t) * 2;
@@ -205,7 +205,7 @@ int String::writeUInt32LEASCII(uint32_t value, uint8_t* buffer, uint32_t pos) {
 
 int String::writeInt32LEASCII(int32_t value, uint8_t* buffer, uint32_t pos) {
 	for (uint8_t i = 0; i <= sizeof(value); i++) {
-		pos += writeUInt8((uint8_t) ((uint32_t) value >> (i * 8)), buffer, pos);
+		pos += writeUInt8ASCII((uint8_t) ((uint32_t) value >> (i * 8)), buffer, pos);
 	}
 
 	return sizeof(int32_t) * 2;
@@ -213,7 +213,7 @@ int String::writeInt32LEASCII(int32_t value, uint8_t* buffer, uint32_t pos) {
 
 int String::writeUInt64BEASCII(uint64_t value, uint8_t* buffer, uint32_t pos) {
 	for (int i = sizeof(value) - 1; i >= 0; i--) {
-		pos += writeUInt8((uint8_t) (value >> (i * 8)), buffer, pos);
+		pos += writeUInt8ASCII((uint8_t) (value >> (i * 8)), buffer, pos);
 	}
 
 	return sizeof(uint64_t) * 2;
@@ -221,7 +221,7 @@ int String::writeUInt64BEASCII(uint64_t value, uint8_t* buffer, uint32_t pos) {
 
 int String::writeInt64BEASCII(int64_t value, uint8_t* buffer, uint32_t pos) {
 	for (int i = sizeof(value) - 1; i >= 0; i--) {
-		pos += writeUInt8((uint8_t) ((uint64_t) value >> (i * 8)), buffer, pos);
+		pos += writeUInt8ASCII((uint8_t) ((uint64_t) value >> (i * 8)), buffer, pos);
 	}
 
 	return sizeof(int64_t) * 2;
@@ -229,7 +229,7 @@ int String::writeInt64BEASCII(int64_t value, uint8_t* buffer, uint32_t pos) {
 
 int String::writeUInt64LEASCII(uint64_t value, uint8_t* buffer, uint32_t pos) {
 	for (uint8_t i = 0; i <= sizeof(value); i++) {
-		pos += writeUInt8((uint8_t) (value >> (i * 8)), buffer, pos);
+		pos += writeUInt8ASCII((uint8_t) (value >> (i * 8)), buffer, pos);
 	}
 
 	return sizeof(uint64_t) * 2;
@@ -237,7 +237,7 @@ int String::writeUInt64LEASCII(uint64_t value, uint8_t* buffer, uint32_t pos) {
 
 int String::writeInt64LEASCII(int64_t value, uint8_t* buffer, uint32_t pos) {
 	for (uint8_t i = 0; i <= sizeof(value); i++) {
-		pos += writeUInt8((uint8_t) ((uint64_t) value >> (i * 8)), buffer, pos);
+		pos += writeUInt8ASCII((uint8_t) ((uint64_t) value >> (i * 8)), buffer, pos);
 	}
 
 	return sizeof(int64_t) * 2;
