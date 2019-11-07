@@ -4,13 +4,16 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../couriercxx/connector/serialport/SerialPortBase.cpp 
+../couriercxx/connector/serialport/SerialPortBase.cpp \
+../couriercxx/connector/serialport/SerialPortBus.cpp 
 
 OBJS += \
-./couriercxx/connector/serialport/SerialPortBase.o 
+./couriercxx/connector/serialport/SerialPortBase.o \
+./couriercxx/connector/serialport/SerialPortBus.o 
 
 CPP_DEPS += \
-./couriercxx/connector/serialport/SerialPortBase.d 
+./couriercxx/connector/serialport/SerialPortBase.d \
+./couriercxx/connector/serialport/SerialPortBus.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

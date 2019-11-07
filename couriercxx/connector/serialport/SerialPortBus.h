@@ -9,6 +9,12 @@
 #ifndef COURIERCXX_CONNECTOR_SERIALPORT_SERIALPORTBUS_H_
 #define COURIERCXX_CONNECTOR_SERIALPORT_SERIALPORTBUS_H_
 
+#include <cstdint>
+#include <mutex>
+#include <string>
+
+#include "SerialPortBase.h"
+
 /**
  * Class for serial port bus
  */
