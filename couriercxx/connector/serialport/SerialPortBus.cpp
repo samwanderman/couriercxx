@@ -3,7 +3,7 @@
  *
  *  Created on: 6.11.2019
  *      Author: Potapov Sergei
- *       Eamil: potapov.sa@carddex.ru
+ *       Email: sam-wanderman@yandex.ru
  */
 
 #include "SerialPortBus.h"

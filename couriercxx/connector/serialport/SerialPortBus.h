@@ -3,7 +3,7 @@
  *
  *  Created on: 6.11.2019
  *      Author: Potapov Sergei
- *       Email: potapov.sa@carddex.ru
+ *       Email: sam-wanderman@yandex.ru
  */
 
 #ifndef COURIERCXX_CONNECTOR_SERIALPORT_SERIALPORTBUS_H_
