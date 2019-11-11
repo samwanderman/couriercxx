@@ -95,14 +95,14 @@ public:
 	 *
 	 * \return 0 - success, -1 - error
 	 */
-	int open();
+	virtual int open();
 
 	/**
 	 * Close serial port
 	 *
 	 * \return 0 - success, -1 - error
 	 */
-	int close();
+	virtual int close();
 
 	/**
 	 * Read data from serial port

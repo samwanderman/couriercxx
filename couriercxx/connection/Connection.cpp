@@ -47,7 +47,7 @@ int Connection::enable() {
 		return -1;
 	}
 
-	Log::debug("Connection.enable()");
+	Log::debug("Connection[%i].enable()", info.id);
 
 	int res = connector->open();
 	if (res == -1) {
@@ -60,16 +60,14 @@ int Connection::enable() {
 	running = true;
 
 	auto readThreadFunc = [this]() {
-		// FIXME
-		// readMutex.lock();
-
 		while (running) {
 			uint8_t buffer[BUFFER_MAX_SIZE];
 			int bytesRead = this->connector->read(buffer, BUFFER_MAX_SIZE);
 			if (bytesRead == -1) {
-				Log::error("Connection.read() error");
+				Log::error("Connection[%i].read() error %i", info.id, bytesRead);
+				perror("");
 			} else if (bytesRead > 0) {
-				Log::debug("Connection.read() %i bytes", bytesRead);
+				Log::debug("Connection[%i].read() %i bytes", info.id, bytesRead);
 #ifdef DEBUG
 				Log::log("<< ");
 				for (int i = 0; i < bytesRead; i++) {
@@ -82,8 +80,6 @@ int Connection::enable() {
 
 			System::sleep(CONNECTION_READ_TIMEOUT);
 		}
-
-		// readMutex.unlock();
 	};
 	std::thread readThread(readThreadFunc);
 	readThread.detach();
@@ -96,7 +92,7 @@ int Connection::enable() {
 			if (eventsList.size() > 0) {
 				EventWrite* ev = eventsList.front();
 				int res = this->connector->write(ev->getData(), ev->getDataLen());
-				Log::debug("Connection.write() %i bytes", res);
+				Log::debug("Connection[%i].write() %i bytes", info.id, res);
 #ifdef DEBUG
 				Log::log(">> ");
 				for (uint32_t i = 0; i < ev->getDataLen(); i++) {
@@ -124,14 +120,13 @@ int Connection::disable() {
 		return -1;
 	}
 
-	Log::debug("Connection.disable()");
+	Log::debug("Connection[%i].disable()", info.id);
 
 	Dispatcher::removeListener(Connection::EVENT_WRITE, this);
 
 	running = false;
 
 	eventMutex.lock();
-	readMutex.lock();
 
 	int res = connector->close();
 	IListener::disable();
@@ -141,16 +136,15 @@ int Connection::disable() {
 
 void Connection::on(const IEvent* event) {
 	if (event->getType() == Connection::EVENT_WRITE) {
-		Log::debug("Connection.on(EVENT_WRITE)");
+		Log::debug("Connection[%i].on(EVENT_WRITE)", info.id);
 		eventsListMutex.lock();
 		if (eventsList.size() >= MAX_EVENTS) {
 			eventsList.pop_front();
 		}
 		eventsList.push_back(new EventWrite(*dynamic_cast<const EventWrite*>(event)));
 		eventsListMutex.unlock();
-		Log::debug("added event to queue");
 	} else if (event->getType() == Connection::EVENT_STATUS) {
-		Log::debug("Connection.on(EVENT_STATUS)");
+		Log::debug("Connection[%i].on(EVENT_STATUS)", info.id);
 	}
 }
 

@@ -13,9 +13,7 @@
 #include <sys/time.h>
 #include <termios.h>
 #include <unistd.h>
-#include <cstdint>
 #include <cstring>
-#include <string>
 
 #include "../../util/Clock.h"
 
