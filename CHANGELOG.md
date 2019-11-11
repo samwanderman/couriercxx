@@ -1,3 +1,6 @@
+### Version 0.2.2.0
+[+] added datasources support
+
 ### Version 0.2.1.0
 [+] added serial port bus support
 
