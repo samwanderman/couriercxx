@@ -1,6 +1,8 @@
 ### Version 0.2.2.0
 [+] added datasources support
 
+[\*] fixed errors with **String.read*** functions
+
 ### Version 0.2.1.0
 [+] added serial port bus support
 
@@ -11,10 +13,10 @@
 
 [*] connectors and protocols refactoring
 
-[*] renamed hex2ascii -> writeBufferASCII, ascii2hex - readBufferASCII
+[\*] renamed hex2ascii -> **writeBufferASCII**, ascii2hex - **readBufferASCII**
 
 ### Version 0.1.1.0
-[+] added write list for TCPPortBase
+[+] added write list for **TCPPortBase**
 
 [*] small fixes
 
@@ -34,13 +36,13 @@
 [+] add binary data convertion to BMP
 
 ### Version 0.0.4.0 (Released 07.08.2019)
-[+] added stop mutex for Sniffer, DispatcherBase, WrappedListener, GPIOSPIPortBase and Connection
+[+] added stop mutex for **Sniffer**, **DispatcherBase**, **WrappedListener**, **GPIOSPIPortBase** and **Connection**
 
-[+] added fileSize func for IO
+[+] added fileSize func for **IO**
 
-[*] fixed bug with pcap_next for Sniffer
+[\*] fixed bug with **pcap_next** for **Sniffer**
 
-[*] fixed bug in DispatcherBase for unhandled events
+[*] fixed bug in **DispatcherBase** for unhandled events
 
 ### Version 0.0.3.1
 [*] bugfixes
@@ -50,7 +52,7 @@
 ### Version 0.0.3.0
 [+] added bluetooth support
 
-[+] added mutex for PostgresConnector
+[+] added mutex for **PostgresConnector**
 
 [*] bugfixes
 

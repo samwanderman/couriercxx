@@ -254,7 +254,7 @@ int8_t String::readInt8(const uint8_t* buffer, uint32_t pos) {
 uint16_t String::readUInt16BE(const uint8_t* buffer, uint32_t pos) {
 	uint16_t value = 0;
 	for (uint32_t i = 0; i < sizeof(value); i++) {
-		value = (value << (i * 8)) | buffer[pos++];
+		value = (value << 8) | buffer[pos++];
 	}
 
 	return value;
@@ -263,7 +263,7 @@ uint16_t String::readUInt16BE(const uint8_t* buffer, uint32_t pos) {
 int16_t String::readInt16BE(const uint8_t* buffer, uint32_t pos) {
 	uint16_t value = 0;
 	for (uint32_t i = 0; i < sizeof(value); i++) {
-		value = (value << (i * 8)) | buffer[pos++];
+		value = (value << 8) | buffer[pos++];
 	}
 
 	return (int16_t) value;
@@ -272,7 +272,7 @@ int16_t String::readInt16BE(const uint8_t* buffer, uint32_t pos) {
 uint16_t String::readUInt16LE(const uint8_t* buffer, uint32_t pos) {
 	uint16_t value = 0;
 	for (int i = sizeof(value) - 1; i >= 0; i--) {
-		value = (value << (i * 8)) | buffer[pos++];
+		value = (value << 8) | buffer[pos++];
 	}
 
 	return value;
@@ -281,7 +281,7 @@ uint16_t String::readUInt16LE(const uint8_t* buffer, uint32_t pos) {
 int16_t String::readInt16LE(const uint8_t* buffer, uint32_t pos) {
 	uint16_t value = 0;
 	for (int i = sizeof(value) - 1; i >= 0; i--) {
-		value = (value << (i * 8)) | buffer[pos++];
+		value = (value << 8) | buffer[pos++];
 	}
 
 	return (int16_t) value;
@@ -290,7 +290,7 @@ int16_t String::readInt16LE(const uint8_t* buffer, uint32_t pos) {
 uint32_t String::readUInt32BE(const uint8_t* buffer, uint32_t pos) {
 	uint32_t value = 0;
 	for (uint32_t i = 0; i < sizeof(value); i++) {
-		value = (value << (i * 8)) | buffer[pos++];
+		value = (value << 8) | buffer[pos++];
 	}
 
 	return value;
@@ -299,7 +299,7 @@ uint32_t String::readUInt32BE(const uint8_t* buffer, uint32_t pos) {
 int32_t String::readInt32BE(const uint8_t* buffer, uint32_t pos) {
 	uint32_t value = 0;
 	for (uint32_t i = 0; i < sizeof(value); i++) {
-		value = (value << (i * 8)) | buffer[pos++];
+		value = (value << 8) | buffer[pos++];
 	}
 
 	return (int32_t) value;
@@ -308,7 +308,7 @@ int32_t String::readInt32BE(const uint8_t* buffer, uint32_t pos) {
 uint32_t String::readUInt32LE(const uint8_t* buffer, uint32_t pos) {
 	uint32_t value = 0;
 	for (int i = sizeof(value) - 1; i >= 0; i--) {
-		value = (value << (i * 8)) | buffer[pos++];
+		value = (value << 8) | buffer[pos++];
 	}
 
 	return value;
@@ -317,7 +317,7 @@ uint32_t String::readUInt32LE(const uint8_t* buffer, uint32_t pos) {
 int32_t String::readInt32LE(const uint8_t* buffer, uint32_t pos) {
 	uint32_t value = 0;
 	for (int i = sizeof(value) - 1; i >= 0; i--) {
-		value = (value << (i * 8)) | buffer[pos++];
+		value = (value << 8) | buffer[pos++];
 	}
 
 	return (int32_t) value;
@@ -326,7 +326,7 @@ int32_t String::readInt32LE(const uint8_t* buffer, uint32_t pos) {
 uint64_t String::readUInt64BE(const uint8_t* buffer, uint32_t pos) {
 	uint64_t value = 0;
 	for (uint32_t i = 0; i < sizeof(value); i++) {
-		value = (value << (i * 8)) | buffer[pos++];
+		value = (value << 8) | buffer[pos++];
 	}
 
 	return value;
@@ -335,7 +335,7 @@ uint64_t String::readUInt64BE(const uint8_t* buffer, uint32_t pos) {
 int64_t String::readInt64BE(const uint8_t* buffer, uint32_t pos) {
 	int64_t value = 0;
 	for (uint32_t i = 0; i < sizeof(value); i++) {
-		value = (value << (i * 8)) | buffer[pos++];
+		value = (value << 8) | buffer[pos++];
 	}
 
 	return value;
@@ -344,7 +344,7 @@ int64_t String::readInt64BE(const uint8_t* buffer, uint32_t pos) {
 uint64_t String::readUInt64LE(const uint8_t* buffer, uint32_t pos) {
 	uint64_t value = 0;
 	for (int i = sizeof(value) - 1; i >= 0; i--) {
-		value = (value << (i * 8)) | buffer[pos++];
+		value = (value << 8) | buffer[pos++];
 	}
 
 	return value;
@@ -353,7 +353,7 @@ uint64_t String::readUInt64LE(const uint8_t* buffer, uint32_t pos) {
 int64_t String::readInt64LE(const uint8_t* buffer, uint32_t pos) {
 	uint64_t value = 0;
 	for (int i = sizeof(value) - 1; i >= 0; i--) {
-		value = (value << (i * 8)) | buffer[pos++];
+		value = (value << 8) | buffer[pos++];
 	}
 
 	return (int64_t) value;
@@ -371,7 +371,7 @@ uint16_t String::readUInt16BEASCII(const uint8_t* buffer, uint32_t pos) {
 	uint16_t value = 0;
 
 	for (uint32_t i = 0; i < sizeof(value); i++) {
-		value = (value << (i * 8)) | readUInt8ASCII(buffer, pos + i * 2);
+		value = (value << 8) | readUInt8ASCII(buffer, pos + i * 2);
 	}
 
 	return value;
@@ -381,7 +381,7 @@ int16_t String::readInt16BEASCII(const uint8_t* buffer, uint32_t pos) {
 	uint16_t value = 0;
 
 	for (uint32_t i = 0; i < sizeof(value); i++) {
-		value = (value << (i * 8)) | readUInt8ASCII(buffer, pos + i * 2);
+		value = (value << 8) | readUInt8ASCII(buffer, pos + i * 2);
 	}
 
 	return (int16_t) value;
@@ -391,7 +391,7 @@ uint16_t String::readUInt16LEASCII(const uint8_t* buffer, uint32_t pos) {
 	uint16_t value = 0;
 
 	for (int i = sizeof(value) - 1; i >= 0; i--) {
-		value = (value << (i * 8)) | readUInt8ASCII(buffer, pos + i * 2);
+		value = (value << 8) | readUInt8ASCII(buffer, pos + i * 2);
 	}
 
 	return value;
@@ -401,7 +401,7 @@ int16_t String::readInt16LEASCII(const uint8_t* buffer, uint32_t pos) {
 	uint16_t value = 0;
 
 	for (int i = sizeof(value) - 1; i >= 0; i--) {
-		value = (value << (i * 8)) | readUInt8ASCII(buffer, pos + i * 2);
+		value = (value << 8) | readUInt8ASCII(buffer, pos + i * 2);
 	}
 
 	return (int16_t) value;
@@ -411,7 +411,7 @@ uint32_t String::readUInt32BEASCII(const uint8_t* buffer, uint32_t pos) {
 	uint32_t value = 0;
 
 	for (uint32_t i = 0; i < sizeof(value); i++) {
-		value = (value << (i * 8)) | readUInt8ASCII(buffer, pos + i * 2);
+		value = (value << 8) | readUInt8ASCII(buffer, pos + i * 2);
 	}
 
 	return value;
@@ -421,7 +421,7 @@ int32_t String::readInt32BEASCII(const uint8_t* buffer, uint32_t pos) {
 	uint32_t value = 0;
 
 	for (uint32_t i = 0; i < sizeof(value); i++) {
-		value = (value << (i * 8)) | readUInt8ASCII(buffer, pos + i * 2);
+		value = (value << 8) | readUInt8ASCII(buffer, pos + i * 2);
 	}
 
 	return (int32_t) value;
@@ -431,7 +431,7 @@ uint32_t String::readUInt32LEASCII(const uint8_t* buffer, uint32_t pos) {
 	uint32_t value = 0;
 
 	for (int i = sizeof(value) - 1; i >= 0; i--) {
-		value = (value << (i * 8)) | readUInt8ASCII(buffer, pos + i * 2);
+		value = (value << 8) | readUInt8ASCII(buffer, pos + i * 2);
 	}
 
 	return value;
@@ -441,7 +441,7 @@ int32_t String::readInt32LEASCII(const uint8_t* buffer, uint32_t pos) {
 	uint32_t value = 0;
 
 	for (int i = sizeof(value) - 1; i >= 0; i--) {
-		value = (value << (i * 8)) | readUInt8ASCII(buffer, pos + i * 2);
+		value = (value << 8) | readUInt8ASCII(buffer, pos + i * 2);
 	}
 
 	return (int32_t) value;
@@ -451,7 +451,7 @@ uint64_t String::readUInt64BEASCII(const uint8_t* buffer, uint32_t pos) {
 	uint64_t value = 0;
 
 	for (uint32_t i = 0; i < sizeof(value); i++) {
-		value = (value << (i * 8)) | readUInt8ASCII(buffer, pos + i * 2);
+		value = (value << 8) | readUInt8ASCII(buffer, pos + i * 2);
 	}
 
 	return value;
@@ -461,7 +461,7 @@ int64_t String::readInt64BEASCII(const uint8_t* buffer, uint32_t pos) {
 	uint64_t value = 0;
 
 	for (uint32_t i = 0; i < sizeof(value); i++) {
-		value = (value << (i * 8)) | readUInt8ASCII(buffer, pos + i * 2);
+		value = (value << 8) | readUInt8ASCII(buffer, pos + i * 2);
 	}
 
 	return (int64_t) value;
@@ -471,7 +471,7 @@ uint64_t String::readUInt64LEASCII(const uint8_t* buffer, uint32_t pos) {
 	uint64_t value = 0;
 
 	for (int i = sizeof(value) - 1; i >= 0; i--) {
-		value = (value << (i * 8)) | readUInt8ASCII(buffer, pos + i * 2);
+		value = (value << 8) | readUInt8ASCII(buffer, pos + i * 2);
 	}
 
 	return value;
@@ -481,7 +481,7 @@ int64_t String::readInt64LEASCII(const uint8_t* buffer, uint32_t pos) {
 	uint64_t value = 0;
 
 	for (int i = sizeof(value) - 1; i >= 0; i--) {
-		value = (value << (i * 8)) | readUInt8ASCII(buffer, pos + i * 2);
+		value = (value << 8) | readUInt8ASCII(buffer, pos + i * 2);
 	}
 
 	return (int64_t) value;
