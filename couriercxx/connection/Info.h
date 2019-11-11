@@ -43,6 +43,7 @@ struct Info {
 	std::string name = "";
 	uint64_t commandTimeout = 0;
 };
+typedef struct Info Info;
 
 }
 
