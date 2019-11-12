@@ -1,7 +1,7 @@
 /*
  * Client.cpp
  *
- *  Created on: 31 окт. 2019 г.
+ *  Created on: 31.11.2019
  *      Author: Potapov Sergei
  *       Email: sam-wanderman@yandex.ru
  */
