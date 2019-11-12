@@ -1,6 +1,8 @@
 ### Version 0.2.2.0
 [+] added datasources support
 
+[+] added SerialPortBaseDatasource, SerialPortBusDatasource and SerialPortBusEventDrivenDatasource
+
 [\*] fixed errors with **String.read*** functions
 
 ### Version 0.2.1.0
