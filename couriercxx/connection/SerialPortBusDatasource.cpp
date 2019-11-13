@@ -11,7 +11,7 @@
 #include "../connector/serialport/SerialPortBus.h"
 #include "../logger/Log.h"
 
-SerialPortBusDatasource::SerialPortBusDatasource(SerialPortBus* port) {
+SerialPortBusDatasource::SerialPortBusDatasource(SerialPortBus* port) : IConcurrentDatasource() {
 	this->port = port;
 }
 

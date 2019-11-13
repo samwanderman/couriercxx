@@ -11,14 +11,14 @@
 
 #include <cstdint>
 
-#include "IDatasource.h"
+#include "IConcurrentDatasource.h"
 
 class SerialPortBus;
 
 /**
  * Simple serial port bus datasource
  */
-class SerialPortBusDatasource: public IDatasource {
+class SerialPortBusDatasource: public IConcurrentDatasource {
 public:
 	/**
 	 * Constructor
