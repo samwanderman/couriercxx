@@ -5,6 +5,8 @@
 
 [\*] fixed errors with **String.read*** functions
 
+[*] fixed bug with resource cleaning
+
 ### Version 0.2.1.0
 [+] added serial port bus support
 

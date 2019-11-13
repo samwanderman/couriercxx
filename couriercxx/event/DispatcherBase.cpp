@@ -77,13 +77,13 @@ DispatcherBase::~DispatcherBase() {
 	std::map<EVENT_T, std::list<IListener*>*>::iterator it = listeners.begin();
 	while (it != listeners.end()) {
 		std::list<IListener*>* listeners2 = it->second;
-		listeners2->empty();
+		listeners2->clear();
 		delete listeners2;
 
 		it++;
 	}
 
-	listeners.empty();
+	listeners.clear();
 
 	listenerMutex.unlock();
 }
