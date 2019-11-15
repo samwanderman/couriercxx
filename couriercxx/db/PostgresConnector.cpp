@@ -153,8 +153,8 @@ pqxx::result PostgresConnector::execStatement(std::string name, ...) {
 
 			if ((*it2).hash_code() == DB::typeINT8T.hash_code()) {
 				DB::Int8Value arg = va_arg(args, DB::Int8Value);
-				int16_t val = *arg.value;
 				if (arg.value != nullptr) {
+					int16_t val = *arg.value;
 					prep_dynamic(val, invoke);
 				} else {
 					prep_dynamic((const char*) nullptr, invoke);
@@ -163,8 +163,8 @@ pqxx::result PostgresConnector::execStatement(std::string name, ...) {
 
 			if ((*it2).hash_code() == DB::typeUINT8T.hash_code()) {
 				DB::UInt8Value arg = va_arg(args, DB::UInt8Value);
-				uint16_t val = *arg.value;
 				if (arg.value != nullptr) {
+					uint16_t val = *arg.value;
 					prep_dynamic(val, invoke);
 				} else {
 					prep_dynamic((const char*) nullptr, invoke);

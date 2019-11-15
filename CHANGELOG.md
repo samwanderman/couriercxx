@@ -7,6 +7,8 @@
 
 [*] fixed bug with resource cleaning
 
+[\*] fixed bug for postgres **uint8_t** and **int8_t** values
+
 ### Version 0.2.1.0
 [+] added serial port bus support
 
