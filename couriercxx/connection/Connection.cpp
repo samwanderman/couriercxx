@@ -9,6 +9,7 @@
 #include "Connection.h"
 
 #include <cstdint>
+#include <cstdio>
 #include <thread>
 
 #include "../connector/IConnectorBase.h"
@@ -146,6 +147,10 @@ void Connection::on(const IEvent* event) {
 	} else if (event->getType() == Connection::EVENT_STATUS) {
 		Log::debug("Connection[%i].on(EVENT_STATUS)", info.id);
 	}
+}
+
+Info Connection::getInfo() {
+	return info;
 }
 
 }

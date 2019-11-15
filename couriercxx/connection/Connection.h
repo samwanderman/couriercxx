@@ -64,6 +64,13 @@ public:
 	 */
 	int disable();
 
+	/**
+	 * Get info
+	 *
+	 * \return connection info
+	 */
+	Info getInfo();
+
 private:
 	Info info;
 	IConnectorBase* connector = nullptr;
