@@ -44,11 +44,22 @@ public:
 	 * Read bytes
 	 *
 	 * \param[out] uint8_t* buffer - pointer to buffer
-	 * \param[in] bufferSize - buffer size
+	 * \param[in] uint32_t bufferSize - buffer size
 	 *
 	 * \return int - number of read bytes if success, -1 if error
 	 */
 	virtual int read(uint8_t* buffer, uint32_t bufferSize) = 0;
+
+	/**
+	 * Read bytes
+	 *
+	 * \param[out] uint8_t* buffer - pointer to buffer
+	 * \param[in] uint32_t bufferSize - buffer size
+	 * \param[in] uint64_t timeout - timeout
+	 *
+	 * \return int - number of read bytes if success, -1 if error
+	 */
+	virtual int read(uint8_t* buffer, uint32_t bufferSize, uint64_t timeout) = 0;
 
 	/**
 	 * Write bytes

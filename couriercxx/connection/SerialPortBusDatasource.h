@@ -10,6 +10,7 @@
 #define COURIERCXX_CONNECTION_SERIALPORTBUSDATASOURCE_H_
 
 #include <cstdint>
+#include <mutex>
 
 #include "IConcurrentDatasource.h"
 
@@ -57,6 +58,17 @@ public:
 	int read(uint8_t* buffer, uint32_t bufferSize);
 
 	/**
+	 * Read bytes from datasource
+	 *
+	 * \param[out] uint8_t* buffer - pointer to buffer
+	 * \param[in] uint32_t bufferSize - max buffer size
+	 * \param[in] uint64_t timeout - timeout
+	 *
+	 * \return int - number of read bytes if success, -1 if error
+	 */
+	int read(uint8_t* buffer, uint32_t bufferSize, uint64_t timeout);
+
+	/**
 	 * Write bytes to datasource
 	 *
 	 * \param[in] const uint8_t* buffer - pointer to buffer
@@ -77,6 +89,8 @@ public:
 	void unlock();
 
 private:
+	bool running = false;
+	std::mutex stopMutex;
 	SerialPortBus* port = nullptr;
 };
 
