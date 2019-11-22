@@ -184,7 +184,7 @@ int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize, int32_t timeout) 
 			if (rv == -1) {
 				return ERR_DEFAULT;
 			} else if (rv == 0) {
-				return ERR_DEFAULT;
+				return 0;
 			}
 		}
 
