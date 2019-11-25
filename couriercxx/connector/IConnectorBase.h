@@ -19,6 +19,7 @@ public:
 	static const int ERR_DEFAULT;
 	static const int ERR_ALREADY_OPEN;
 	static const int ERR_NOT_OPEN;
+	static const int ERR_TIMEOUT;
 
 	/**
 	 * Empty constructor

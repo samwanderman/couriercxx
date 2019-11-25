@@ -11,6 +11,7 @@
 const int IConnectorBase::ERR_DEFAULT		= -1;
 const int IConnectorBase::ERR_ALREADY_OPEN	= -2;
 const int IConnectorBase::ERR_NOT_OPEN		= -3;
+const int IConnectorBase::ERR_TIMEOUT		= -4;
 
 IConnectorBase::IConnectorBase() { }
 
