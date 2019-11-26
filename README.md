@@ -1,5 +1,5 @@
 # CourierCXX
-##### v0.2.2.0
+##### v0.2.2.1
 C++ framework for standart operations simplification
 
 ### Requirements

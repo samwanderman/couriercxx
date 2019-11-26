@@ -6,16 +6,13 @@
  *       Email: sam-wanderman@yandex.ru
  */
 
-#include "../../network/http/Server.h"
+#include "Server.h"
 
-#include <event2/event_compat.h>
+#include <couriercxx/logger/Log.h>
+#include <event2/event.h>
 #include <event2/http.h>
-#include <event2/http_compat.h>
 #include <sys/time.h>
-#include <memory>
 #include <thread>
-
-#include "../../logger/Log.h"
 
 namespace HTTP {
 
@@ -35,18 +32,21 @@ int Server::start() {
 	}
 
 	auto func = [this] () {
-		if (!event_init()) {
+		if ((eventLoop = event_base_new()) == nullptr) {
 			Log::error("Server: event_init() error");
 
-			return -1;
+			return;
 		}
-		Log::debug("Server: event_init() success");
+		Log::debug("Server: event_base_new() success");
 
-		std::unique_ptr<evhttp, decltype(&evhttp_free)> server(evhttp_start(config.host.c_str(), config.port), &evhttp_free);
-		if (!server) {
+		server = evhttp_new(eventLoop);
+		if (evhttp_bind_socket(server, config.host.c_str(), config.port) == -1) {
 			Log::error("Server.start() error");
 
-			return -1;
+			evhttp_free(server);
+			event_base_free(eventLoop);
+
+			return;
 		}
 		Log::debug("Server.start() success");
 
@@ -57,16 +57,17 @@ int Server::start() {
 			server->callback(serverRequest);
 		};
 
-		evhttp_set_gencb(server.get(), onRequest, this);
+		evhttp_set_gencb(server, onRequest, this);
 
-		if (event_dispatch() == -1) {
+		if (event_base_dispatch(eventLoop) == -1) {
 			Log::error("Server: event_dispatch() error");
 
-			return -1;
+			evhttp_free(server);
+			event_base_free(eventLoop);
+
+			return;
 		}
 		Log::debug("Server: event_dispatch() success");
-
-		return 0;
 	};
 
 	std::thread thread(func);
@@ -80,12 +81,12 @@ int Server::stop() {
 		return -1;
 	}
 
+	running = false;
+
 	struct timeval time;
 	time.tv_sec = 0;
 	time.tv_usec = 0;
-	event_loopexit(&time);
-
-	running = false;
+	event_base_loopexit(eventLoop, &time);
 
 	return 0;
 }

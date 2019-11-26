@@ -13,7 +13,10 @@
 #include <functional>
 #include <string>
 
-#include "../../network/http/Request.h"
+#include "Request.h"
+
+struct event_base;
+struct evhttp;
 
 namespace HTTP {
 
@@ -26,8 +29,8 @@ public:
 	 * Server config
 	 */
 	struct ServerConfig {
-		std::string host;
-		uint16_t port;
+		std::string	host;
+		uint16_t	port;
 	};
 	typedef struct ServerConfig ServerConfig;
 
@@ -59,9 +62,11 @@ public:
 	int stop();
 
 private:
-	ServerConfig config;
-	bool running = false;
-	std::function<void (Request&)> callback = nullptr;
+	ServerConfig					config;
+	bool							running		= false;
+	struct event_base*				eventLoop	= nullptr;
+	struct evhttp*					server		= nullptr;
+	std::function<void (Request&)>	callback	= nullptr;
 };
 
 }; /* namespace HTTP */
