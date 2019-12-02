@@ -27,17 +27,18 @@
 template<typename T>
 pqxx::prepare::invocation& prep_dynamic(T value, pqxx::prepare::invocation& inv) {
 	inv(value);
+
 	return inv;
 }
 
 PostgresConnector::PostgresConnector(std::string host, uint16_t port, std::string username, std::string password, std::string dbName, std::string encoding) {
-	this->host = host;
-	this->port = port;
-	this->username = username;
-	this->password = password;
-	this->dbName = dbName;
-	this->encoding = encoding;
-	connection = nullptr;
+	this->host		= host;
+	this->port		= port;
+	this->username	= username;
+	this->password	= password;
+	this->dbName	= dbName;
+	this->encoding	= encoding;
+	connection		= nullptr;
 }
 
 PostgresConnector::~PostgresConnector() {
@@ -90,6 +91,7 @@ int PostgresConnector::close() {
 
 int PostgresConnector::reopen() {
 	close();
+
 	return open();
 }
 
@@ -112,6 +114,7 @@ int PostgresConnector::addStatement(std::string name, std::string sql) {
 
 int PostgresConnector::removeStatement(std::string name) {
 	connection->unprepare(name);
+
 	return preparedStatements.erase(name) > 0 ? 0 : -1;
 }
 
