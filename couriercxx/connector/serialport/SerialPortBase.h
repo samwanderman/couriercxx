@@ -30,6 +30,7 @@ public:
 		bool		parityCheck	= false;
 		bool		stopBit		= false;
 		bool		startBit	= false;
+		bool		handshake	= false;
 		uint8_t		dateBits	= 8;
 	};
 	typedef struct Config Config;

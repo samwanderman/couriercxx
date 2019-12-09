@@ -299,9 +299,9 @@ int SerialPortBase::setBaudrate(uint32_t baudrate) {
 
 	tty.c_cflag &= config.parityCheck ? PARENB : ~PARENB;
 	tty.c_cflag &= config.stopBit ? CSTOPB : ~CSTOPB;
+	tty.c_cflag &= config.handshake ? CRTSCTS : ~CRTSCTS;
 	tty.c_cflag &= ~CSIZE;
 	tty.c_cflag |= dateBits;
-	tty.c_cflag &= ~CRTSCTS;
 	tty.c_cc[VMIN] = 1;
 	tty.c_cc[VTIME] = 5;
 	tty.c_cflag |= CREAD | CLOCAL;
