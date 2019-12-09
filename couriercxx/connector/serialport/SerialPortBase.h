@@ -23,14 +23,14 @@ public:
 	 * Serial port configuration struct
 	 */
 	struct Config {
-		std::string path	= "";
-		uint32_t baudrate	= 0;
-		bool nonBlock		= false;
-		uint32_t timeout	= 0;
-		bool parityCheck	= false;
-		bool stopBit		= false;
-		bool startBit		= false;
-		uint8_t dateBits	= 8;
+		std::string	path		= "";
+		uint32_t	baudrate	= 0;
+		bool		nonBlock	= false;
+		uint32_t	timeout		= 0;
+		bool		parityCheck	= false;
+		bool		stopBit		= false;
+		bool		startBit	= false;
+		uint8_t		dateBits	= 8;
 	};
 	typedef struct Config Config;
 
