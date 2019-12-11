@@ -8,7 +8,8 @@
 
 #include "Server.h"
 
-#include <couriercxx/logger/Log.h>
+#include "../../logger/Log.h"
+
 #include <event2/event.h>
 #include <event2/http.h>
 #include <sys/time.h>
