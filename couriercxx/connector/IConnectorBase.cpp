@@ -38,6 +38,8 @@ int IConnectorBase::close() {
 	return 0;
 }
 
+void IConnectorBase::clear() { }
+
 bool IConnectorBase::isOpen() {
 	return opened;
 }

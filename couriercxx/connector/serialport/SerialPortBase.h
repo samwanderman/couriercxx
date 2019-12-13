@@ -152,6 +152,11 @@ public:
 	 */
 	uint32_t getBaudrate();
 
+	/**
+	 * Clear input/output buffers
+	 */
+	void clear();
+
 private:
 	Config config;
 	int fd = -1;

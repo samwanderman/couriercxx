@@ -72,6 +72,11 @@ public:
 	virtual bool isOpen();
 
 	/**
+	 * Clear input/output buffers
+	 */
+	virtual void clear();
+
+	/**
 	 * Read data from connector
 	 *
 	 * \param[out] uint8_t* buffer - buffer to store data

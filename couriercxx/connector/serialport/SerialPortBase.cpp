@@ -326,3 +326,7 @@ int SerialPortBase::setBaudrate(uint32_t baudrate) {
 uint32_t SerialPortBase::getBaudrate() {
 	return config.baudrate;
 }
+
+void SerialPortBase::clear() {
+	tcflush(fd, TCIOFLUSH);
+}
