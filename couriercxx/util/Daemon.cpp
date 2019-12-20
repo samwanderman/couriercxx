@@ -15,6 +15,7 @@
 #include <cstdlib>
 
 void Daemon::daemonize() {
+#ifndef _WIN32
 	int pid = fork();
 	if (pid == -1) {
 		exit(EXIT_SUCCESS);
@@ -31,4 +32,5 @@ void Daemon::daemonize() {
 		close(STDOUT_FILENO);
 		close(STDERR_FILENO);
 	}
+#endif
 }

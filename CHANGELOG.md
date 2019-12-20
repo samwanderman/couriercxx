@@ -1,5 +1,8 @@
+### Version 0.3.0.0
+[+] added initial Windows support
+
 ### Version 0.2.2.1
-[*] updateed server event loop
+[*] updated server event loop
 
 ### Version 0.2.2.0
 [+] added datasources support

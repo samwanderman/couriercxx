@@ -9,7 +9,8 @@
 #ifndef COURIERCXX_DB_POSTGRESCONNECTOR_H_
 #define COURIERCXX_DB_POSTGRESCONNECTOR_H_
 
-#include <pqxx/connection.hxx>
+#include <pqxx/connection>
+
 #include <cstdint>
 #include <list>
 #include <map>

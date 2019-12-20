@@ -8,11 +8,15 @@
 
 #include "BluetoothDevice.h"
 
+#ifdef _WIN32
+#else
 #include <bluetooth/bluetooth.h>
 #include <bluetooth/rfcomm.h>
 #include <bluetooth/sdp.h>
 #include <bluetooth/sdp_lib.h>
 #include <sys/socket.h>
+#endif
+
 #include <unistd.h>
 
 #include "../../logger/Log.h"
@@ -38,6 +42,8 @@ uint32_t BluetoothDevice::getType() {
 }
 
 int BluetoothDevice::connect() {
+#ifdef _WIN32
+#else
 	sock = socket(AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM);
 	if (sock == -1) {
 		return -1;
@@ -51,6 +57,7 @@ int BluetoothDevice::connect() {
 	if (::connect(sock, (struct sockaddr*) &addr, sizeof(addr)) == -1) {
 		return -1;
 	}
+#endif
 
 	return 0;
 }
@@ -70,6 +77,8 @@ int BluetoothDevice::write(const uint8_t* buffer, uint32_t bufferSize) {
 }
 
 void BluetoothDevice::test() {
+#ifdef _WIN32
+#else
 	bdaddr_t target;
 	str2ba(addr.c_str(), &target);
 
@@ -137,4 +146,5 @@ void BluetoothDevice::test() {
 	}
 
 	sdp_close(session);
+#endif
 }

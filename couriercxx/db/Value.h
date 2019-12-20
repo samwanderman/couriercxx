@@ -9,7 +9,11 @@
 #ifndef COURIERCXX_DB_VALUE_H_
 #define COURIERCXX_DB_VALUE_H_
 
+#ifdef _WIN32
+#else
 #include <pqxx/binarystring.hxx>
+#endif
+
 #include <cstdint>
 #include <typeindex>
 

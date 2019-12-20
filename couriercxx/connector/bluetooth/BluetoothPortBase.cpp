@@ -8,11 +8,14 @@
 
 #include "BluetoothPortBase.h"
 
+#ifdef _WIN32
+#else
 #include <bluetooth/bluetooth.h>
 #include <bluetooth/hci.h>
 #include <bluetooth/hci_lib.h>
 #include <bluetooth/sdp.h>
 #include <bluetooth/sdp_lib.h>
+#endif
 #include <unistd.h>
 #include <cstdint>
 #include <cstdlib>
@@ -36,6 +39,9 @@ int BluetoothPortBase::open() {
 		return -1;
 	}
 
+#ifdef _WIN32
+	return 0;
+#else
 	if (addr.length() == 0) {
 		devId = hci_get_route(nullptr);
 	} else {
@@ -52,6 +58,7 @@ int BluetoothPortBase::open() {
 	}
 
 	return IConnectorBase::open();
+#endif
 }
 
 int BluetoothPortBase::close() {
@@ -68,6 +75,8 @@ int BluetoothPortBase::close() {
 std::list<BluetoothDevice*> BluetoothPortBase::search() {
 	std::list<BluetoothDevice*> devices;
 
+#ifdef _WIN32
+#else
 	int flags = IREQ_CACHE_FLUSH;
 	int maxDevices = MAX_DEVICES;
 
@@ -90,13 +99,14 @@ std::list<BluetoothDevice*> BluetoothPortBase::search() {
 	}
 
 	delete[] foundDevices;
-
+#endif
 	return devices;
 }
 
 int BluetoothPortBase::connect(std::string addr, uint8_t svcUUIDInt[16]) {
 	Log::debug("BluetoothPortBase.connect()");
-
+#ifdef _WIN32
+#else
 	bdaddr_t target;
 	str2ba(addr.c_str(), &target);
 
@@ -192,6 +202,6 @@ int BluetoothPortBase::connect(std::string addr, uint8_t svcUUIDInt[16]) {
 	}
 
 	sdp_close(session);
-
+#endif
 	return 0;
 }

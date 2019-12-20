@@ -8,7 +8,11 @@
 
 #include "System.h"
 
+#ifdef _WIN32
+#include <windows.h>
+#else
 #include <sys/reboot.h>
+#endif
 #include <chrono>
 #include <cstdio>
 #include <cstdlib>
@@ -44,7 +48,11 @@ int System::restartNetwork() {
 }
 
 int System::reboot() {
+#ifndef _WIN32
 	return ::reboot(RB_AUTOBOOT);
+#else
+	return 0;
+#endif
 }
 
 void System::sleep(uint64_t milliseconds) {
@@ -52,7 +60,11 @@ void System::sleep(uint64_t milliseconds) {
 }
 
 void System::usleep(uint64_t microseconds) {
+#ifdef _WIN32
+	Sleep(microseconds/ 1000);
+#else
 	std::this_thread::sleep_for(std::chrono::microseconds(microseconds));
+#endif
 }
 
 int System::mkdir(std::string path) {

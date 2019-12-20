@@ -9,10 +9,10 @@
 #include "PostgresConnector.h"
 
 #include <pqxx/binarystring.hxx>
-#include <pqxx/connection_base.hxx>
+#include <pqxx/connection>
 #include <pqxx/prepared_statement.hxx>
-#include <pqxx/result.hxx>
-#include <pqxx/transaction.hxx>
+#include <pqxx/result>
+#include <pqxx/transaction>
 #include <cstdarg>
 #include <cstdio>
 #include <cstring>
@@ -126,7 +126,7 @@ pqxx::result PostgresConnector::execStatement(std::string name, ...) {
 	pqxx::work worker(*connection);
 	pqxx::prepare::invocation invoke = worker.prepared(name);
 	pqxx::result res;
-	memset(&res, 0, sizeof(res));
+	res.clear();
 
 	std::list<std::type_index> types;
 	std::map<std::string, std::list<std::type_index>>::iterator it = preparedStatements.find(name);

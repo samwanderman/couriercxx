@@ -10,7 +10,11 @@
 
 #include <cstdio>
 #include <cstdlib>
+#ifdef _WIN32
+#else
 #include <jpeglib.h>
+#endif
+
 #include <cstring>
 
 namespace Image {
@@ -43,6 +47,8 @@ JPG::~JPG() {
 }
 
 int JPG::toBin(uint8_t** outBuffer, uint64_t* outBufferSize) {
+#ifdef _WIN32
+#else
 	struct jpeg_compress_struct cinfo;
 	struct jpeg_error_mgr jerr;
 
@@ -70,6 +76,7 @@ int JPG::toBin(uint8_t** outBuffer, uint64_t* outBufferSize) {
 
 	jpeg_finish_compress(&cinfo);
 	jpeg_destroy_compress(&cinfo);
+#endif
 
 	return 0;
 }

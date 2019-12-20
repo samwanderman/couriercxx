@@ -11,7 +11,11 @@
 
 #include <cstdint>
 #include <string>
+
+#ifdef _WIN32
+#else
 #include <linux/spi/spidev.h>
+#endif
 
 #include "../IConnectorBase.h"
 
@@ -67,7 +71,10 @@ public:
 
 private:
 	int fd = -1;
+#ifdef _WIN32
+#else
 	struct spi_ioc_transfer spi;
+#endif
 	uint32_t speed = 0;
 	uint8_t bits = 0;
 	std::string path = "";

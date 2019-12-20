@@ -8,7 +8,10 @@
 
 #include "../network/Sniffer.h"
 
+#ifdef _WIN32
+#else
 #include <pcap/bpf.h>
+#endif
 #include <cstdio>
 #include <thread>
 
@@ -25,6 +28,8 @@ Sniffer::Sniffer(std::string filter, std::function<void (const uint8_t* packet, 
 Sniffer::~Sniffer() { }
 
 int Sniffer::enable() {
+#ifdef _WIN32
+#else
 	if (handle != nullptr) {
 		return -1;
 	}
@@ -164,11 +169,14 @@ int Sniffer::enable() {
 	};
 	std::thread th(func);
 	th.detach();
+#endif
 
 	return 0;
 }
 
 int Sniffer::disable() {
+#ifdef _WIN32
+#else
 	if (handle == nullptr) {
 		return -1;
 	}
@@ -176,6 +184,7 @@ int Sniffer::disable() {
 	running = false;
 
 	stopMutex.lock();
+#endif
 
 	return 0;
 }

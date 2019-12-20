@@ -9,9 +9,12 @@
 #include "SerialPortBase.h"
 
 #include <fcntl.h>
+#ifdef _WIN32
+#else
 #include <sys/select.h>
-#include <sys/time.h>
 #include <termios.h>
+#endif
+#include <sys/time.h>
 #include <unistd.h>
 #include <cstring>
 
@@ -41,7 +44,7 @@ SerialPortBase::SerialPortBase(std::string path, uint32_t baudrate, uint32_t tim
 
 SerialPortBase::SerialPortBase(SerialPortBase&& other) : IConnectorBase(other) {
 	this->config = other.config;
-	memset(&other.config, 0, sizeof(other.config));
+	other.config = {0};
 	this->fd = other.fd;
 	other.fd = -1;
 }
@@ -51,7 +54,7 @@ SerialPortBase::~SerialPortBase() { }
 SerialPortBase& SerialPortBase::operator=(SerialPortBase&& other) {
 	IConnectorBase::operator=(other);
 	this->config = other.config;
-	memset(&other.config, 0, sizeof(other.config));
+	other.config = {0};
 	this->fd = other.fd;
 	other.fd = -1;
 
@@ -62,6 +65,10 @@ int SerialPortBase::open() {
 	if (isOpen()) {
 		return ERR_ALREADY_OPEN;
 	}
+
+#ifdef _WIN32
+	return 0;
+#else
 
 	fd = ::open(config.path.c_str(), O_RDWR | O_NOCTTY);
 	if (fd == -1) {
@@ -84,6 +91,7 @@ int SerialPortBase::open() {
 	}
 
 	return IConnectorBase::open();
+#endif
 }
 
 int SerialPortBase::close() {
@@ -108,6 +116,10 @@ int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize, int32_t timeout) 
 	if (!isOpen()) {
 		return ERR_DEFAULT;
 	}
+
+#ifdef _WIN32
+	return 0;
+#else
 
 	if (timeout == -1) {
 		timeout = config.timeout;
@@ -199,9 +211,9 @@ int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize, int32_t timeout) 
 			Log::log("\r\n");
 		}
 #endif
-
 		return res;
 	}
+#endif
 }
 
 int SerialPortBase::write(const uint8_t* buffer, uint32_t bufferSize) {
@@ -226,6 +238,8 @@ int SerialPortBase::write(const uint8_t* buffer, uint32_t bufferSize) {
 
 int SerialPortBase::setBaudrate(uint32_t baudrate) {
 	config.baudrate = baudrate;
+#ifdef _WIN32
+#else
 	uint32_t convertedBaudrate = 0;
 	switch (baudrate) {
 	case 9600:
@@ -320,6 +334,8 @@ int SerialPortBase::setBaudrate(uint32_t baudrate) {
 		return ERR_DEFAULT;
 	}
 
+#endif
+
 	return 0;
 }
 
@@ -328,5 +344,8 @@ uint32_t SerialPortBase::getBaudrate() {
 }
 
 void SerialPortBase::clear() {
+#ifdef _WIN32
+#else
 	tcflush(fd, TCIOFLUSH);
+#endif
 }

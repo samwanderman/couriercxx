@@ -1,8 +1,8 @@
 # CourierCXX
-##### v0.2.2.1
+##### v0.3.0.0
 C++ framework for standart operations simplification
 
-### Requirements
+### Requirements (Linux)
 [1] libevent-dev
 
 [2] libpq-dev
@@ -18,6 +18,11 @@ C++ framework for standart operations simplification
 [7] libjpeg-dev
 
 [8] doxygen
+
+### Requirements (Windows)
+[1] postgresql 10 ( https://www.postgresql.org/download/windows/ )
+
+[2] libpqxx 6.4 ( https://github.com/jtv/libpqxx/tree/6.4 )
 
 ### Documentation
 To generate documentation, execute command:

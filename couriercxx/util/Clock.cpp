@@ -12,6 +12,10 @@
 #include <cstring>
 #include <ctime>
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 using namespace std::chrono;
 
 Time::Time() { }
@@ -28,7 +32,12 @@ Time::Time(uint64_t time) {
 	day = t->tm_wday;
 	month = t->tm_mon + 1;
 	year = t->tm_year + 1900;
+
+#ifdef _WIN32
+	gmt = 0;
+#else
 	gmt = t->tm_gmtoff / 3600;
+#endif
 }
 
 uint64_t Time::getTimestamp() {
@@ -42,6 +51,7 @@ uint64_t Time::getTimestamp() {
     }
 
     if ((year == 70) && (month == 1) && (date <= 1)) {
+#ifndef _WIN32
             time_t t = time(nullptr);
             struct tm lt = { 0 };
 
@@ -50,6 +60,7 @@ uint64_t Time::getTimestamp() {
             if (hour < lt.tm_gmtoff) {
                     hour = lt.tm_gmtoff / 3600;
             }
+#endif
             date = 1;
     }
 
@@ -61,7 +72,10 @@ uint64_t Time::getTimestamp() {
     time.tm_mday = date;
     time.tm_mon = month - 1;
     time.tm_year = year;
+
+#ifndef _WIN32
     time.tm_gmtoff = gmt * 3600;
+#endif
 
 	return mktime(&time) * 1000 + msecond;
 }
@@ -83,7 +97,19 @@ Time Clock::getTime() {
 }
 
 void Clock::setTime(Time newTime) {
+#ifdef _WIN32
+	SYSTEMTIME time;
+	time.wYear			= newTime.year;
+	time.wMonth			= newTime.month;
+	time.wDay			= newTime.date;
+	time.wHour			= newTime.hour;
+	time.wMinute		= newTime.minute;
+	time.wSecond		= newTime.second;
+	time.wMilliseconds	= newTime.msecond;
+	SetSystemTime(&time);
+#else
 	time_t t = newTime.getTimestamp() / 1000;
-    stime(&t);
+	stime(&t);
+#endif
 }
 

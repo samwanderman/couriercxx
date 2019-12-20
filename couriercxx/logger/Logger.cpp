@@ -8,7 +8,11 @@
 
 #include "Logger.h"
 
+#ifdef _WIN32
+#else
 #include <syslog.h>
+#endif
+
 #include <cstdint>
 #include <cstring>
 
@@ -37,13 +41,19 @@ Logger::~Logger() {
 
 void Logger::open() {
 	if (daemon) {
+#ifdef _WIN32
+#else
 		openlog(name.c_str(), 0, LOG_USER);
+#endif
 	}
 }
 
 void Logger::close() {
 	if (daemon) {
+#ifdef _WIN32
+#else
 		closelog();
+#endif
 	}
 }
 
@@ -59,6 +69,8 @@ void Logger::setName(std::string name) {
 
 void Logger::print(uint8_t level, std::string format, va_list args) {
 	if (daemon) {
+#ifdef _WIN32
+#else
 		int logLevel = LOG_INFO;
 
 		switch (level) {
@@ -90,6 +102,7 @@ void Logger::print(uint8_t level, std::string format, va_list args) {
 		memset(bytes, 0, STRING_MAX_LEN);
 		vsnprintf(bytes, STRING_MAX_LEN - 1, format.c_str(), args);
 		syslog(logLevel, "%s", bytes);
+#endif
 	} else {
 		std::string logLevel = "[INFO]";
 

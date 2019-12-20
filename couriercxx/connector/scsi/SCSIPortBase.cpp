@@ -9,9 +9,13 @@
 #include "SCSIPortBase.h"
 
 #include <fcntl.h>
+#ifdef _WIN32
+#else
 #include <scsi/sg.h>
-#include <stdlib.h>
 #include <sys/ioctl.h>
+#endif
+
+#include <stdlib.h>
 #include <unistd.h>
 #include <cstring>
 
@@ -24,7 +28,10 @@
 #define TIMEOUT				20000
 #define WRITE_LEN			0xff
 
+#ifdef _WIN32
+#else
 void printHeader(sg_io_hdr_t& hdr);
+#endif
 
 SCSIPortBase::SCSIPortBase(std::string port) {
 	this->port = port;
@@ -60,6 +67,8 @@ int SCSIPortBase::read(uint8_t* buffer, uint32_t bufferSize) {
 	uint8_t senseBuffer[32];
 	memset(senseBuffer, 0, sizeof(senseBuffer));
 
+#ifdef _WIN32
+#else
 	uint8_t cmd[10];
 	cmd[0] = 0x2a;//28
 	cmd[1] = 0;
@@ -91,6 +100,7 @@ int SCSIPortBase::read(uint8_t* buffer, uint32_t bufferSize) {
 	}
 
 	printHeader(header);
+#endif
 
     return 0;
 }
@@ -103,6 +113,8 @@ int SCSIPortBase::write(const uint8_t* buffer, uint32_t bufferSize) {
 	memset(buffer2, 0, sizeof(buffer2));
 	memmove(buffer2, buffer, bufferSize * sizeof(uint8_t));
 
+#ifdef _WIN32
+#else
 	uint8_t cmd[10];
 	cmd[0] = 0x2a;//28
 	cmd[1] = 0;
@@ -135,7 +147,7 @@ int SCSIPortBase::write(const uint8_t* buffer, uint32_t bufferSize) {
 	}
 
 	printHeader(header);
-
+#endif
     return 0;
 }
 
@@ -146,6 +158,8 @@ int SCSIPortBase::getDeviceInfo(bool extended, uint8_t pageCode) {
 	uint8_t buffer[256];
 	memset(buffer, 0, sizeof(buffer));
 
+#ifdef _WIN32
+#else
 	uint8_t cmd[6];
 	cmd[0] = 0x12;
 	cmd[1] = 0;
@@ -181,10 +195,12 @@ int SCSIPortBase::getDeviceInfo(bool extended, uint8_t pageCode) {
 		printHeader(header);
 
     }
-
+#endif
     return 0;
 }
 
+#ifdef _WIN32
+#else
 void printHeader(sg_io_hdr_t& header) {
 	Log::debug("-------------------------");
 	Log::debug("OK");
@@ -231,4 +247,4 @@ void printHeader(sg_io_hdr_t& header) {
 	Log::debug("timeout: %i", header.timeout);
 	Log::debug("-------------------------");
 }
-
+#endif

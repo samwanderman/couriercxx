@@ -8,9 +8,13 @@
 
 #include "../../network/tcp/Client.h"
 
+#ifdef _WIN32
+#else
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
+#endif
+
 #include <unistd.h>
 #include <cstring>
 #include <vector>
@@ -25,6 +29,8 @@ Client::Client(std::string ip, uint16_t port) {
 Client::~Client() { }
 
 int Client::open() {
+#ifdef _WIN32
+#else
 	socketFd = socket(AF_INET, SOCK_STREAM, 0);
 	if (socketFd == -1) {
 		return -1;
@@ -50,9 +56,14 @@ int Client::open() {
 	running = true;
 
 	return 0;
+#endif
+
+	return -1;
 }
 
 int Client::close() {
+#ifdef _WIN32
+#else
 	running = false;
 
 	if (socketFd != -1) {
@@ -60,12 +71,16 @@ int Client::close() {
 	}
 
 	socketFd = -1;
-
+#endif
 	return 0;
 }
 
 int Client::write(const uint8_t* buffer, uint32_t bufferSize) {
+#ifdef _WIN32
+	return 0;
+#else
 	return ::write(socketFd, buffer, bufferSize);
+#endif
 }
 
 int Client::write(std::list<uint8_t>& buffer) {
@@ -75,7 +90,11 @@ int Client::write(std::list<uint8_t>& buffer) {
 }
 
 int Client::read(uint8_t* buffer, uint32_t bufferSize) {
+#ifdef _WIN32
+	return -1;
+#else
 	return ::read(socketFd, buffer, bufferSize);
+#endif
 }
 
 bool Client::isRunning() {

@@ -12,7 +12,10 @@
 #include <cstdint>
 #include <string>
 
+#ifdef _WIN32
+#else
 #include <netinet/in.h>
+#endif
 
 #include "../IConnectorBase.h"
 
@@ -82,7 +85,11 @@ private:
 	std::string ip = "";
 	uint16_t port = 0;
 	int fd = -1;
+
+#ifdef _WIN32
+#else
 	struct sockaddr_in sin;
+#endif
 
 	void clean();
 };
