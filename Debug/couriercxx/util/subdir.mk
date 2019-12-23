@@ -9,6 +9,7 @@ CPP_SRCS += \
 ../couriercxx/util/Daemon.cpp \
 ../couriercxx/util/Hardware.cpp \
 ../couriercxx/util/IO.cpp \
+../couriercxx/util/SignalWatcher.cpp \
 ../couriercxx/util/String.cpp \
 ../couriercxx/util/System.cpp 
 
@@ -18,6 +19,7 @@ OBJS += \
 ./couriercxx/util/Daemon.o \
 ./couriercxx/util/Hardware.o \
 ./couriercxx/util/IO.o \
+./couriercxx/util/SignalWatcher.o \
 ./couriercxx/util/String.o \
 ./couriercxx/util/System.o 
 
@@ -27,6 +29,7 @@ CPP_DEPS += \
 ./couriercxx/util/Daemon.d \
 ./couriercxx/util/Hardware.d \
 ./couriercxx/util/IO.d \
+./couriercxx/util/SignalWatcher.d \
 ./couriercxx/util/String.d \
 ./couriercxx/util/System.d 
 

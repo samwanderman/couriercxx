@@ -9,6 +9,7 @@
 #include "SignalWatcher.h"
 
 #include <csignal>
+#include <cstring>
 
 void SignalWatcher::set(void (*func) (int signal)) {
 #ifdef _WIN32
