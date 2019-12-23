@@ -9,6 +9,7 @@ CPP_SRCS += \
 ../couriercxx/util/Daemon.cpp \
 ../couriercxx/util/Hardware.cpp \
 ../couriercxx/util/IO.cpp \
+../couriercxx/util/SignalWatcher.cpp \
 ../couriercxx/util/String.cpp \
 ../couriercxx/util/System.cpp 
 
@@ -18,6 +19,7 @@ OBJS += \
 ./couriercxx/util/Daemon.o \
 ./couriercxx/util/Hardware.o \
 ./couriercxx/util/IO.o \
+./couriercxx/util/SignalWatcher.o \
 ./couriercxx/util/String.o \
 ./couriercxx/util/System.o 
 
@@ -27,6 +29,7 @@ CPP_DEPS += \
 ./couriercxx/util/Daemon.d \
 ./couriercxx/util/Hardware.d \
 ./couriercxx/util/IO.d \
+./couriercxx/util/SignalWatcher.d \
 ./couriercxx/util/String.d \
 ./couriercxx/util/System.d 
 
@@ -35,7 +38,7 @@ CPP_DEPS += \
 couriercxx/util/%.o: ../couriercxx/util/%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
-	g++ -std=c++17 -DDEBUG -I"C:\mingw\mingw64\home\libpqxx\include" -I"C:\mingw\mingw64\home\libevent2\build\include" -I"C:\mingw\mingw64\home\libevent2\include" -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
+	g++ -std=c++1y -DDEBUG -I"C:\mingw\mingw32\home\libpqxx\include" -I"C:\mingw\mingw32\home\libevent2\build\include" -I"C:\mingw\mingw32\home\libevent2\include" -O0 -g3 -Wall -c -fmessage-length=0 -m32 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

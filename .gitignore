@@ -4,6 +4,7 @@
 *.bmp
 *.jpg
 *.bin
+*.lib
 .settings
 docs
 examples/*Example

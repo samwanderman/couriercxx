@@ -1,6 +1,8 @@
 ### Version 0.3.0.0
 [+] added initial Windows support
 
+[+] added system signal watcher
+
 ### Version 0.2.2.1
 [*] updated server event loop
 
