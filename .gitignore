@@ -5,6 +5,7 @@
 *.jpg
 *.bin
 *.lib
+*.exe
 .settings
 docs
 examples/*Example
