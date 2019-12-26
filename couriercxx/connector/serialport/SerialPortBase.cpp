@@ -46,7 +46,12 @@ SerialPortBase::SerialPortBase(SerialPortBase&& other) : IConnectorBase(other) {
 	this->config = other.config;
 	other.config = {0};
 	this->fd = other.fd;
+
+#ifdef _WIN32
+	other.fd = nullptr;
+#else
 	other.fd = -1;
+#endif
 }
 
 SerialPortBase::~SerialPortBase() { }
@@ -56,7 +61,12 @@ SerialPortBase& SerialPortBase::operator=(SerialPortBase&& other) {
 	this->config = other.config;
 	other.config = {0};
 	this->fd = other.fd;
+
+#ifdef _WIN32
+	other.fd = nullptr;
+#else
 	other.fd = -1;
+#endif
 
 	return *this;
 }
@@ -67,6 +77,11 @@ int SerialPortBase::open() {
 	}
 
 #ifdef _WIN32
+	fd = ::CreateFile(config.path.c_str(), GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	if (fd == INVALID_HANDLE_VALUE) {
+		return -1;
+	}
+
 	return 0;
 #else
 
@@ -105,7 +120,11 @@ int SerialPortBase::close() {
 }
 
 void SerialPortBase::clean() {
+#ifdef _WIN32
+	::CloseHandle(fd);
+#else
 	::close(fd);
+#endif
 }
 
 int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize) {
@@ -117,8 +136,15 @@ int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize, int32_t timeout) 
 		return ERR_DEFAULT;
 	}
 
+	int res = -1;
 #ifdef _WIN32
-	return 0;
+	DWORD readBytes = -1;
+
+	if (!::ReadFile(fd, (LPVOID) buffer, (DWORD) bufferSize, &readBytes, nullptr)) {
+		return -1;
+	}
+
+	res = (int) readBytes;
 #else
 
 	if (timeout == -1) {
@@ -200,20 +226,21 @@ int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize, int32_t timeout) 
 			}
 		}
 
-		int res = ::read(fd, buffer, bufferSize);
-
-#ifdef DEBUG
-		if (res > 0) {
-			Log::log("< ");
-			for (int i = 0; i < res; i++) {
-				Log::log("%02x ", buffer[i]);
-			}
-			Log::log("\r\n");
-		}
-#endif
-		return res;
+		res = ::read(fd, buffer, bufferSize);
 	}
 #endif
+
+#ifdef DEBUG
+	if (res > 0) {
+		Log::log("< ");
+		for (int i = 0; i < res; i++) {
+			Log::log("%02x ", buffer[i]);
+		}
+		Log::log("\r\n");
+	}
+#endif
+
+	return res;
 }
 
 int SerialPortBase::write(const uint8_t* buffer, uint32_t bufferSize) {
@@ -221,7 +248,18 @@ int SerialPortBase::write(const uint8_t* buffer, uint32_t bufferSize) {
 		return ERR_DEFAULT;
 	}
 
-	int res = ::write(fd, buffer, bufferSize);
+	int res = -1;
+#ifdef _WIN32
+	DWORD bytesWritten = -1;
+
+	if (!::WriteFile(fd, (LPCVOID) buffer, (DWORD) bufferSize, &bytesWritten, nullptr)) {
+		return -1;
+	}
+
+	res = (int) bytesWritten;
+#else
+	res = ::write(fd, buffer, bufferSize);
+#endif
 
 #ifdef DEBUG
 	if (res > 0) {
@@ -239,6 +277,47 @@ int SerialPortBase::write(const uint8_t* buffer, uint32_t bufferSize) {
 int SerialPortBase::setBaudrate(uint32_t baudrate) {
 	config.baudrate = baudrate;
 #ifdef _WIN32
+	DCB dcbSerialParams = {0};
+	dcbSerialParams.DCBlength = sizeof(dcbSerialParams);
+	if (!GetCommState(fd, &dcbSerialParams)) {
+		return -1;
+	}
+
+	uint32_t convertedBaudrate = 0;
+	switch (baudrate) {
+	case 9600:
+		convertedBaudrate = CBR_9600;
+
+		break;
+
+	case 19200:
+		convertedBaudrate = CBR_19200;
+
+		break;
+
+	case 38400:
+		convertedBaudrate = CBR_38400;
+
+		break;
+
+	case 57600:
+		convertedBaudrate = CBR_57600;
+
+		break;
+
+	case 115200:
+		convertedBaudrate = CBR_115200;
+
+		break;
+	}
+
+	dcbSerialParams.BaudRate = convertedBaudrate;
+	dcbSerialParams.ByteSize = config.dataBits;
+	dcbSerialParams.StopBits = config.stopBit ? TWOSTOPBITS : ONESTOPBIT;
+	dcbSerialParams.Parity = config.parityCheck ? ODDPARITY : NOPARITY;
+	if(!SetCommState(fd, &dcbSerialParams)) {
+		return -1;
+	}
 #else
 	uint32_t convertedBaudrate = 0;
 	switch (baudrate) {
@@ -287,26 +366,26 @@ int SerialPortBase::setBaudrate(uint32_t baudrate) {
 		}
 	}
 
-	uint8_t dateBits = 0;
-	switch (config.dateBits) {
+	uint8_t dataBits = 0;
+	switch (config.dataBits) {
 	case 5:
-		dateBits = CS5;
+		dataBits = CS5;
 
 		break;
 
 	case 6:
-		dateBits = CS6;
+		dataBits = CS6;
 
 		break;
 
 	case 7:
-		dateBits = CS7;
+		dataBits = CS7;
 
 		break;
 
 	case 8:
 	default:
-		dateBits = CS8;
+		dataBits = CS8;
 
 		break;
 	}
@@ -315,7 +394,7 @@ int SerialPortBase::setBaudrate(uint32_t baudrate) {
 	tty.c_cflag &= config.stopBit ? CSTOPB : ~CSTOPB;
 	tty.c_cflag &= config.handshake ? CRTSCTS : ~CRTSCTS;
 	tty.c_cflag &= ~CSIZE;
-	tty.c_cflag |= dateBits;
+	tty.c_cflag |= dataBits;
 	tty.c_cc[VMIN] = 1;
 	tty.c_cc[VTIME] = 5;
 	tty.c_cflag |= CREAD | CLOCAL;

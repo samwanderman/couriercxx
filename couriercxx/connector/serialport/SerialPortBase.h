@@ -12,6 +12,10 @@
 #include <cstdint>
 #include <string>
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 #include "../IConnectorBase.h"
 
 /**
@@ -31,7 +35,7 @@ public:
 		bool		stopBit		= false;
 		bool		startBit	= false;
 		bool		handshake	= false;
-		uint8_t		dateBits	= 8;
+		uint8_t		dataBits	= 8;
 	};
 	typedef struct Config Config;
 
@@ -159,7 +163,12 @@ public:
 
 private:
 	Config config;
+
+#ifdef _WIN32
+	HANDLE fd = nullptr;
+#else
 	int fd = -1;
+#endif
 
 	void clean();
 };
