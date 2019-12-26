@@ -14,40 +14,40 @@
 
 namespace Connection {
 
-EventWrite::EventWrite(const Info info, const uint8_t* data, uint32_t dataLen) : IEvent(Connection::EVENT_WRITE), EventConnection(info) {
-	if ((data != nullptr) && (dataLen > 0)) {
-		this->data = new uint8_t[dataLen];
-		this->dataLen = dataLen;
-		memmove(this->data, data, sizeof(uint8_t) * this->dataLen);
+EventWrite::EventWrite(const Info info, const uint8_t* data, uint32_t dataSize) : IEvent(Connection::EVENT_WRITE), EventConnection(info) {
+	if ((data != nullptr) && (dataSize > 0)) {
+		this->data = new uint8_t[dataSize];
+		this->dataSize = dataSize;
+		memmove(this->data, data, sizeof(uint8_t) * this->dataSize);
 	} else {
 		this->data = nullptr;
-		this->dataLen = 0;
+		this->dataSize = 0;
 	}
 }
 
-EventWrite::EventWrite(const Info info, const uint8_t* data, uint32_t dataLen, IListener* source, IListener* target) : IEvent(Connection::EVENT_WRITE, source, target), EventConnection(info) {
-	if ((data != nullptr) && (dataLen > 0)) {
-		this->data = new uint8_t[dataLen];
-		this->dataLen = dataLen;
-		memmove(this->data, data, sizeof(uint8_t) * this->dataLen);
+EventWrite::EventWrite(const Info info, const uint8_t* data, uint32_t dataSize, IListener* source, IListener* target) : IEvent(Connection::EVENT_WRITE, source, target), EventConnection(info) {
+	if ((data != nullptr) && (dataSize > 0)) {
+		this->data = new uint8_t[dataSize];
+		this->dataSize = dataSize;
+		memmove(this->data, data, sizeof(uint8_t) * this->dataSize);
 	} else {
 		this->data = nullptr;
-		this->dataLen = 0;
+		this->dataSize = 0;
 	}
 }
 
 EventWrite::EventWrite(const EventWrite& other) : IEvent(other), EventConnection(other) {
-	if (other.dataLen > 0) {
-		dataLen = other.dataLen;
-		data = new uint8_t[dataLen];
-		memmove(data, other.data, dataLen * sizeof(uint8_t));
+	if (other.dataSize > 0) {
+		dataSize = other.dataSize;
+		data = new uint8_t[dataSize];
+		memmove(data, other.data, dataSize * sizeof(uint8_t));
 	} else {
 		data = nullptr;
 	}
 }
 
 EventWrite::EventWrite(EventWrite&& other) : IEvent(other), EventConnection(other) {
-	dataLen = other.dataLen;
+	dataSize = other.dataSize;
 	data = other.data;
 	other.data = nullptr;
 }
@@ -64,13 +64,13 @@ EventWrite& EventWrite::operator=(const EventWrite& other) {
 	EventConnection::operator=(other);
 
 	if (this != &other) {
-		if (other.dataLen > 0) {
-			dataLen = other.dataLen;
-			data = new uint8_t[dataLen];
-			memmove(data, other.data, dataLen * sizeof(uint8_t));
+		if (other.dataSize > 0) {
+			dataSize = other.dataSize;
+			data = new uint8_t[dataSize];
+			memmove(data, other.data, dataSize * sizeof(uint8_t));
 		} else {
 			data = nullptr;
-			dataLen = 0;
+			dataSize = 0;
 		}
 	}
 
@@ -82,7 +82,7 @@ EventWrite& EventWrite::operator=(EventWrite&& other) {
 	EventConnection::operator=(other);
 
 	if (this != &other) {
-		dataLen = other.dataLen;
+		dataSize = other.dataSize;
 		data = other.data;
 		other.data = nullptr;
 	}
@@ -90,16 +90,16 @@ EventWrite& EventWrite::operator=(EventWrite&& other) {
 	return *this;
 }
 
-uint32_t EventWrite::getDataLen() const {
-	return dataLen;
+uint32_t EventWrite::getDataSize() const {
+	return dataSize;
 }
 
-int EventWrite::getData(uint8_t* data, uint32_t dataLen) const {
-	if ((this->data == nullptr) || (data == nullptr) || (dataLen == 0) || (this->dataLen == 0)) {
+int EventWrite::getData(uint8_t* data, uint32_t dataSize) const {
+	if ((this->data == nullptr) || (data == nullptr) || (dataSize == 0) || (this->dataSize == 0)) {
 		return -1;
 	}
 
-	uint32_t minLen = dataLen > this->dataLen ? this->dataLen : dataLen;
+	uint32_t minLen = dataSize > this->dataSize ? this->dataSize : dataSize;
 	memmove(data, this->data, sizeof(uint8_t) * minLen);
 
 	return 0;

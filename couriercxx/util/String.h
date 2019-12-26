@@ -610,25 +610,25 @@ public:
 	 * Convert bytes data to ASCII HEX string
 	 *
 	 * \param[in] const uint8_t* hexData - byte buffer pointer
-	 * \param[in] uint32_t hexDataLen - buffer len
+	 * \param[in] uint32_t hexDataSize - buffer len
 	 * \param[out] uint8_t* asciiData - string buffer pointer
-	 * \param[in] uint32_t asciiDataLen - string buffer max size
+	 * \param[in] uint32_t asciiDataSize - string buffer max size
 	 *
 	 * \return int size of asciiData buffer
 	 */
-	static int writeBufferASCII(const uint8_t* hexData, uint32_t hexDataLen, uint8_t* asciiData, uint32_t asciiDataLen);
+	static int writeBufferASCII(const uint8_t* hexData, uint32_t hexDataSize, uint8_t* asciiData, uint32_t asciiDataSize);
 
 	/**
 	 * Convert ASCII HEX string to byte data
 	 *
 	 * \param[in] const uint8_t* asciiData - string buffer pointer
-	 * \param[in] uint32_t asciiDataLen - string buffer len
+	 * \param[in] uint32_t asciiDataSize - string buffer len
 	 * \param[out] uint8_t* hexData - byte buffer pointer
-	 * \param[in] uint32_t hexDataLen - byte buffer max size
+	 * \param[in] uint32_t hexDataSize - byte buffer max size
 	 *
 	 * \return int size of hexData buffer
 	 */
-	static int readBufferASCII(const uint8_t* asciiData, uint32_t asciiDataLen, uint8_t* hexData, uint32_t hexDataLen);
+	static int readBufferASCII(const uint8_t* asciiData, uint32_t asciiDataSize, uint8_t* hexData, uint32_t hexDataSize);
 
 	/**
 	 * Split string and return it's parts

@@ -27,20 +27,20 @@ public:
 	 *
 	 * \param[in] const Info info - connection info
 	 * \param[in] const uint8_t* data - pointer to data
-	 * \param[in] uint32_t dataLen - max data size
+	 * \param[in] uint32_t dataSize - max data size
 	 */
-	EventWrite(const Info info, const uint8_t* data, uint32_t dataLen);
+	EventWrite(const Info info, const uint8_t* data, uint32_t dataSize);
 
 	/**
 	 * Constructor
 	 *
 	 * \param[in] const Info info - connection info
 	 * \param[in] const uint8_t* data - pointer to data
-	 * \param[in] uint32_t dataLen - max data size
+	 * \param[in] uint32_t dataSize - max data size
 	 * \param[in] IListener* source - event source
 	 * \param[in] IListener* target - event target
 	 */
-	EventWrite(const Info info, const uint8_t* data, uint32_t dataLen, IListener* source, IListener* target);
+	EventWrite(const Info info, const uint8_t* data, uint32_t dataSize, IListener* source, IListener* target);
 
 	/**
 	 * Copy-constructor
@@ -80,11 +80,11 @@ public:
 	EventWrite& operator=(EventWrite&& other);
 
 	/**
-	 * Get data length
+	 * Get data size
 	 *
-	 * \return uint32_t data len
+	 * \return uint32_t data size
 	 */
-	uint32_t getDataLen() const;
+	uint32_t getDataSize() const;
 
 	/**
 	 * Copy data to buffer
@@ -104,8 +104,8 @@ public:
 	const uint8_t* getData() const;
 
 private:
-	uint8_t* data = nullptr;
-	uint32_t dataLen = 0;
+	uint8_t* data		= nullptr;
+	uint32_t dataSize	= 0;
 };
 
 } /* namespace Connection */

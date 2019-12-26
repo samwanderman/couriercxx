@@ -92,11 +92,11 @@ int Connection::enable() {
 			eventsListMutex.lock();
 			if (eventsList.size() > 0) {
 				EventWrite* ev = eventsList.front();
-				int res = this->connector->write(ev->getData(), ev->getDataLen());
+				int res = this->connector->write(ev->getData(), ev->getDataSize());
 				Log::debug("Connection[%i].write() %i bytes", info.id, res);
 #ifdef DEBUG
 				Log::log(">> ");
-				for (uint32_t i = 0; i < ev->getDataLen(); i++) {
+				for (uint32_t i = 0; i < ev->getDataSize(); i++) {
 					Log::log("%x ", ev->getData()[i]);
 				}
 				Log::log("\r\n");

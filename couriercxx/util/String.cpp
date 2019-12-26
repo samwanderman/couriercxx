@@ -487,29 +487,29 @@ int64_t String::readInt64LEASCII(const uint8_t* buffer, uint32_t pos) {
 	return (int64_t) value;
 }
 
-int String::writeBufferASCII(const uint8_t* hexData, uint32_t hexDataLen, uint8_t* asciiData, uint32_t asciiDataLen) {
-	if (hexDataLen * 2 > asciiDataLen) {
+int String::writeBufferASCII(const uint8_t* hexData, uint32_t hexDataSize, uint8_t* asciiData, uint32_t asciiDataSize) {
+	if (hexDataSize * 2 > asciiDataSize) {
 		return -1;
 	}
 
-	for (uint32_t i = 0; i < hexDataLen; i++) {
+	for (uint32_t i = 0; i < hexDataSize; i++) {
 		asciiData[i * 2] = writeASCII(hexData[i] >> 4);
 		asciiData[i * 2 + 1] = writeASCII(hexData[i]);
 	}
 
-	return hexDataLen * 2;
+	return hexDataSize * 2;
 }
 
-int String::readBufferASCII(const uint8_t* asciiData, uint32_t asciiDataLen, uint8_t* hexData, uint32_t hexDataLen) {
-	if (hexDataLen * 2 < asciiDataLen) {
+int String::readBufferASCII(const uint8_t* asciiData, uint32_t asciiDataSize, uint8_t* hexData, uint32_t hexDataSize) {
+	if (hexDataSize * 2 < asciiDataSize) {
 		return -1;
 	}
 
-	for (uint32_t i = 0; i < hexDataLen; i++) {
+	for (uint32_t i = 0; i < hexDataSize; i++) {
 		hexData[i] = (readASCII(asciiData[i * 2]) << 4 | readASCII(asciiData[i * 2 + 1]));
 	}
 
-	return hexDataLen;
+	return hexDataSize;
 }
 
 std::list<std::string> String::split(std::string str, std::string delim) {

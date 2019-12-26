@@ -82,14 +82,14 @@ void SerialPortBusEventDrivenDatasource::on(const IEvent* event) {
 
 		accessMutex.lock();
 
-		if (tmpBufferSize + ev->getDataLen() > BUFFER_SIZE) {
-			uint32_t offset = tmpBufferSize + ev->getDataLen() - BUFFER_SIZE;
+		if (tmpBufferSize + ev->getDataSize() > BUFFER_SIZE) {
+			uint32_t offset = tmpBufferSize + ev->getDataSize() - BUFFER_SIZE;
 			memmove(tmpBuffer, &tmpBuffer[offset], tmpBufferSize - offset);
 			tmpBufferSize -= offset;
 		}
 
-		memmove(&tmpBuffer[tmpBufferSize], ev->getData(), ev->getDataLen());
-		tmpBufferSize += ev->getDataLen();
+		memmove(&tmpBuffer[tmpBufferSize], ev->getData(), ev->getDataSize());
+		tmpBufferSize += ev->getDataSize();
 
 		accessMutex.unlock();
 	}
