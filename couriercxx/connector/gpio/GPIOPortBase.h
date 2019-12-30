@@ -32,8 +32,8 @@ public:
 	 * Signal type
 	 */
 	enum Signal {
-		LOW = '0',
-		HIGH = '1'
+		LOW		= '0',
+		HIGH	= '1'
 	};
 	typedef enum Signal Signal;
 
@@ -147,8 +147,8 @@ public:
 	uint8_t getPID();
 
 private:
-	uint8_t pid = 0;
-	Direction direction = NONE;
+	uint8_t		pid			= 0;
+	Direction	direction	= NONE;
 
 	void clean();
 };
