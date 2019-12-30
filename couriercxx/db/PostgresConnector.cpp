@@ -8,11 +8,14 @@
 
 #include "PostgresConnector.h"
 
+#ifdef _WIN32
+#else
 #include <pqxx/binarystring.hxx>
 #include <pqxx/connection>
 #include <pqxx/prepared_statement.hxx>
 #include <pqxx/result>
 #include <pqxx/transaction>
+#endif
 #include <cstdarg>
 #include <cstdio>
 #include <cstring>
@@ -24,12 +27,16 @@
 
 #define BUFFER_SIZE	1024
 
+#ifdef _WIN32
+#else
 template<typename T>
 pqxx::prepare::invocation& prep_dynamic(T value, pqxx::prepare::invocation& inv) {
 	inv(value);
 
 	return inv;
 }
+
+#endif
 
 PostgresConnector::PostgresConnector(std::string host, uint16_t port, std::string username, std::string password, std::string dbName, std::string encoding) {
 	this->host		= host;
@@ -38,7 +45,10 @@ PostgresConnector::PostgresConnector(std::string host, uint16_t port, std::strin
 	this->password	= password;
 	this->dbName	= dbName;
 	this->encoding	= encoding;
+#ifdef _WIN32
+#else
 	connection		= nullptr;
+#endif
 }
 
 PostgresConnector::~PostgresConnector() {
@@ -49,6 +59,8 @@ int PostgresConnector::open() {
 	if (opened) {
 		return -1;
 	}
+#ifdef _WIN32
+#else
 
 	try {
 		char buffer[BUFFER_SIZE];
@@ -66,6 +78,7 @@ int PostgresConnector::open() {
 		Log::error("%s", e.what());
 		return -1;
 	}
+#endif
 
 	return 0;
 }
@@ -75,6 +88,8 @@ int PostgresConnector::close() {
 		return -1;
 	}
 
+#ifdef _WIN32
+#else
 	if (connection != nullptr) {
 		if (connection->is_open()) {
 			connection->disconnect();
@@ -83,6 +98,7 @@ int PostgresConnector::close() {
 		delete connection;
 		connection = nullptr;
 	}
+#endif
 
 	opened = false;
 
@@ -96,12 +112,19 @@ int PostgresConnector::reopen() {
 }
 
 bool PostgresConnector::isOpen() {
+#ifdef _WIN32
+	return false;
+#else
 	return opened && connection->is_open();
+#endif
 }
 
 int PostgresConnector::addStatement(std::string name, std::string sql, std::list<std::type_index> types) {
+#ifdef _WIN32
+#else
 	connection->prepare(name, sql);
 	preparedStatements.insert(std::pair<std::string, std::list<std::type_index>>(name, types));
+#endif
 
 	return 0;
 }
@@ -113,11 +136,17 @@ int PostgresConnector::addStatement(std::string name, std::string sql) {
 }
 
 int PostgresConnector::removeStatement(std::string name) {
+#ifdef _WIN32
+#else
 	connection->unprepare(name);
+#endif
 
 	return preparedStatements.erase(name) > 0 ? 0 : -1;
 }
 
+
+#ifdef _WIN32
+#else
 pqxx::result PostgresConnector::execStatement(std::string name, ...) {
 	accessMutex.lock();
 	va_list args;
@@ -277,3 +306,5 @@ pqxx::result PostgresConnector::exec(std::string sql) {
 		throw;
 	}
 }
+
+#endif

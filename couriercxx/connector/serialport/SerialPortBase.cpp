@@ -44,7 +44,6 @@ SerialPortBase::SerialPortBase(std::string path, uint32_t baudrate, uint32_t tim
 
 SerialPortBase::SerialPortBase(SerialPortBase&& other) : IConnectorBase(other) {
 	this->config = other.config;
-	other.config = {0};
 	this->fd = other.fd;
 
 #ifdef _WIN32
@@ -59,7 +58,6 @@ SerialPortBase::~SerialPortBase() { }
 SerialPortBase& SerialPortBase::operator=(SerialPortBase&& other) {
 	IConnectorBase::operator=(other);
 	this->config = other.config;
-	other.config = {0};
 	this->fd = other.fd;
 
 #ifdef _WIN32

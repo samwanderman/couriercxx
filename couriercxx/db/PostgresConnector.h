@@ -9,7 +9,10 @@
 #ifndef COURIERCXX_DB_POSTGRESCONNECTOR_H_
 #define COURIERCXX_DB_POSTGRESCONNECTOR_H_
 
+#ifdef _WIN32
+#else
 #include <pqxx/connection>
+#endif
 
 #include <cstdint>
 #include <list>
@@ -98,6 +101,8 @@ public:
 	 */
 	int removeStatement(std::string name);
 
+#ifdef _WIN32
+#else
 	/**
 	 * Execute statement
 	 *
@@ -115,9 +120,13 @@ public:
 	 * \return pqxx result
 	 */
 	pqxx::result exec(std::string sql);
+#endif
 
 private:
+#ifdef _WIN32
+#else
 	pqxx::connection *connection = nullptr;
+#endif
 	std::map<std::string, std::list<std::type_index>> preparedStatements;
 	std::mutex accessMutex;
 
