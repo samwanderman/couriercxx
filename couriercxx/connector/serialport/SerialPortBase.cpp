@@ -61,9 +61,13 @@ SerialPortBase& SerialPortBase::operator=(SerialPortBase&& other) {
 	this->fd = other.fd;
 
 #ifdef _WIN32
+
 	other.fd = nullptr;
+
 #else
+
 	other.fd = -1;
+
 #endif
 
 	return *this;
@@ -75,12 +79,12 @@ int SerialPortBase::open() {
 	}
 
 #ifdef _WIN32
+
 	fd = ::CreateFile(config.path.c_str(), GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 	if (fd == INVALID_HANDLE_VALUE) {
 		return -1;
 	}
 
-	return 0;
 #else
 
 	fd = ::open(config.path.c_str(), O_RDWR | O_NOCTTY);
@@ -103,8 +107,9 @@ int SerialPortBase::open() {
 		}
 	}
 
-	return IConnectorBase::open();
 #endif
+
+	return IConnectorBase::open();
 }
 
 int SerialPortBase::close() {
