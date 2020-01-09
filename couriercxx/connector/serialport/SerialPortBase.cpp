@@ -9,11 +9,16 @@
 #include "SerialPortBase.h"
 
 #include <fcntl.h>
+
 #ifdef _WIN32
+
 #else
+
 #include <sys/select.h>
 #include <termios.h>
+
 #endif
+
 #include <sys/time.h>
 #include <unistd.h>
 #include <cstring>
@@ -21,7 +26,9 @@
 #include "../../util/Clock.h"
 
 #ifdef DEBUG
+
 #include "../../logger/Log.h"
+
 #endif
 
 #define READ_TIMEOUT	50000
@@ -47,9 +54,13 @@ SerialPortBase::SerialPortBase(SerialPortBase&& other) : IConnectorBase(other) {
 	this->fd = other.fd;
 
 #ifdef _WIN32
+
 	other.fd = nullptr;
+
 #else
+
 	other.fd = -1;
+
 #endif
 }
 
@@ -83,6 +94,12 @@ int SerialPortBase::open() {
 	fd = ::CreateFile(config.path.c_str(), GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 	if (fd == INVALID_HANDLE_VALUE) {
 		return -1;
+	}
+
+	if (setBaudrate(config.baudrate) == -1) {
+		clean();
+
+		return ERR_DEFAULT;
 	}
 
 #else
@@ -123,24 +140,36 @@ int SerialPortBase::close() {
 }
 
 void SerialPortBase::clean() {
+
 #ifdef _WIN32
+
 	::CloseHandle(fd);
+
 #else
+
 	::close(fd);
+
 #endif
+
 }
 
 int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize) {
+//	Log::debug("SerialPortRead()");
+
 	return read(buffer, bufferSize, -1);
 }
 
 int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize, int32_t timeout) {
+//	Log::debug("SerialPortRead(%i)", timeout);
+
 	if (!isOpen()) {
 		return ERR_DEFAULT;
 	}
 
 	int res = -1;
+
 #ifdef _WIN32
+
 	DWORD readBytes = -1;
 
 	if (!::ReadFile(fd, (LPVOID) buffer, (DWORD) bufferSize, &readBytes, nullptr)) {
@@ -148,6 +177,7 @@ int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize, int32_t timeout) 
 	}
 
 	res = (int) readBytes;
+
 #else
 
 	if (timeout == -1) {
@@ -193,6 +223,7 @@ int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize, int32_t timeout) 
 			int res = ::read(fd, &buffer[bytesRead], bufferSize - bytesRead);
 
 #ifdef DEBUG
+
 			if (res > 0) {
 				Log::log("< ");
 				for (int i = 0; i < res; i++) {
@@ -200,6 +231,7 @@ int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize, int32_t timeout) 
 				}
 				Log::log("\r\n");
 			}
+
 #endif
 
 			if (res != -1) {
@@ -231,9 +263,11 @@ int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize, int32_t timeout) 
 
 		res = ::read(fd, buffer, bufferSize);
 	}
+
 #endif
 
 #ifdef DEBUG
+
 	if (res > 0) {
 		Log::log("< ");
 		for (int i = 0; i < res; i++) {
@@ -241,18 +275,23 @@ int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize, int32_t timeout) 
 		}
 		Log::log("\r\n");
 	}
+
 #endif
 
 	return res;
 }
 
 int SerialPortBase::write(const uint8_t* buffer, uint32_t bufferSize) {
+//	Log::debug("SerialPortBase.write()");
+
 	if (!isOpen()) {
 		return ERR_DEFAULT;
 	}
 
 	int res = -1;
+
 #ifdef _WIN32
+
 	DWORD bytesWritten = -1;
 
 	if (!::WriteFile(fd, (LPCVOID) buffer, (DWORD) bufferSize, &bytesWritten, nullptr)) {
@@ -260,11 +299,15 @@ int SerialPortBase::write(const uint8_t* buffer, uint32_t bufferSize) {
 	}
 
 	res = (int) bytesWritten;
+
 #else
+
 	res = ::write(fd, buffer, bufferSize);
+
 #endif
 
 #ifdef DEBUG
+
 	if (res > 0) {
 		Log::log("> ");
 		for (int i = 0; i < (int) bufferSize; i++) {
@@ -272,19 +315,54 @@ int SerialPortBase::write(const uint8_t* buffer, uint32_t bufferSize) {
 		}
 		Log::log("\r\n");
 	}
+
 #endif
 
 	return res;
 }
 
 int SerialPortBase::setBaudrate(uint32_t baudrate) {
+//	Log::debug("SerialPortBase.setBaudrate(%u)", baudrate);
+
 	config.baudrate = baudrate;
+
 #ifdef _WIN32
+
 	DCB dcbSerialParams = {0};
 	dcbSerialParams.DCBlength = sizeof(dcbSerialParams);
 	if (!GetCommState(fd, &dcbSerialParams)) {
 		return -1;
 	}
+
+#ifdef DEBUG
+
+	Log::debug("Length is %u",				dcbSerialParams.DCBlength);
+	Log::debug("BaudRate is %u",			dcbSerialParams.BaudRate);
+	Log::debug("fBinary is %u",				dcbSerialParams.fBinary);
+	Log::debug("fParity is %u",				dcbSerialParams.fParity);
+	Log::debug("fOutxCtsFlow is %u",		dcbSerialParams.fOutxCtsFlow);
+	Log::debug("fOutxDsrFlow is %u",		dcbSerialParams.fOutxDsrFlow);
+	Log::debug("fDtrControl is %u",			dcbSerialParams.fDtrControl);
+	Log::debug("fDsrSensitivity is %u",		dcbSerialParams.fDsrSensitivity);
+	Log::debug("fTXContinueOnXoff is %u",	dcbSerialParams.fTXContinueOnXoff);
+	Log::debug("fOutX is %u",				dcbSerialParams.fOutX);
+	Log::debug("fInX is %u",				dcbSerialParams.fInX);
+	Log::debug("fErrorChar is %u",			dcbSerialParams.fErrorChar);
+	Log::debug("fNull is %u",				dcbSerialParams.fNull);
+	Log::debug("fRtsControl is %u",			dcbSerialParams.fRtsControl);
+	Log::debug("fAbortOnError is %u",		dcbSerialParams.fAbortOnError);
+	Log::debug("XonLim is %u",				dcbSerialParams.XonLim);
+	Log::debug("XoffLim is %u",				dcbSerialParams.XoffLim);
+	Log::debug("ByteSize is %u",			dcbSerialParams.ByteSize);
+	Log::debug("Parity is %u",				dcbSerialParams.Parity);
+	Log::debug("StopBits is %u",			dcbSerialParams.StopBits);
+	Log::debug("XonChar is %u",				dcbSerialParams.XonChar);
+	Log::debug("XoffChar is %u",			dcbSerialParams.XoffChar);
+	Log::debug("ErrorChar is %u",			dcbSerialParams.ErrorChar);
+	Log::debug("EofChar is %u",				dcbSerialParams.EofChar);
+	Log::debug("EvtChar is %u",				dcbSerialParams.EvtChar);
+
+#endif
 
 	uint32_t convertedBaudrate = 0;
 	switch (baudrate) {
@@ -314,13 +392,15 @@ int SerialPortBase::setBaudrate(uint32_t baudrate) {
 		break;
 	}
 
-	dcbSerialParams.BaudRate = convertedBaudrate;
-	dcbSerialParams.ByteSize = config.dataBits;
-	dcbSerialParams.StopBits = config.stopBit ? TWOSTOPBITS : ONESTOPBIT;
-	dcbSerialParams.Parity = config.parityCheck ? ODDPARITY : NOPARITY;
+	dcbSerialParams.BaudRate		= convertedBaudrate;
+	dcbSerialParams.ByteSize		= config.dataBits;
+	dcbSerialParams.Parity			= config.parityCheck ? ODDPARITY : NOPARITY;
+	dcbSerialParams.StopBits		= config.stopBit ? TWOSTOPBITS : ONESTOPBIT;
+
 	if(!SetCommState(fd, &dcbSerialParams)) {
 		return -1;
 	}
+
 #else
 	uint32_t convertedBaudrate = 0;
 	switch (baudrate) {
@@ -426,8 +506,13 @@ uint32_t SerialPortBase::getBaudrate() {
 }
 
 void SerialPortBase::clear() {
+
 #ifdef _WIN32
+
 #else
+
 	tcflush(fd, TCIOFLUSH);
+
 #endif
+
 }
