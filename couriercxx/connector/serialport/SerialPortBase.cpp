@@ -334,35 +334,35 @@ int SerialPortBase::setBaudrate(uint32_t baudrate) {
 		return -1;
 	}
 
-#ifdef DEBUG
-
-	Log::debug("Length is %u",				dcbSerialParams.DCBlength);
-	Log::debug("BaudRate is %u",			dcbSerialParams.BaudRate);
-	Log::debug("fBinary is %u",				dcbSerialParams.fBinary);
-	Log::debug("fParity is %u",				dcbSerialParams.fParity);
-	Log::debug("fOutxCtsFlow is %u",		dcbSerialParams.fOutxCtsFlow);
-	Log::debug("fOutxDsrFlow is %u",		dcbSerialParams.fOutxDsrFlow);
-	Log::debug("fDtrControl is %u",			dcbSerialParams.fDtrControl);
-	Log::debug("fDsrSensitivity is %u",		dcbSerialParams.fDsrSensitivity);
-	Log::debug("fTXContinueOnXoff is %u",	dcbSerialParams.fTXContinueOnXoff);
-	Log::debug("fOutX is %u",				dcbSerialParams.fOutX);
-	Log::debug("fInX is %u",				dcbSerialParams.fInX);
-	Log::debug("fErrorChar is %u",			dcbSerialParams.fErrorChar);
-	Log::debug("fNull is %u",				dcbSerialParams.fNull);
-	Log::debug("fRtsControl is %u",			dcbSerialParams.fRtsControl);
-	Log::debug("fAbortOnError is %u",		dcbSerialParams.fAbortOnError);
-	Log::debug("XonLim is %u",				dcbSerialParams.XonLim);
-	Log::debug("XoffLim is %u",				dcbSerialParams.XoffLim);
-	Log::debug("ByteSize is %u",			dcbSerialParams.ByteSize);
-	Log::debug("Parity is %u",				dcbSerialParams.Parity);
-	Log::debug("StopBits is %u",			dcbSerialParams.StopBits);
-	Log::debug("XonChar is %u",				dcbSerialParams.XonChar);
-	Log::debug("XoffChar is %u",			dcbSerialParams.XoffChar);
-	Log::debug("ErrorChar is %u",			dcbSerialParams.ErrorChar);
-	Log::debug("EofChar is %u",				dcbSerialParams.EofChar);
-	Log::debug("EvtChar is %u",				dcbSerialParams.EvtChar);
-
-#endif
+//#ifdef DEBUG
+//
+//	Log::debug("Length is %u",				dcbSerialParams.DCBlength);
+//	Log::debug("BaudRate is %u",			dcbSerialParams.BaudRate);
+//	Log::debug("fBinary is %u",				dcbSerialParams.fBinary);
+//	Log::debug("fParity is %u",				dcbSerialParams.fParity);
+//	Log::debug("fOutxCtsFlow is %u",		dcbSerialParams.fOutxCtsFlow);
+//	Log::debug("fOutxDsrFlow is %u",		dcbSerialParams.fOutxDsrFlow);
+//	Log::debug("fDtrControl is %u",			dcbSerialParams.fDtrControl);
+//	Log::debug("fDsrSensitivity is %u",		dcbSerialParams.fDsrSensitivity);
+//	Log::debug("fTXContinueOnXoff is %u",	dcbSerialParams.fTXContinueOnXoff);
+//	Log::debug("fOutX is %u",				dcbSerialParams.fOutX);
+//	Log::debug("fInX is %u",				dcbSerialParams.fInX);
+//	Log::debug("fErrorChar is %u",			dcbSerialParams.fErrorChar);
+//	Log::debug("fNull is %u",				dcbSerialParams.fNull);
+//	Log::debug("fRtsControl is %u",			dcbSerialParams.fRtsControl);
+//	Log::debug("fAbortOnError is %u",		dcbSerialParams.fAbortOnError);
+//	Log::debug("XonLim is %u",				dcbSerialParams.XonLim);
+//	Log::debug("XoffLim is %u",				dcbSerialParams.XoffLim);
+//	Log::debug("ByteSize is %u",			dcbSerialParams.ByteSize);
+//	Log::debug("Parity is %u",				dcbSerialParams.Parity);
+//	Log::debug("StopBits is %u",			dcbSerialParams.StopBits);
+//	Log::debug("XonChar is %u",				dcbSerialParams.XonChar);
+//	Log::debug("XoffChar is %u",			dcbSerialParams.XoffChar);
+//	Log::debug("ErrorChar is %u",			dcbSerialParams.ErrorChar);
+//	Log::debug("EofChar is %u",				dcbSerialParams.EofChar);
+//	Log::debug("EvtChar is %u",				dcbSerialParams.EvtChar);
+//
+//#endif
 
 	uint32_t convertedBaudrate = 0;
 	switch (baudrate) {

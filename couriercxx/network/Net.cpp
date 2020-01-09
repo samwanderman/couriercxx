@@ -76,8 +76,11 @@ int Net::getLocalIPAddr(std::string& addr) {
 }
 
 int Net::get(Addr &addr) {
+
 #ifdef _WIN32
+
 #else
+
 	memset(&addr, 0, sizeof(addr));
 
 	FILE* fd = fopen(DEFAULT_NET_ROUTE, "r");
@@ -139,6 +142,8 @@ int Net::get(Addr &addr) {
 	}
 
 	freeifaddrs(ifaddr);
+
 #endif
+
 	return 0;
 }
