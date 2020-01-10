@@ -13,6 +13,16 @@
 #include <list>
 #include <string>
 
+#ifdef _WIN32
+
+#include <winsock2.h>
+#include <windows.h>
+#include <ws2tcpip.h>
+#include <cstdlib>
+#include <cstdio>
+
+#endif
+
 namespace TCP {
 
 /**
@@ -85,18 +95,27 @@ public:
 	int read(uint8_t* buffer, uint32_t bufferSize);
 
 	/**
-	 * Check if process running
+	 * Check if port is open
 	 *
-	 * \return bool - true if running, false - otherwise
+	 * \return bool - open state
 	 */
-	bool isRunning();
+	bool isOpen();
 
 private:
-	std::string ip;
-	uint16_t port = 0;
-	int socketFd = -1;
+	std::string	ip;
+	uint16_t	port	= 0;
+	bool		opened	= false;
 
-	bool running = false;
+#ifdef _WIN32
+
+	SOCKET		socketFd = INVALID_SOCKET;
+
+#else
+
+	int			socketFd = -1;
+
+#endif
+
 };
 
 } /* namespace TCP */
