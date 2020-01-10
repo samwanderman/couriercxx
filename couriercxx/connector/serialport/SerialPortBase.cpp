@@ -24,12 +24,7 @@
 #include <cstring>
 
 #include "../../util/Clock.h"
-
-#ifdef DEBUG
-
 #include "../../logger/Log.h"
-
-#endif
 
 #define READ_TIMEOUT	50000
 
