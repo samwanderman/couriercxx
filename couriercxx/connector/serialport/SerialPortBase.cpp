@@ -91,7 +91,7 @@ int SerialPortBase::open() {
 
 #ifdef _WIN32
 
-	fd = ::CreateFile(config.path.c_str(), GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	fd = ::CreateFile(config.path.c_str(), GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, 0, 0);
 	if (fd == INVALID_HANDLE_VALUE) {
 		return -1;
 	}
@@ -397,9 +397,31 @@ int SerialPortBase::setBaudrate(uint32_t baudrate) {
 	dcbSerialParams.Parity			= config.parityCheck ? ODDPARITY : NOPARITY;
 	dcbSerialParams.StopBits		= config.stopBit ? TWOSTOPBITS : ONESTOPBIT;
 
+	COMMTIMEOUTS timeouts;
+	GetCommTimeouts(fd, &timeouts);
+
+#ifdef DEBUG
+
+	Log::debug("ReadIntervalTimeout         %u", timeouts.ReadIntervalTimeout);
+	Log::debug("ReadTotalTimeoutConstant    %u", timeouts.ReadTotalTimeoutConstant);
+	Log::debug("ReadTotalTimeoutMultiplier  %u", timeouts.ReadTotalTimeoutMultiplier);
+	Log::debug("WriteTotalTimeoutConstant   %u", timeouts.WriteTotalTimeoutConstant);
+	Log::debug("WriteTotalTimeoutMultiplier %u", timeouts.WriteTotalTimeoutMultiplier);
+
+#endif
+
+	if (config.timeout != 0) {
+		timeouts.ReadIntervalTimeout = config.timeout;
+	}
+
+	if (!SetCommTimeouts(fd, &timeouts)) {
+		Log::error("SetCommTimeouts() error");
+	}
+
 	if(!SetCommState(fd, &dcbSerialParams)) {
 		return -1;
 	}
+
 
 #else
 	uint32_t convertedBaudrate = 0;

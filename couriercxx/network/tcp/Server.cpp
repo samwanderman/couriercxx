@@ -13,12 +13,6 @@
 #include <event2/event_compat.h>
 #include <event2/listener.h>
 #include <event2/util.h>
-#ifdef _WIN32
-#include <winsock.h>
-#else
-#include <netinet/in.h>
-#include <sys/socket.h>
-#endif
 #include <sys/time.h>
 #include <unistd.h>
 #include <cstring>
