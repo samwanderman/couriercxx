@@ -1,3 +1,6 @@
+### Version 0.4.1.0
+[+] added creationTimestamp for IEvent
+
 ### Version 0.4.0.0
 [*] dataLen -> dataSize
 

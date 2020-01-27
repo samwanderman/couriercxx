@@ -11,6 +11,8 @@
 
 #include <cstdint>
 
+#include "../util/Clock.h"
+
 class IListener;
 
 /**
@@ -112,12 +114,21 @@ public:
 	 */
 	static EVENT_T genEventId();
 
+	/**
+	 * Get event creation timestamp
+	 *
+	 * \return timestamp
+	 */
+	const uint64_t getCreationTimestamp() const;
+
 private:
 	static EVENT_T nextEventId;
 
 	EVENT_T type;
 	const IListener* source = nullptr;
 	const IListener* target = nullptr;
+
+	const uint64_t timestamp = Clock::getTimestamp();
 };
 
 #endif /* COURIERCXX_EVENT_IEVENT_H_ */

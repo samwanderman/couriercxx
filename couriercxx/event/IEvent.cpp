@@ -11,11 +11,7 @@
 EVENT_T IEvent::nextEventId = 0;
 const EVENT_T IEvent::EVENT_TIMEOUT = IEvent::genEventId();
 
-IEvent::IEvent(EVENT_T type) {
-	this->type = type;
-	this->source = nullptr;
-	this->target = nullptr;
-}
+IEvent::IEvent(EVENT_T type) : IEvent(type, nullptr, nullptr) { }
 
 IEvent::IEvent(EVENT_T type, const IListener* source, const IListener* target) {
 	this->type = type;
@@ -83,4 +79,8 @@ int IEvent::setSource(const IListener* source) {
 
 EVENT_T IEvent::genEventId() {
 	return nextEventId++;
+}
+
+const uint64_t IEvent::getCreationTimestamp() const {
+	return timestamp;
 }
