@@ -9,11 +9,7 @@
 #ifndef COURIERCXX_DB_VALUE_H_
 #define COURIERCXX_DB_VALUE_H_
 
-#ifdef _WIN32
-#else
 #include <pqxx/binarystring.hxx>
-#endif
-
 #include <cstdint>
 #include <typeindex>
 
@@ -43,10 +39,7 @@ struct Value {
 };
 
 typedef Value<const char*> StringValue;
-#ifdef _WIN32
-#else
 typedef Value<pqxx::binarystring> ArrayValue;
-#endif
 typedef Value<uint8_t> UInt8Value;
 typedef Value<int8_t> Int8Value;
 typedef Value<uint16_t> UInt16Value;
@@ -66,10 +59,7 @@ const std::type_index typeUINT32T(typeid(UInt32Value));
 const std::type_index typeINT32T(typeid(Int32Value));
 const std::type_index typeUINT64T(typeid(UInt64Value));
 const std::type_index typeINT64T(typeid(Int64Value));
-#ifdef _WIN32
-#else
 const std::type_index typeArray(typeid(ArrayValue));
-#endif
 const std::type_index typeString(typeid(StringValue));
 
 };
