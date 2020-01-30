@@ -14,41 +14,45 @@ const EVENT_T IEvent::EVENT_TIMEOUT = IEvent::genEventId();
 IEvent::IEvent(EVENT_T type) : IEvent(type, nullptr, nullptr) { }
 
 IEvent::IEvent(EVENT_T type, const IListener* source, const IListener* target) {
-	this->type = type;
-	this->source = source;
-	this->target = target;
+	this->type		= type;
+	this->source	= source;
+	this->target	= target;
 }
 
 IEvent::~IEvent() { }
 
 IEvent::IEvent(const IEvent& other) {
-	type = other.type;
-	source = other.source;
-	target = other.target;
+	type		= other.type;
+	source		= other.source;
+	target		= other.target;
+	timestamp	= other.timestamp;
 }
 
 IEvent::IEvent(IEvent&& other) {
-	type = other.type;
-	source = other.source;
-	target = other.target;
-	other.source = nullptr;
-	other.target = nullptr;
+	type			= other.type;
+	source			= other.source;
+	target			= other.target;
+	timestamp		= other.timestamp;
+	other.source	= nullptr;
+	other.target	= nullptr;
 }
 
 IEvent& IEvent::operator=(const IEvent& other) {
-	type = other.type;
-	source = other.source;
-	target = other.target;
+	type		= other.type;
+	source		= other.source;
+	target		= other.target;
+	timestamp	= other.timestamp;
 
 	return *this;
 }
 
 IEvent& IEvent::operator=(IEvent&& other) {
-	type = other.type;
-	source = other.source;
-	target = other.target;
-	other.source = nullptr;
-	other.target = nullptr;
+	type			= other.type;
+	source			= other.source;
+	target			= other.target;
+	timestamp		= other.timestamp;
+	other.source	= nullptr;
+	other.target	= nullptr;
 
 	return *this;
 }
@@ -81,6 +85,6 @@ EVENT_T IEvent::genEventId() {
 	return nextEventId++;
 }
 
-const uint64_t IEvent::getCreationTimestamp() const {
+uint64_t IEvent::getCreationTimestamp() const {
 	return timestamp;
 }

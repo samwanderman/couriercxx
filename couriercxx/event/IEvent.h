@@ -119,7 +119,7 @@ public:
 	 *
 	 * \return timestamp
 	 */
-	const uint64_t getCreationTimestamp() const;
+	uint64_t getCreationTimestamp() const;
 
 private:
 	static EVENT_T nextEventId;
@@ -128,7 +128,7 @@ private:
 	const IListener* source = nullptr;
 	const IListener* target = nullptr;
 
-	const uint64_t timestamp = Clock::getTimestamp();
+	uint64_t timestamp = Clock::getTimestamp();
 };
 
 #endif /* COURIERCXX_EVENT_IEVENT_H_ */
