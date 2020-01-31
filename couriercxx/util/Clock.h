@@ -101,6 +101,13 @@ public:
 	static uint64_t getTimestampExt();
 
 	/**
+	 * Get timezone offset in hours
+	 *
+	 * \return uint16_t timezone offset
+	 */
+	static uint16_t getTimezoneOffset();
+
+	/**
 	 * Get system time
 	 *
 	 * \return Time - system time in UTC

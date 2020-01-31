@@ -92,6 +92,16 @@ uint64_t Clock::getTimestampExt() {
 	return ms.count();
 }
 
+uint16_t Clock::getTimezoneOffset() {
+	time_t t = time(nullptr);
+	struct tm *tmp = gmtime(&t);
+	if (tmp != nullptr) {
+		return tmp->tm_gmtoff / 3600;
+	}
+
+	return 0;
+}
+
 Time Clock::getTime() {
 	return Time(getTimestamp());
 }
