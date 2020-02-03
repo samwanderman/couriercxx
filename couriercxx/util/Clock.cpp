@@ -92,14 +92,12 @@ uint64_t Clock::getTimestampExt() {
 	return ms.count();
 }
 
-uint16_t Clock::getTimezoneOffset() {
+int32_t Clock::getTimezoneOffset() {
 	time_t t = time(nullptr);
-	struct tm *tmp = gmtime(&t);
-	if (tmp != nullptr) {
-		return tmp->tm_gmtoff / 3600;
-	}
+	struct tm lt = { 0 };
+	localtime_r(&t, &lt);
 
-	return 0;
+	return lt.tm_gmtoff / 3600;
 }
 
 Time Clock::getTime() {

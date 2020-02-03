@@ -103,9 +103,9 @@ public:
 	/**
 	 * Get timezone offset in hours
 	 *
-	 * \return uint16_t timezone offset
+	 * \return int32_t timezone offset
 	 */
-	static uint16_t getTimezoneOffset();
+	static int32_t getTimezoneOffset();
 
 	/**
 	 * Get system time
