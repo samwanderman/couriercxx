@@ -108,6 +108,13 @@ public:
 	static int32_t getTimezoneOffset();
 
 	/**
+	 * Get minutes from timestamp
+	 *
+	 * \return int32_t - minutes from day start
+	 */
+	static int32_t getDayMinutesFromTimestamp(uint64_t timestamp);
+
+	/**
 	 * Get system time
 	 *
 	 * \return Time - system time in UTC

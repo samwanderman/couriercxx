@@ -3,6 +3,8 @@
 
 [+] added timezone offset obtaining method 
 
+[+] added timestamp strip method for Clock
+
 ### Version 0.4.0.0
 [*] dataLen -> dataSize
 

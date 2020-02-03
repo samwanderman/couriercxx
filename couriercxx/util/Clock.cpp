@@ -100,6 +100,14 @@ int32_t Clock::getTimezoneOffset() {
 	return lt.tm_gmtoff / 3600;
 }
 
+int32_t Clock::getDayMinutesFromTimestamp(uint64_t time) {
+	time %= 24 * 3600000;
+	time = time / 60000;
+	time += Clock::getTimezoneOffset() * 60;
+
+	return time;
+}
+
 Time Clock::getTime() {
 	return Time(getTimestamp());
 }
