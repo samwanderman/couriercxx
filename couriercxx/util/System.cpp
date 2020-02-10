@@ -8,6 +8,12 @@
 
 #include "System.h"
 
+#include <cstdint>
+#include <fcntl.h>
+#include <cerrno>
+
+#include "../logger/Log.h"
+
 #ifdef _WIN32
 #include <windows.h>
 #else
@@ -15,9 +21,12 @@
 #endif
 #include <chrono>
 #include <cstdio>
-#include <cstdlib>
 #include <cstring>
 #include <thread>
+#include <sys/stat.h>
+#include <sys/file.h>
+#include <unistd.h>
+#include <cstdlib>
 
 int System::startService(std::string name) {
 	char command[64];
@@ -73,4 +82,47 @@ int System::mkdir(std::string path) {
 	snprintf(command, 255, "mkdir -p %s", path.c_str());
 
 	return system(command);
+}
+
+void System::daemonize() {
+#ifndef _WIN32
+	int pid = fork();
+	if (pid == -1) {
+		exit(EXIT_SUCCESS);
+	} else if (pid != 0) {
+		exit(EXIT_SUCCESS);
+	} else {
+		umask(0);
+		setsid();
+		const char* dir = "/";
+		if (chdir(dir) == -1) {
+			Log::error("Can't change dir to '%s'", dir);
+		}
+		close(STDIN_FILENO);
+		close(STDOUT_FILENO);
+		close(STDERR_FILENO);
+	}
+#endif
+}
+
+void System::setGlobalExceptionHandler(std::terminate_handler t) {
+	std::set_terminate(t);
+}
+
+int System::singleton(std::string uid) {
+	std::string path = "/var/run/" + uid;
+	int pidFile = ::open(path.c_str(), O_CREAT | O_RDWR, 0666);
+	if (pidFile == -1) {
+		return -1;
+	}
+
+	if (flock(pidFile, LOCK_EX | LOCK_NB) != -1) {
+		return 0;
+	} else {
+		if (errno == EWOULDBLOCK) {
+			return 1;
+		}
+	}
+
+	return -1;
 }

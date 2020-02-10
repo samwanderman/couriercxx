@@ -1,3 +1,10 @@
+### Version 0.5.0.0
+[+] added global exception handler
+
+[+] added app singleton controller
+
+[*] refactoring
+
 ### Version 0.4.1.0
 [+] added creationTimestamp for IEvent
 

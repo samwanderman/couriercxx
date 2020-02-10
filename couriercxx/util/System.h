@@ -10,6 +10,7 @@
 #define COURIERCXX_UTIL_SYSTEM_H_
 
 #include <cstdint>
+#include <exception>
 #include <string>
 
 /**
@@ -80,6 +81,31 @@ public:
 	 * \return int - 0 if success, -1 if error
 	 */
 	static int mkdir(std::string path);
+
+	/**
+	 * Daemonize process
+	 */
+	static void daemonize();
+
+	/**
+	 * Set global exception handler
+	 */
+	static void setGlobalExceptionHandler(std::terminate_handler t);
+
+	/**
+	 * Make process singletone
+	 *
+	 * \param[in] string name - process uid
+	 *
+	 * \return
+	 * 			- 0 if success
+	 * 			- -1 if error
+	 * 			- 1 if another process running
+	 *
+	 * NOTE:
+	 *   app should has root permission
+	 */
+	static int singleton(std::string uid);
 };
 
 #endif /* COURIERCXX_UTIL_SYSTEM_H_ */

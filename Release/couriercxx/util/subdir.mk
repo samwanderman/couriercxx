@@ -6,7 +6,6 @@
 CPP_SRCS += \
 ../couriercxx/util/ByteOrder.cpp \
 ../couriercxx/util/Clock.cpp \
-../couriercxx/util/Daemon.cpp \
 ../couriercxx/util/Hardware.cpp \
 ../couriercxx/util/IO.cpp \
 ../couriercxx/util/SignalWatcher.cpp \
@@ -16,7 +15,6 @@ CPP_SRCS += \
 OBJS += \
 ./couriercxx/util/ByteOrder.o \
 ./couriercxx/util/Clock.o \
-./couriercxx/util/Daemon.o \
 ./couriercxx/util/Hardware.o \
 ./couriercxx/util/IO.o \
 ./couriercxx/util/SignalWatcher.o \
@@ -26,7 +24,6 @@ OBJS += \
 CPP_DEPS += \
 ./couriercxx/util/ByteOrder.d \
 ./couriercxx/util/Clock.d \
-./couriercxx/util/Daemon.d \
 ./couriercxx/util/Hardware.d \
 ./couriercxx/util/IO.d \
 ./couriercxx/util/SignalWatcher.d \
