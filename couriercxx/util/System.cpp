@@ -110,6 +110,17 @@ void System::setGlobalExceptionHandler(std::terminate_handler t) {
 }
 
 int System::singleton(std::string uid) {
+#ifdef _WIN32
+	HANDLE hMutex = OpenMutex(MUTEX_ALL_ACCESS, 0, uid.c_str());
+    if (!hMutex) {
+    	hMutex = CreateMutex(0, 0, uid.c_str());
+    	if (hMutex) {
+    		return 0;
+    	}
+    }
+
+    return -1;
+#else
 	std::string path = "/var/run/" + uid;
 	int pidFile = ::open(path.c_str(), O_CREAT | O_RDWR, 0666);
 	if (pidFile == -1) {
@@ -123,6 +134,21 @@ int System::singleton(std::string uid) {
 			return 1;
 		}
 	}
+#endif
 
 	return -1;
+}
+
+int System::releaseSingleton(std::string uid) {
+#ifdef _WIN32
+	HANDLE hMutex = OpenMutex(MUTEX_ALL_ACCESS, 0, uid.c_str());
+    if (!hMutex) {
+    	ReleaseMutex(hMutex);
+
+    	return 0;
+    }
+
+    return -1;
+#else
+#endif
 }

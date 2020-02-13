@@ -93,11 +93,16 @@ uint64_t Clock::getTimestampExt() {
 }
 
 int32_t Clock::getTimezoneOffset() {
+#ifdef _WIN32
+	return 0;
+#else
 	time_t t = time(nullptr);
 	struct tm lt = { 0 };
+
 	localtime_r(&t, &lt);
 
 	return lt.tm_gmtoff / 3600;
+#endif
 }
 
 int32_t Clock::getDayMinutesFromTimestamp(uint64_t time) {

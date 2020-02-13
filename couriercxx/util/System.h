@@ -100,12 +100,27 @@ public:
 	 * \return
 	 * 			- 0 if success
 	 * 			- -1 if error
-	 * 			- 1 if another process running
+	 * 			- 1 if another proccess is running
 	 *
 	 * NOTE:
 	 *   app should has root permission
 	 */
 	static int singleton(std::string uid);
+
+	/**
+	 * Release singleton
+	 *
+	 * \param[in] string name - process uid
+	 *
+	 * \return
+	 * 			- 0 if success
+	 * 			- -1 if error
+	 * 			- 1 if another proccess is running
+	 *
+	 * NOTE:
+	 * 	 app should has root permission
+	 */
+	static int releaseSingleton(std::string uid);
 };
 
 #endif /* COURIERCXX_UTIL_SYSTEM_H_ */

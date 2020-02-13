@@ -3,6 +3,8 @@
 
 [+] added app singleton controller
 
+[+] added release singleton command
+
 [*] refactoring
 
 ### Version 0.4.1.0
