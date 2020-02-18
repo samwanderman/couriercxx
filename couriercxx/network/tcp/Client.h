@@ -13,6 +13,8 @@
 #include <list>
 #include <string>
 
+#include "../../connector/IConnectorBase.h"
+
 #ifdef _WIN32
 
 #include <winsock2.h>
@@ -28,7 +30,7 @@ namespace TCP {
 /**
  * TCP client
  */
-class Client {
+class Client : public IConnectorBase {
 public:
 	/**
 	 * Constructor
