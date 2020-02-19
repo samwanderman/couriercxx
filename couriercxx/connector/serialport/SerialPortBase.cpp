@@ -522,6 +522,10 @@ uint32_t SerialPortBase::getBaudrate() {
 	return config.baudrate;
 }
 
+bool SerialPortBase::isValid() {
+	return (fcntl(fd, F_GETFL) != -1) || (errno != EBADF);
+}
+
 void SerialPortBase::clear() {
 
 #ifdef _WIN32

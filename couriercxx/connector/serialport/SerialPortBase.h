@@ -161,6 +161,13 @@ public:
 	 */
 	void clear();
 
+	/**
+	 * Check if descriptor is still valid
+	 *
+	 * \return true if descriptor is valid, false - otherwise
+	 */
+	bool isValid();
+
 private:
 	Config config;
 
