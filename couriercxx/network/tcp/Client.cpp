@@ -182,7 +182,7 @@ int Client::read(uint8_t* buffer, uint32_t bufferSize) {
 	int res = ::read(socketFd, buffer, bufferSize);
 
 #ifdef DEBUG
-	Log::log("> ");
+	Log::log("< ");
 	for (int i = 0; i < res; i++) {
 		Log::log("%02x ", buffer[i]);
 	}
