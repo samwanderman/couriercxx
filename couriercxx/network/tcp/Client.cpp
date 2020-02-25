@@ -21,6 +21,12 @@
 #include <cstring>
 #include <vector>
 
+#define DEBUG
+
+#ifdef DEBUG
+#include "../logger/Log.h"
+#endif
+
 namespace TCP {
 
 Client::Client(std::string ip, uint16_t port) {
@@ -143,7 +149,17 @@ int Client::write(const uint8_t* buffer, uint32_t bufferSize) {
 
 #else
 
-	return ::write(socketFd, buffer, bufferSize);
+	int res = ::write(socketFd, buffer, bufferSize);
+
+#ifdef DEBUG
+	Log::log("> ");
+	for (int i = 0; i < res; i++) {
+		Log::log("%02x ", buffer[i]);
+	}
+	Log::log("\r\n");
+#endif
+
+	return res;
 
 #endif
 
@@ -163,7 +179,17 @@ int Client::read(uint8_t* buffer, uint32_t bufferSize) {
 
 #else
 
-	return ::read(socketFd, buffer, bufferSize);
+	int res = ::read(socketFd, buffer, bufferSize);
+
+#ifdef DEBUG
+	Log::log("> ");
+	for (int i = 0; i < res; i++) {
+		Log::log("%02x ", buffer[i]);
+	}
+	Log::log("\r\n");
+#endif
+
+	return res;
 
 #endif
 
