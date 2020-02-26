@@ -152,6 +152,17 @@ int Server::read(int32_t clientFd, uint8_t* buffer, uint32_t bufferSize) {
 	return ::read(clientFd, buffer, bufferSize);
 }
 
+int Server::write(const uint8_t* buffer, uint32_t bufferSize) {
+	std::map<int32_t, struct bufferevent *>::iterator it = connectedClients.begin();
+	while (it != connectedClients.end()) {
+		write(it->first, buffer, bufferSize);
+
+		it++;
+	}
+
+	return 0;
+}
+
 int Server::write(std::list<uint8_t>& buffer) {
 	std::map<int32_t, struct bufferevent *>::iterator it = connectedClients.begin();
 	while (it != connectedClients.end()) {
