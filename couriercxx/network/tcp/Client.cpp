@@ -21,8 +21,6 @@
 #include <cstring>
 #include <vector>
 
-#define DEBUG
-
 #ifdef DEBUG
 #include "../../logger/Log.h"
 #endif

@@ -43,6 +43,7 @@ couriercxx/logger \
 couriercxx/network \
 couriercxx/network/http \
 couriercxx/network/tcp \
+couriercxx/network/udp \
 couriercxx/property \
 couriercxx/sound \
 couriercxx/util \

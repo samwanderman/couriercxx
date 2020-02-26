@@ -1,3 +1,6 @@
+### Version 0.5.1.0
+[+] added initial UDP support
+
 ### Version 0.5.0.0
 [+] added global exception handler
 

@@ -11,6 +11,7 @@ RM := rm -rf
 -include couriercxx/util/subdir.mk
 -include couriercxx/sound/subdir.mk
 -include couriercxx/property/subdir.mk
+-include couriercxx/network/udp/subdir.mk
 -include couriercxx/network/tcp/subdir.mk
 -include couriercxx/network/http/subdir.mk
 -include couriercxx/network/subdir.mk

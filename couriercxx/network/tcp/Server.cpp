@@ -10,7 +10,6 @@
 
 #include <event2/buffer.h>
 #include <event2/event.h>
-#include <event2/event_compat.h>
 #include <event2/listener.h>
 #include <event2/util.h>
 #include <sys/time.h>
@@ -87,7 +86,6 @@ int Server::open() {
 	running = true;
 
 	auto func = [this]() {
-		struct event_base* base;
 		struct evconnlistener* listener;
 		struct sockaddr_in sin;
 
@@ -125,7 +123,7 @@ int Server::close() {
 		struct timeval time;
 		time.tv_sec = 0;
 		time.tv_usec = 0;
-		event_loopexit(&time);
+		event_base_loopexit(base, &time);
 	}
 
 	std::map<int, struct bufferevent *>::iterator it = connectedClients.begin();

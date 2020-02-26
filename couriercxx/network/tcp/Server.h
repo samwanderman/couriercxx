@@ -132,11 +132,12 @@ public:
 	bool isRunning();
 
 private:
-	std::string ip;
-	uint16_t port = 0;
+	std::string			ip;
+	uint16_t			port	= 0;
+	bool				running = false;
+	struct event_base*	base	= nullptr;
 	std::function<void (Server* self, int32_t clientFd, std::list<uint8_t>& buffer)> callback = nullptr;
 	std::map<int32_t, struct bufferevent *> connectedClients;
-	bool running = false;
 };
 
 } /* namespace TCP */
