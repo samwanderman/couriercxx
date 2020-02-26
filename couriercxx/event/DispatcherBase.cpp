@@ -147,7 +147,7 @@ int DispatcherBase::removeListener(EVENT_T eventType, IListener* listener) {
 }
 
 void DispatcherBase::trigger(const IEvent* event) {
-//	Log::debug("DispatcherBase.trigger()", event->getType());
+//	Log::debug("DispatcherBase.trigger(%u)", event->getType());
 	std::list<IListener*>* foundListeners = getListeners(event->getType());
 	if ((foundListeners == nullptr) || (foundListeners->size() == 0)) {
 //		Log::error("Listener not found");
