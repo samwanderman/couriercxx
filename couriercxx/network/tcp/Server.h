@@ -16,6 +16,8 @@
 #include <map>
 #include <string>
 
+struct evconnlistener;
+
 namespace TCP {
 
 /**
@@ -136,6 +138,7 @@ private:
 	uint16_t			port	= 0;
 	bool				running = false;
 	struct event_base*	base	= nullptr;
+	struct evconnlistener*	listener= nullptr;
 	std::function<void (Server* self, int32_t clientFd, std::list<uint8_t>& buffer)> callback = nullptr;
 	std::map<int32_t, struct bufferevent *> connectedClients;
 };

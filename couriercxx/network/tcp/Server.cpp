@@ -19,6 +19,7 @@
 #include <utility>
 #include <vector>
 
+#include "../../util/System.h"
 #include "../../logger/Log.h"
 
 namespace TCP {
@@ -26,6 +27,8 @@ namespace TCP {
 #define BUFFER_SIZE			1024
 
 void echoReadCallback(struct bufferevent *buffEvent, void *arg) {
+	Log::debug("TCP.Server.echoReadCallback()");
+
 	Server* self = (Server*) arg;
 
 	struct evbuffer *inputBuffer = bufferevent_get_input(buffEvent);
@@ -41,6 +44,8 @@ void echoReadCallback(struct bufferevent *buffEvent, void *arg) {
 }
 
 void echoEventCallback(struct bufferevent *buffEvent, short events, void *arg) {
+	Log::debug("TCP.Server.echoEventCallback()");
+
 	Server* self = (Server*) arg;
 
 	if (events & BEV_EVENT_ERROR) {
@@ -58,6 +63,7 @@ void echoEventCallback(struct bufferevent *buffEvent, short events, void *arg) {
 }
 
 void acceptConnectionCallback(struct evconnlistener *listener, evutil_socket_t fd, struct sockaddr *addr, int sockLen, void *arg ) {
+	Log::debug("TCP.Server.acceptConnectionCallback()");
 	Server* self = (Server*) arg;
 
 	struct event_base *base = evconnlistener_get_base(listener);
@@ -83,10 +89,12 @@ Server::Server(std::string ip, uint16_t port, std::function<void (Server* self, 
 Server::~Server() { }
 
 int Server::open() {
+	Log::debug("TCP.Server.open()");
+
 	running = true;
 
 	auto func = [this]() {
-		struct evconnlistener* listener;
+		Log::debug("Try to start TCP.Server");
 		struct sockaddr_in sin;
 
 		base = event_base_new();
@@ -99,9 +107,8 @@ int Server::open() {
 		sin.sin_addr.s_addr = htonl(INADDR_ANY);
 		sin.sin_port = htons(this->port);
 
-		listener = evconnlistener_new_bind(base, acceptConnectionCallback, this, (LEV_OPT_CLOSE_ON_FREE | LEV_OPT_REUSEABLE), -1, (struct sockaddr*) &sin, sizeof(sin));
-		if (!listener) {
-			return -1;
+		while (running && ((listener = evconnlistener_new_bind(base, acceptConnectionCallback, this, (LEV_OPT_CLOSE_ON_FREE | LEV_OPT_REUSEABLE), -1, (struct sockaddr*) &sin, sizeof(sin))) == nullptr)) {
+			System::sleep(5000);
 		}
 		evconnlistener_set_error_cb(listener, acceptErrorCallback);
 
@@ -117,7 +124,14 @@ int Server::open() {
 }
 
 int Server::close() {
+	Log::debug("TCP.Server.close()");
+
 	running = false;
+
+	if (listener != nullptr) {
+		evconnlistener_free(listener);
+		listener = nullptr;
+	}
 
 	if (callback != nullptr) {
 		struct timeval time;
@@ -153,7 +167,9 @@ int Server::read(int32_t clientFd, uint8_t* buffer, uint32_t bufferSize) {
 }
 
 int Server::write(const uint8_t* buffer, uint32_t bufferSize) {
+	Log::debug("TCP.Server.write()");
 	std::map<int32_t, struct bufferevent *>::iterator it = connectedClients.begin();
+	Log::debug("connected clients: %i", connectedClients.size());
 	while (it != connectedClients.end()) {
 		write(it->first, buffer, bufferSize);
 
