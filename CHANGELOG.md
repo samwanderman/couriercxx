@@ -3,6 +3,8 @@
 
 [\*] fixed bug with TCP.Server.write(uint8_t\*, uint23_t)
 
+[\*] changed Properties  
+
 ### Version 0.5.0.0
 [+] added global exception handler
 

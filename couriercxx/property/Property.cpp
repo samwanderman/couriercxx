@@ -12,13 +12,7 @@
 
 Property::Property() { }
 
-Property::~Property() {
-	if (property != nullptr) {
-		property->close();
-		delete property;
-		property = nullptr;
-	}
-}
+Property::~Property() { }
 
 int Property::init(IProperty* property) {
 	if (this->property != nullptr) {
@@ -29,6 +23,16 @@ int Property::init(IProperty* property) {
 	this->property = property;
 
 	return this->property->open();
+}
+
+int Property::destroy() {
+	if (property != nullptr) {
+		property->close();
+		delete property;
+		property = nullptr;
+	}
+
+	return 0;
 }
 
 Property& Property::getInstance() {

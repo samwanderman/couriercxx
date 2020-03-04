@@ -355,6 +355,13 @@ public:
 	 */
 	int init(IProperty* property);
 
+	/**
+	 * Destroy
+	 *
+	 * \return 0 if success, -1 if error
+	 */
+	int destroy();
+
 private:
 	IProperty* property = nullptr;
 
