@@ -1,3 +1,6 @@
+### Version 0.5.1.1
+[+] added LInfo, LDebug, LWarn and LError macros
+
 ### Version 0.5.1.0
 [+] added initial UDP support
 

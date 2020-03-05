@@ -11,6 +11,11 @@
 
 #include <string>
 
+#define LInfo(format, ...) Log::info("%s:%u (%s) " format, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__)
+#define LDebug(format, ...) Log::debug("%s:%u (%s) " format, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__)
+#define LWarn(format, ...) Log::warn("%s:%u (%s) " format, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__)
+#define LError(format, ...) Log::error("%s:%u (%s) " format, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__)
+
 class Logger;
 
 /**
