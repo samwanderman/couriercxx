@@ -67,8 +67,8 @@ int Client::close() {
 	return 0;
 }
 
-int Client::read(struct sockaddr* serverAddr, uint32_t* serverAddrLen, uint8_t* buffer, uint32_t bufferSize) {
-	return recvfrom(fd, buffer, bufferSize, 0, serverAddr, (socklen_t*) serverAddrLen);
+int Client::read(struct sockaddr_in* serverAddr, uint32_t* serverAddrLen, uint8_t* buffer, uint32_t bufferSize) {
+	return recvfrom(fd, buffer, bufferSize, 0, (struct sockaddr*) serverAddr, (socklen_t*) serverAddrLen);
 }
 
 int Client::write(const uint8_t* buffer, uint32_t bufferSize) {

@@ -54,7 +54,7 @@ int main(int ac, char** av) {
 	}
 	Log::log("\r\n");
 
-	struct sockaddr* serverAddr = nullptr;
+	struct sockaddr_in* serverAddr = nullptr;
 	uint32_t serverAddrLen = 0;
 	uint8_t buffer[1024];
 	res = client->read(serverAddr, &serverAddrLen, buffer, sizeof(buffer));

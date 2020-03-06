@@ -64,7 +64,7 @@ public:
 	 *
 	 * \return number of read bytes if success, -1 if error
 	 */
-	int read(struct sockaddr* serverAddr, uint32_t* serverAddrLen, uint8_t* buffer, uint32_t bufferSize);
+	int read(struct sockaddr_in* serverAddr, uint32_t* serverAddrLen, uint8_t* buffer, uint32_t bufferSize);
 
 	/**
 	 * Write data to host
