@@ -64,7 +64,7 @@ public:
 	bool isOpen();
 
 	/**
-	 * Write data to UPD
+	 * Write data to UDP
 	 *
 	 * \param[in] buffer		- pointer to buffer
 	 * \param[in] bufferSize	- buffer size
