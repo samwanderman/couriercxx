@@ -1,3 +1,6 @@
+### Version 0.6.0.0
+[*] UDP client and server refactoring
+
 ### Version 0.5.1.1
 [+] added LInfo, LDebug, LWarn and LError macros
 

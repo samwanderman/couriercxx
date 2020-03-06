@@ -13,8 +13,6 @@
 #include <netinet/in.h>
 #include <string>
 
-struct event_base;
-
 namespace UDP {
 
 /**
@@ -31,17 +29,16 @@ public:
 	Client(std::string ip, uint16_t port);
 
 	/**
+	 * Constructor for broadcast mode
+	 *
+	 * \param[in] port	- host port
+	 */
+	Client(uint16_t port);
+
+	/**
 	 * Destructor
 	 */
 	virtual ~Client();
-
-	Client(const Client &other) = delete;
-
-	Client(Client &&other) = delete;
-
-	Client& operator=(const Client &other) = delete;
-
-	Client& operator=(Client &&other) = delete;
 
 	/**
 	 * Open UDP client
@@ -60,25 +57,33 @@ public:
 	/**
 	 * Read data from host
 	 *
-	 * \param[in, out]	buffer		- pointer to buffer
-	 * \param[in]		bufferSize	- max buffer size
+	 * \param[out]		serverAddr		- server addr
+	 * \param[out]		serverAddrLen	- server addr len
+	 * \param[in, out]	buffer			- pointer to buffer
+	 * \param[in]		bufferSize		- max buffer size
 	 *
 	 * \return number of read bytes if success, -1 if error
 	 */
-	int read(uint8_t* buffer, uint32_t bufferSize);
-
-private:
-	std::string			ip			= "";
-	uint16_t			port		= 0;
-
-	struct event_base*	base		= nullptr;
-	int					fd			= -1;
-	struct sockaddr_in	servaddr	= { 0 };
+	int read(struct sockaddr* serverAddr, uint32_t* serverAddrLen, uint8_t* buffer, uint32_t bufferSize);
 
 	/**
-	 * Clean resources
+	 * Write data to host
+	 *
+	 * \param[in]	buffer		- pointer to buffer
+	 * \param[in]	bufferSize	- max buffer size
+	 *
+	 * \return number fo written bytes if success, -1 if error
 	 */
-	int clean();
+	int write(const uint8_t* buffer, uint32_t bufferSize);
+
+private:
+	std::string			ip				= "";
+	uint16_t			port			= 0;
+	int					fd				= -1;
+
+	struct sockaddr_in	broadcastAddr	= { 0 };
+
+	void clean();
 };
 
 } /* namespace UDP */
