@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <cstring>
 #include <string>
+#include <arpa/inet.h>
 
 #include "../couriercxx/connector/udp/UDPPortBase.h"
 #include "../couriercxx/logger/Log.h"
@@ -11,19 +12,31 @@
 
 class UDPPortBase;
 
-#define PORT			8880
 #define BUFFER_MAX_SIZE	1024
 
-const uint8_t DISCOVERY_REQUEST[]		= { 0x52, 0x45, 0x51, 0x55, 0x45, 0x53, 0x54 };
-const uint16_t DISCOVERY_REQUEST_SIZE	= 7;
-const uint8_t DISCOVERY_RESPONSE[]		= { 0x52, 0x45, 0x53, 0x50, 0x4f, 0x4e, 0x53, 0x45 };
-const uint16_t DISCOVERY_RESPONSE_SIZE	= 8;
+const uint8_t	DISCOVERY_REQUEST[]	= { 0x52, 0x45, 0x51, 0x55, 0x45, 0x53, 0x54 };
+const uint16_t	DISCOVERY_REQUEST_SIZE	= 7;
+const uint8_t	DISCOVERY_RESPONSE[]	= { 0x52, 0x45, 0x53, 0x50, 0x4f, 0x4e, 0x53, 0x45 };
+const uint16_t	DISCOVERY_RESPONSE_SIZE	= 8;
 
 int main(int ac, char** av) {
 	Log::setAppName(&av[0][2]);
+
+	if (ac < 3) {
+		Log::info("Usage: %s port netmask", &av[0][2]);
+
+		return 0;
+	}
+
+	uint16_t	port	= atoi(av[1]);
+	struct in_addr	mask;
+	inet_pton(AF_INET, av[2], &mask);
+
 	Log::info("Program has started");
 
-	auto func = [](const uint8_t* packet, uint32_t packetSize) {
+	Log::debug("Port: %u, Mask: %s", port, inet_ntoa(mask));
+
+	auto func = [port, mask](const uint8_t* packet, uint32_t packetSize) {
 		ETHPacket ethPacket(packet);
 		uint32_t ethPacketSize = 14;
 
@@ -34,7 +47,7 @@ int main(int ac, char** av) {
 		uint32_t udpHeaderSize = 8;
 
 		uint32_t dstAddr = ((uint32_t) ipPacket.dstAddr[0] << 24) | ((uint32_t) ipPacket.dstAddr[1] << 16) | ((uint32_t) ipPacket.dstAddr[2] << 8) | ipPacket.dstAddr[3];
-		if ((ethPacket.type == 0x0800) && (dstAddr == 0x0affffff) && (ipPacket.protocol == PROTOCOL_UDP) && (udpPacket.dstPort == PORT)) {
+		if ((ethPacket.type == 0x0800) && (dstAddr == (uint32_t) mask.s_addr) && (ipPacket.protocol == PROTOCOL_UDP) && (udpPacket.dstPort == port)) {
 			Log::info("---------------");
 			Log::log("\r\n");
 			for (uint32_t i = 0; i < 14; i++) {

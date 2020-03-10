@@ -20,6 +20,8 @@
 
 #define ERROR_BUFFER_SIZE	1024
 
+#undef DEBUG
+
 Sniffer::Sniffer(std::string filter, std::function<void (const uint8_t* packet, uint32_t packetSize)> callback) {
 	this->callback = callback;
 	this->filter = filter;
