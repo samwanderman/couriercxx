@@ -10,7 +10,10 @@
 #define COURIERCXX_NETWORK_UDP_SERVER_H_
 
 #include <cstdint>
+#ifdef _WIN32
+#else
 #include <netinet/in.h>
+#endif
 #include <functional>
 #include <mutex>
 #include <string>
@@ -93,7 +96,11 @@ private:
 	std::string			ip			= "";
 	uint16_t			port		= 0;
 	int					fd			= -1;
+
+#ifdef _WIN32
+#else
 	struct sockaddr_in	servAddr	= { 0 };
+#endif
 
 	std::function<void(Server* server, struct sockaddr_in* clientAddr, uint32_t clientAddrLen, const uint8_t* buffer, uint32_t bufferSize)> callback = nullptr;
 

@@ -523,7 +523,11 @@ uint32_t SerialPortBase::getBaudrate() {
 }
 
 bool SerialPortBase::isValid() {
+#ifdef _WIN32
+	return true;
+#else
 	return (fcntl(fd, F_GETFL) != -1) || (errno != EBADF);
+#endif
 }
 
 void SerialPortBase::clear() {
