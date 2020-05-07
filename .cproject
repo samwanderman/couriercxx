@@ -123,7 +123,7 @@
                     					
                     <sourceEntries>
                         						
-                        <entry excluding="examples|utils|tests" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+                        <entry excluding="Release-WIN|Debug-WIN|examples|utils|tests" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
                         					
                     </sourceEntries>
                     				
@@ -253,7 +253,7 @@
                     					
                     <sourceEntries>
                         						
-                        <entry excluding="examples|utils|tests" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+                        <entry excluding="Release-WIN|Debug-WIN|examples|utils|tests" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
                         					
                     </sourceEntries>
                     				
