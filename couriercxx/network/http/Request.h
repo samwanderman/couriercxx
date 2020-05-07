@@ -77,6 +77,13 @@ public:
 	 */
 	virtual int getRAWInput(uint8_t* buffer, uint32_t bufferSize) const;
 
+	/**
+	 * Get uri
+	 *
+	 * \return uri
+	 */
+	const char* getURI() const;
+
 private:
 	const evhttp_request *request = nullptr;
 	const struct evbuffer* outputBuffer = nullptr;

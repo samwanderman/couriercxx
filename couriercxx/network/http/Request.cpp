@@ -59,4 +59,8 @@ int Request::getRAWInput(uint8_t* buffer, uint32_t bufferSize) const {
 	}
 }
 
+const char* Request::getURI() const {
+	return evhttp_request_get_uri(request);
+};
+
 };
