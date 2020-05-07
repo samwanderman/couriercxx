@@ -11,4 +11,5 @@ docs
 examples/*Example
 utils/*Util
 tests/*Test
-.cproject
+/Debug/
+/Release/

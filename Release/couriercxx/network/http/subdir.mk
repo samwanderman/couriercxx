@@ -4,14 +4,17 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../couriercxx/network/http/Client.cpp \
 ../couriercxx/network/http/Request.cpp \
 ../couriercxx/network/http/Server.cpp 
 
 OBJS += \
+./couriercxx/network/http/Client.o \
 ./couriercxx/network/http/Request.o \
 ./couriercxx/network/http/Server.o 
 
 CPP_DEPS += \
+./couriercxx/network/http/Client.d \
 ./couriercxx/network/http/Request.d \
 ./couriercxx/network/http/Server.d 
 

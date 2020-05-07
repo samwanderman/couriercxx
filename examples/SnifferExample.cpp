@@ -103,7 +103,7 @@ int main(int ac, char** av) {
 			Log::debug("udpPacket checksum is %x", udpPacket.checksum);
 
 			const uint8_t* payload = packet + ethPacketSize + ipHeaderSize + 8;
-			for (uint32_t i = 0; i < udpPacket.len - 8; i++) {
+			for (uint32_t i = 0; i < (uint32_t) (udpPacket.len - 8); i++) {
 				Log::log("%x ", payload[i]);
 			}
 			Log::log("\r\n");
