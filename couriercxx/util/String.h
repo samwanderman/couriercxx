@@ -639,6 +639,16 @@ public:
 	 * \return pars of splitted string
 	 */
 	static std::list<std::string> split(std::string str, std::string delim);
+
+	/**
+	 * Trim all left symbols
+	 *
+	 * \param[in] src	- source string
+	 * \param[in] delim - delimeter
+	 *
+	 * \return trimmed string
+	 */
+	static std::string& trimLeft(std::string& src, std::string& delim);
 };
 
 #endif /* COURIERCXX_UTIL_STRING_H_ */

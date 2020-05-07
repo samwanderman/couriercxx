@@ -1,3 +1,8 @@
+### Version 0.7.0.0
+[+] added selfUpdate method to System
+
+[*] mkdir moved to IO
+
 ### Version 0.6.0.0
 [*] UDP client and server refactoring
 

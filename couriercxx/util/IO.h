@@ -56,6 +56,28 @@ public:
 	 * \return int - size of file if success, -1 if error
 	 */
 	static int getSize(std::string path);
+
+	/**
+	 * Make new directory
+	 *
+	 * \param[in] path - path to directory
+	 *
+	 * \return
+	 * 			0	- if success
+	 * 			-1	- if error
+	 */
+	static int mkdir(std::string path);
+
+	/**
+	 * Remove directory or file
+	 *
+	 * \param[in] path - path to delete
+	 *
+	 * \return
+	 * 			0 	- if success
+	 * 			-1	- if error
+	 */
+	static int rm(std::string path);
 };
 
 #endif /* COURIERCXX_UTIL_IO_H_ */

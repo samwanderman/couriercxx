@@ -84,6 +84,13 @@ public:
 	 */
 	const char* getURI() const;
 
+	/**
+	 * Get input buffer size
+	 *
+	 * \return input buffer size
+	 */
+	uint32_t getInputBufferSize() const;
+
 private:
 	const evhttp_request *request = nullptr;
 	const struct evbuffer* outputBuffer = nullptr;

@@ -524,3 +524,9 @@ std::list<std::string> String::split(std::string str, std::string delim) {
 
 	return parts;
 }
+
+std::string& String::trimLeft(std::string& str, std::string& delim) {
+	str.erase(0, str.find_last_of(delim) + 1);
+
+	return str;
+}

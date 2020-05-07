@@ -76,14 +76,6 @@ void System::usleep(uint64_t microseconds) {
 #endif
 }
 
-int System::mkdir(std::string path) {
-	char command[256];
-	memset(command, 0, sizeof(command));
-	snprintf(command, 255, "mkdir -p %s", path.c_str());
-
-	return system(command);
-}
-
 void System::daemonize() {
 #ifndef _WIN32
 	int pid = fork();
@@ -152,4 +144,12 @@ int System::releaseSingleton(std::string uid) {
 #else
     return 0;
 #endif
+}
+
+void System::selfUpdate(std::string path) {
+	char command[256];
+	memset(command, 0, sizeof(command));
+	snprintf(command, 255, "dpkg -i %s &", path.c_str());
+
+	system(command);
 }

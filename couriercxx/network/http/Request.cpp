@@ -49,10 +49,11 @@ int Request::send(uint16_t code, std::string text) const {
 int Request::getRAWInput(uint8_t* buffer, uint32_t bufferSize) const {
 	uint8_t* dataRef = (uint8_t*) EVBUFFER_DATA((evbuffer*) inputBuffer);
 	if (dataRef != nullptr) {
-		uint16_t minSize = evbuffer_get_length(inputBuffer);
+		uint32_t minSize = getInputBufferSize();
 		minSize = minSize > bufferSize ? bufferSize : minSize;
 		memmove(buffer, dataRef, bufferSize * sizeof(uint8_t));
 		memset(&buffer[minSize], 0, bufferSize - minSize);
+
 		return minSize;
 	} else {
 		return -1;
@@ -62,5 +63,9 @@ int Request::getRAWInput(uint8_t* buffer, uint32_t bufferSize) const {
 const char* Request::getURI() const {
 	return evhttp_request_get_uri(request);
 };
+
+uint32_t Request::getInputBufferSize() const {
+	return evbuffer_get_length(inputBuffer);
+}
 
 };

@@ -10,8 +10,10 @@
 
 #include <fcntl.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 #include <unistd.h>
 #include <cstdio>
+#include <cstring>
 
 int IO::writeTo(std::string path, const uint8_t* buffer, uint32_t bufferSize) {
 	int fd = ::open(path.c_str(), O_WRONLY | O_CREAT, 0200);
@@ -75,4 +77,20 @@ int IO::getSize(std::string path) {
 	}
 
 	return size;
+}
+
+int IO::mkdir(std::string path) {
+	char command[256];
+	memset(command, 0, sizeof(command));
+	snprintf(command, 255, "mkdir -p %s", path.c_str());
+
+	return system(command);
+}
+
+int IO::rm(std::string path) {
+	char command[256];
+	memset(command, 0, sizeof(command));
+	snprintf(command, 255, "rm -rf %s", path.c_str());
+
+	return system(command);
 }
