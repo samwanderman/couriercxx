@@ -1,6 +1,8 @@
 /*
  * Client.cpp
  *
+ * FIXME - see HTTPClientTest.cpp
+ *
  *  Created on: 07.05.2020
  *      Author: Potapov Sergei
  *       Email: sam-wanderman@yandex.ru
