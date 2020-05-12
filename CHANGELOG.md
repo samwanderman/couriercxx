@@ -1,3 +1,8 @@
+### Version 0.7.0.1
+[*] String module fixes
+
+[*] TCP server improvements
+
 ### Version 0.7.0.0
 [+] added selfUpdate method to System
 
