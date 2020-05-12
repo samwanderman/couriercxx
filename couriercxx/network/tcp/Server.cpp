@@ -29,24 +29,23 @@ namespace TCP {
 void echoReadCallback(struct bufferevent *buffEvent, void *arg) {
 	Log::debug("TCP.Server.echoReadCallback()");
 
-	Server* self = (Server*) arg;
+	Server* self = reinterpret_cast<Server*>(arg);
 
 	struct evbuffer *inputBuffer = bufferevent_get_input(buffEvent);
-	uint8_t buffer[BUFFER_SIZE];
-	int bytesRead = evbuffer_remove(inputBuffer, buffer, BUFFER_SIZE);
+	uint32_t len = evbuffer_get_length(inputBuffer);
 
-	std::list<uint8_t> bytes;
-	for (int i = 0; i < bytesRead; i++) {
-		bytes.push_back(buffer[i]);
-	}
+	std::vector<uint8_t> bytes(len);
 
-	self->getCallback()(self, (int32_t) bufferevent_getfd(buffEvent), bytes);
+	int bytesRead = evbuffer_remove(inputBuffer, &bytes[0], len);
+	Log::debug("read %i bytes", bytesRead);
+
+	self->getCallback()(self, static_cast<int32_t>(bufferevent_getfd(buffEvent)), bytes);
 }
 
 void echoEventCallback(struct bufferevent *buffEvent, short events, void *arg) {
 	Log::debug("TCP.Server.echoEventCallback()");
 
-	Server* self = (Server*) arg;
+	Server* self = reinterpret_cast<Server*>(arg);
 
 	if (events & BEV_EVENT_ERROR) {
 		Log::error("Error of bufferevent object");
@@ -55,7 +54,7 @@ void echoEventCallback(struct bufferevent *buffEvent, short events, void *arg) {
 	if (events & (BEV_EVENT_EOF | BEV_EVENT_ERROR)) {
 		Log::debug("Clear events");
 
-		int32_t fd = (int32_t) bufferevent_getfd(buffEvent);
+		int32_t fd = static_cast<int32_t>(bufferevent_getfd(buffEvent));
 		self->getConnectedClients().erase(fd);
 
 		bufferevent_free(buffEvent);
@@ -64,7 +63,7 @@ void echoEventCallback(struct bufferevent *buffEvent, short events, void *arg) {
 
 void acceptConnectionCallback(struct evconnlistener *listener, evutil_socket_t fd, struct sockaddr *addr, int sockLen, void *arg ) {
 	Log::debug("TCP.Server.acceptConnectionCallback()");
-	Server* self = (Server*) arg;
+	Server* self = reinterpret_cast<Server*>(arg);
 
 	struct event_base *base = evconnlistener_get_base(listener);
 	struct bufferevent *buffEvent = bufferevent_socket_new(base, fd, BEV_OPT_CLOSE_ON_FREE);
@@ -72,7 +71,7 @@ void acceptConnectionCallback(struct evconnlistener *listener, evutil_socket_t f
 	bufferevent_setcb(buffEvent, echoReadCallback, nullptr, echoEventCallback, arg);
 	bufferevent_enable(buffEvent, EV_READ | EV_WRITE);
 
-	self->getConnectedClients().insert(std::pair<int32_t, struct bufferevent *>((int32_t) fd, buffEvent));
+	self->getConnectedClients().insert(std::pair<int32_t, struct bufferevent *>(static_cast<int32_t>(fd), buffEvent));
 }
 
 void acceptErrorCallback(struct evconnlistener *listener, void *arg) {
@@ -80,10 +79,10 @@ void acceptErrorCallback(struct evconnlistener *listener, void *arg) {
 	event_base_loopexit(base, nullptr);
 }
 
-Server::Server(std::string ip, uint16_t port, std::function<void (Server* self, int32_t clientFd, std::list<uint8_t>& buffer)> callback) {
-	this->ip = ip;
-	this->port = port;
-	this->callback = callback;
+Server::Server(std::string ip, uint16_t port, std::function<void (Server* self, int32_t clientFd, std::vector<uint8_t>& buffer)> callback) {
+	this->ip		= ip;
+	this->port		= port;
+	this->callback	= callback;
 }
 
 Server::~Server() { }
@@ -103,11 +102,11 @@ int Server::open() {
 		}
 
 		memset(&sin, 0, sizeof(sin));
-		sin.sin_family = AF_INET;
+		sin.sin_family		= AF_INET;
 		sin.sin_addr.s_addr = htonl(INADDR_ANY);
-		sin.sin_port = htons(this->port);
+		sin.sin_port		= htons(this->port);
 
-		while (running && ((listener = evconnlistener_new_bind(base, acceptConnectionCallback, this, (LEV_OPT_CLOSE_ON_FREE | LEV_OPT_REUSEABLE), -1, (struct sockaddr*) &sin, sizeof(sin))) == nullptr)) {
+		while (isRunning() && ((listener = evconnlistener_new_bind(base, acceptConnectionCallback, this, (LEV_OPT_CLOSE_ON_FREE | LEV_OPT_REUSEABLE), -1, (struct sockaddr*) &sin, sizeof(sin))) == nullptr)) {
 			System::sleep(5000);
 		}
 		evconnlistener_set_error_cb(listener, acceptErrorCallback);
@@ -135,8 +134,8 @@ int Server::close() {
 
 	if (callback != nullptr) {
 		struct timeval time;
-		time.tv_sec = 0;
-		time.tv_usec = 0;
+		time.tv_sec		= 0;
+		time.tv_usec	= 0;
 		event_base_loopexit(base, &time);
 	}
 
@@ -152,34 +151,15 @@ int Server::close() {
 	return 0;
 }
 
-int Server::write(int32_t clientFd, const uint8_t* buffer, uint32_t bufferSize) {
-	return ::write(clientFd, buffer, bufferSize);
+int Server::write(int32_t clientFd, std::vector<uint8_t>& buffer) {
+	return ::write(clientFd, &buffer[0], buffer.size());
 }
 
-int Server::write(int32_t clientFd, std::list<uint8_t>& buffer) {
-	std::vector<uint8_t> vec(buffer.begin(), buffer.end());
-
-	return write(clientFd, (const uint8_t*) &vec[0], vec.size());
+int Server::read(int32_t clientFd, std::vector<uint8_t>& buffer) {
+	return ::read(clientFd, &buffer[0], buffer.size());
 }
 
-int Server::read(int32_t clientFd, uint8_t* buffer, uint32_t bufferSize) {
-	return ::read(clientFd, buffer, bufferSize);
-}
-
-int Server::write(const uint8_t* buffer, uint32_t bufferSize) {
-	Log::debug("TCP.Server.write()");
-	std::map<int32_t, struct bufferevent *>::iterator it = connectedClients.begin();
-	Log::debug("connected clients: %i", connectedClients.size());
-	while (it != connectedClients.end()) {
-		write(it->first, buffer, bufferSize);
-
-		it++;
-	}
-
-	return 0;
-}
-
-int Server::write(std::list<uint8_t>& buffer) {
+int Server::write(std::vector<uint8_t>& buffer) {
 	std::map<int32_t, struct bufferevent *>::iterator it = connectedClients.begin();
 	while (it != connectedClients.end()) {
 		write(it->first, buffer);
@@ -190,7 +170,7 @@ int Server::write(std::list<uint8_t>& buffer) {
 	return 0;
 }
 
-std::function<void (Server* self, int32_t clientFd, std::list<uint8_t>& buffer)> Server::getCallback() {
+std::function<void (Server* self, int32_t clientFd, std::vector<uint8_t>& buffer)> Server::getCallback() {
 	return callback;
 }
 
