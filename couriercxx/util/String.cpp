@@ -8,8 +8,6 @@
 
 #include "String.h"
 
-#include "../logger/Log.h"
-
 #include <cstring>
 
 uint8_t writeASCII(uint8_t hex) {
@@ -73,7 +71,6 @@ int String::writeInt16LE(int16_t value, uint8_t* buffer, uint32_t pos) {
 
 int String::writeUInt32BE(uint32_t value, uint8_t* buffer, uint32_t pos) {
 	for (int64_t i = sizeof(value) - 1; i >= 0; i--) {
-		Log::warn("%u", pos);
 		buffer[pos++] = (uint8_t) ((value >> (i * 8)) & 0xff);
 	}
 
