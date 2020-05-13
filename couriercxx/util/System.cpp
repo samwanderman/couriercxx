@@ -27,6 +27,7 @@
 #include <sys/file.h>
 #include <unistd.h>
 #include <cstdlib>
+#include <exception>
 
 int System::startService(std::string name) {
 	char command[64];
@@ -152,4 +153,31 @@ void System::selfUpdate(std::string path) {
 	snprintf(command, 255, "dpkg -i %s &", path.c_str());
 
 	system(command);
+}
+
+std::string System::exec(std::string shellCommand) {
+	std::string result = "";
+
+	FILE* file = popen(shellCommand.c_str(), "r");
+	if (file == nullptr) {
+		return "ERROR";
+	}
+
+	try {
+		uint8_t buffer[1024];
+		memset(buffer, 0, sizeof(buffer));
+		while (fgets(reinterpret_cast<char*>(buffer), sizeof(buffer) - 1, file) != nullptr) {
+			result += reinterpret_cast<char*>(buffer);
+
+			memset(buffer, 0, sizeof(buffer));
+		}
+	} catch (...) {
+		pclose(file);
+
+		return "ERROR";
+	}
+
+	pclose(file);
+
+	return result;
 }

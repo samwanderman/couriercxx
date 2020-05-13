@@ -1,4 +1,6 @@
 ### Version 0.7.0.1
+[+] added System::exec()
+
 [*] String module fixes
 
 [*] TCP server improvements

@@ -119,6 +119,15 @@ public:
 	 * 	 app should has root permission
 	 */
 	static int releaseSingleton(std::string uid);
+
+	/**
+	 * Execute shell command and return result
+	 *
+	 * \param shellCommand - command to execute
+	 *
+	 * \return string result
+	 */
+	static std::string exec(std::string shellCommand);
 };
 
 #endif /* COURIERCXX_UTIL_SYSTEM_H_ */
