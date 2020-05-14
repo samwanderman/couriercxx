@@ -705,6 +705,16 @@ public:
 	 * \return trimmed string
 	 */
 	static std::string& trimLeft(std::string& src, std::string& delim);
+
+	/**
+	 * Trim all right symbols
+	 *
+	 * \param[in] src	- source string
+	 * \param[in] delim - delimeter
+	 *
+	 * \return trimmed string
+	 */
+	static std::string& trimRight(std::string& src, std::string& delim);
 };
 
 #endif /* COURIERCXX_UTIL_STRING_H_ */
