@@ -147,3 +147,11 @@ int Net::get(Addr &addr) {
 
 	return 0;
 }
+
+std::string Net::ipToStr(uint8_t ip[4]) {
+	char buffer[20];
+	memset(buffer, 0, sizeof(buffer));
+	snprintf(buffer, sizeof(buffer), "%u.%u.%u.%u", ip[0], ip[1], ip[2], ip[3]);
+
+	return std::string(buffer);
+}

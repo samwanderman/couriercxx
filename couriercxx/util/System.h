@@ -21,41 +21,51 @@ public:
 	/**
 	 * Start service
 	 *
-	 * \param[in] string name - service name
+	 * \param[in] name - service name
 	 *
-	 * \return 0 if success, -1 if error
+	 * \return
+	 * 			- 0 if success
+	 * 			- -1 if error
 	 */
 	static int startService(std::string name);
 
 	/**
 	 * Stop service
 	 *
-	 * \param[in] string name - service name
+	 * \param[in] name - service name
 	 *
-	 * \return 0 if success, -1 if error
+	 * \return
+	 *			- 0 if success
+	 *			- -1 if error
 	 */
 	static int stopService(std::string name);
 
 	/**
 	 * Restart service
 	 *
-	 * \param[in] string name - service name
+	 * \param[in] name - service name
 	 *
-	 * \return 0 if success, -1 if error
+	 * \return
+	 * 			- 0 if success
+	 * 			- -1 if error
 	 */
 	static int restartService(std::string name);
 
 	/**
 	 * Restart network
 	 *
-	 * \return 0 if success, -1 if error
+	 * \return
+	 * 			- 0 if success
+	 * 			- -1 if error
 	 */
 	static int restartNetwork();
 
 	/**
 	 * Reboot system
 	 *
-	 * \return 0 if success, -1 if error
+	 * \return
+	 * 			- 0 if success
+	 * 			- -1 if error
 	 */
 	static int reboot();
 
@@ -87,13 +97,15 @@ public:
 
 	/**
 	 * Set global exception handler
+	 *
+	 * \param[in] handler - exception handler
 	 */
-	static void setGlobalExceptionHandler(std::terminate_handler t);
+	static void setGlobalExceptionHandler(std::terminate_handler handler);
 
 	/**
 	 * Make process singletone
 	 *
-	 * \param[in] string name - process uid
+	 * \param[in] name - process uid
 	 *
 	 * \return
 	 * 			- 0 if success
@@ -108,7 +120,7 @@ public:
 	/**
 	 * Release singleton
 	 *
-	 * \param[in] string name - process uid
+	 * \param[in] name - process uid
 	 *
 	 * \return
 	 * 			- 0 if success
@@ -125,9 +137,18 @@ public:
 	 *
 	 * \param shellCommand - command to execute
 	 *
-	 * \return string result
+	 * \return result
 	 */
-	static std::string exec(std::string shellCommand);
+	static std::string execAndGetOutput(std::string shellCommand);
+
+	/**
+	 * Execute shell command and return status
+	 *
+	 * \param[in] shellCommand - command to execute
+	 *
+	 * \return status
+	 */
+	static int exec(std::string shellCommand);
 };
 
 #endif /* COURIERCXX_UTIL_SYSTEM_H_ */

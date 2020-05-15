@@ -1,3 +1,8 @@
+### Version 0.8.0.0
+[*] System module refactoring
+
+[*] added right for mkdir and writeTo
+
 ### Version 0.7.0.1
 [+] added System::exec()
 

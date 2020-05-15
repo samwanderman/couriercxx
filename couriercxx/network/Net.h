@@ -29,20 +29,33 @@ public:
 	/**
 	 * Get local machine ip address
 	 *
-	 * \param[out] sting addr - addr
+	 * \param[out] addr - addr
 	 *
-	 * \return string IP addr
+	 * \return
+	 *			- 0 if success
+	 *			- -1 if error
 	 */
 	static int getLocalIPAddr(std::string& addr);
 
 	/**
 	 * Get local machine net params
 	 *
-	 * \param[out] Addr addr - addr
+	 * \param[out] addr - addr
 	 *
-	 * \return 0 if succes, -1 if error
+	 * \return
+	 * 			- 0 if success
+	 * 			- -1 if error
 	 */
 	static int get(Addr &addr);
+
+	/**
+	 * Convert ip to string
+	 *
+	 * \param[in] ip - ip
+	 *
+	 * \return string representation of ip
+	 */
+	static std::string ipToStr(uint8_t ip[4]);
 };
 
 #endif /* COURIERCXX_NETWORK_NET_H_ */

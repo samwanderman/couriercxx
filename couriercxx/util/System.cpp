@@ -30,31 +30,28 @@
 #include <exception>
 
 int System::startService(std::string name) {
-	char command[64];
-	memset(command, 0, sizeof(command));
-	snprintf(command, 63, "systemctl start %s", name.c_str());
+	std::string cmd = "systemctl start ";
+	cmd.append(name);
 
-	return system(command);
+	return System::exec(cmd);
 }
 
 int System::stopService(std::string name) {
-	char command[64];
-	memset(command, 0, sizeof(command));
-	snprintf(command, 63, "systemctl stop %s", name.c_str());
+	std::string cmd = "systemctl stop ";
+	cmd.append(name);
 
-	return system(command);
+	return System::exec(cmd);
 }
 
 int System::restartService(std::string name) {
-	char command[64];
-	memset(command, 0, sizeof(command));
-	snprintf(command, 63, "systemctl restart %s", name.c_str());
+	std::string cmd = "systemctl restart ";
+	cmd.append(name);
 
-	return system(command);
+	return System::exec(cmd);
 }
 
 int System::restartNetwork() {
-	return system("systemctl restart networking");
+	return System::exec("systemctl restart networking");
 }
 
 int System::reboot() {
@@ -155,13 +152,13 @@ void System::selfUpdate(std::string path) {
 		command.append(path);
 		//command.append(" &");
 
-		system(command.c_str());
+		System::exec(command);
 
 		exit(0);
 	}
 }
 
-std::string System::exec(std::string shellCommand) {
+std::string System::execAndGetOutput(std::string shellCommand) {
 	std::string result = "";
 
 	FILE* file = popen(shellCommand.c_str(), "r");
@@ -186,4 +183,8 @@ std::string System::exec(std::string shellCommand) {
 	pclose(file);
 
 	return result;
+}
+
+int System::exec(std::string shellCommand) {
+	return system(shellCommand.c_str());
 }
