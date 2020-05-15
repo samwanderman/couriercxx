@@ -148,11 +148,17 @@ int System::releaseSingleton(std::string uid) {
 }
 
 void System::selfUpdate(std::string path) {
-	char command[256];
-	memset(command, 0, sizeof(command));
-	snprintf(command, 255, "dpkg -i %s &", path.c_str());
+	Log::debug("System.selfUpdate(%s)", path.c_str());
 
-	system(command);
+	if (fork() == 0) {
+		std::string command = "dpkg -i ";
+		command.append(path);
+		//command.append(" &");
+
+		system(command.c_str());
+
+		exit(0);
+	}
 }
 
 std::string System::exec(std::string shellCommand) {
