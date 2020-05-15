@@ -284,3 +284,13 @@ void PropertyFile::setString(std::string name, std::string value) {
 	properties.insert(std::pair<std::string, std::string>(name, value));
 	save();
 }
+
+std::map<std::string, std::string>& PropertyFile::getProperties() {
+	return properties;
+}
+
+int PropertyFile::setProperties(std::map<std::string, std::string>& properties) {
+	this->properties = properties;
+
+	return 0;
+}

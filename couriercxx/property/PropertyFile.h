@@ -263,9 +263,23 @@ public:
 	 */
 	void setBool(std::string paramName, bool value);
 
-private:
-	std::string path;
-	std::map<std::string, std::string> properties;
+	/**
+	 * Get properties
+	 *
+	 * \return properties
+	 */
+	std::map<std::string, std::string>& getProperties();
+
+	/**
+	 * Set properties
+	 *
+	 * \param[in] properties - properties
+	 *
+	 * \return
+	 * 			- 0 if success
+	 * 			- -1 if error
+	 */
+	int setProperties(std::map<std::string, std::string>& properties);
 
 	/**
 	 * Save properties
@@ -280,6 +294,10 @@ private:
 	 * \return - 0 if success, -1 if error
 	 */
 	int load();
+
+private:
+	std::string path;
+	std::map<std::string, std::string> properties;
 };
 
 #endif /* COURIERCXX_PROPERTY_PROPERTYFILE_H_ */
