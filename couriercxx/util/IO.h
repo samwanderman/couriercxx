@@ -20,40 +20,60 @@ public:
 	/**
 	 * Write data to file
 	 *
-	 * \param[in] string path - path to file
-	 * \param[in] const uint8_t* buffer - pointer to buffer
-	 * \param[in] uint32_t bufferSize - size of buffer
+	 * \param[in] path			- path to file
+	 * \param[in] buffer		- pointer to buffer
+	 * \param[in] bufferSize	- size of buffer
 	 *
-	 * \return number of written bytes if success, -1 if error
+	 * \return
+	 * 			- number of written bytes if success
+	 * 			- -1 if error
 	 */
 	static int writeTo(std::string path, const uint8_t* buffer, uint32_t bufferSize);
 
 	/**
 	 * Read data from file
 	 *
-	 * \param[in] string path - path to file
-	 * \param[out] uint8_t* buffer - pointer to buffer
-	 * \param[in] uint32_t bufferSize - size of buffer
+	 * \param[in]	path		- path to file
+	 * \param[out]	buffer		- pointer to buffer
+	 * \param[in]	bufferSize	- size of buffer
 	 *
-	 * \return number of read bytes if success, -1 if error
+	 * \return
+	 * 			- number of read bytes if success
+	 * 			- -1 if error
 	 */
 	static int readFrom(std::string path, uint8_t* buffer, uint32_t bufferSize);
 
 	/**
+	 * Copy file
+	 *
+	 * \param[in] src - source file
+	 * \param[in] dst - destination file
+	 *
+	 * \return
+	 * 			- 0 if success
+	 * 			- -1 if error
+	 */
+	static int copyFile(std::string src, std::string dst);
+
+	/**
 	 * Check if file exists
 	 *
-	 * \param[in] string path - path to file
+	 * \param[in] path - path to file
 	 *
-	 * \return true - file exists, false - file not exists
+	 * \return
+	 * 			- true	- file exists
+	 * 			- false - file not exists
 	 */
 	static bool exists(std::string path);
 
 	/**
 	 * Get file size
 	 *
-	 * \param[in] std::string path - path to file
+	 * \param[in] path - path to file
 	 *
-	 * \return int - size of file if success, -1 if error
+	 * \return
+	 * 			- size of file if success
+	 * 			- -1 if error
 	 */
 	static int getSize(std::string path);
 

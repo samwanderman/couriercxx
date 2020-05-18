@@ -55,6 +55,18 @@ int IO::readFrom(std::string path, uint8_t* buffer, uint32_t bufferSize) {
 	return bytesRead;
 }
 
+int IO::copyFile(std::string src, std::string dst) {
+	int size = getSize(src);
+
+	uint8_t buffer[size];
+
+	if (readFrom(src, buffer, size) == -1) {
+		return -1;
+	}
+
+	return writeTo(dst, buffer, size);
+}
+
 bool IO::exists(std::string path) {
 	struct stat buffer;
 	return stat(path.c_str(), &buffer) == 0;
