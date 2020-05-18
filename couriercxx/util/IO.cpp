@@ -16,7 +16,7 @@
 #include "System.h"
 
 int IO::writeTo(std::string path, const uint8_t* buffer, uint32_t bufferSize) {
-	int fd = ::open(path.c_str(), O_WRONLY | O_CREAT, 0755);
+	int fd = ::open(path.c_str(), O_WRONLY | O_CREAT | O_TRUNC, 0755);
 	if (fd == -1) {
 		return -1;
 	}

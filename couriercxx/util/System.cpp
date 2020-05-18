@@ -60,7 +60,8 @@ int System::restartNetwork() {
 
 int System::reboot() {
 #ifndef _WIN32
-	return ::reboot(RB_AUTOBOOT);
+//	return ::reboot(RB_AUTOBOOT);
+	return System::exec("reboot");
 #else
 	return 0;
 #endif
@@ -151,15 +152,11 @@ int System::releaseSingleton(std::string uid) {
 void System::selfUpdate(std::string path) {
 	Log::debug("System.selfUpdate(%s)", path.c_str());
 
-	if (fork() == 0) {
-		std::string command = "dpkg -i ";
-		command.append(path);
-		//command.append(" &");
+	std::string command = "echo \"dpkg -i ";
+	command.append(path);
+	command.append("\" | at now");
 
-		System::exec(command);
-
-		exit(0);
-	}
+	System::exec(command);
 }
 
 std::string System::execAndGetOutput(std::string shellCommand) {
@@ -190,5 +187,10 @@ std::string System::execAndGetOutput(std::string shellCommand) {
 }
 
 int System::exec(std::string shellCommand) {
-	return system(shellCommand.c_str());
+	Log::debug("System.exec('%s')", shellCommand.c_str());
+
+//	return system(shellCommand.c_str());
+	execAndGetOutput(shellCommand);
+
+	return 0;
 }
