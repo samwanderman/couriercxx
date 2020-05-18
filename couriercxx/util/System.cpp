@@ -51,7 +51,11 @@ int System::restartService(std::string name) {
 }
 
 int System::restartNetwork() {
-	return System::exec("systemctl restart networking");
+//	return System::exec("systemctl restart networking");
+	System::exec("ifdown -a");
+	System::exec("ifup -a");
+
+	return 0;
 }
 
 int System::reboot() {
