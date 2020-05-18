@@ -16,7 +16,7 @@
 #include "System.h"
 
 int IO::writeTo(std::string path, const uint8_t* buffer, uint32_t bufferSize) {
-	int fd = ::open(path.c_str(), O_WRONLY | O_CREAT, 0750);
+	int fd = ::open(path.c_str(), O_WRONLY | O_CREAT, 0755);
 	if (fd == -1) {
 		return -1;
 	}
@@ -85,7 +85,7 @@ int IO::mkdir(std::string path) {
 
 	System::exec(cmd);
 
-	cmd = "chmod 750 ";
+	cmd = "chmod 755 ";
 	cmd.append(path.c_str());
 	System::exec(cmd);
 
