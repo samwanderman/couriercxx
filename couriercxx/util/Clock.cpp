@@ -11,6 +11,7 @@
 #include <chrono>
 #include <cstring>
 #include <ctime>
+#include <sys/time.h>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -134,3 +135,14 @@ void Clock::setTime(Time newTime) {
 #endif
 }
 
+void Clock::setTime(Time time, int32_t timezone) {
+	struct timeval t;
+	t.tv_usec	= 0;
+	t.tv_sec	= time.getTimestamp();
+
+	struct timezone tz;
+	tz.tz_dsttime = 0;
+	tz.tz_minuteswest = timezone * 60;
+
+	settimeofday(&t, &tz);
+}

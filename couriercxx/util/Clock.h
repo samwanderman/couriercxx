@@ -23,7 +23,7 @@ struct Time {
 	/**
 	 * Constructor
 	 *
-	 * \param[in] uint64_t timestamp - timestamp in msec
+	 * \param[in] timestamp - timestamp in msec
 	 */
 	Time(uint64_t timestamp);
 
@@ -75,7 +75,7 @@ struct Time {
 	/**
 	 * Get timestamp
 	 *
-	 * \return uint64_t - timestamp
+	 * \return timestamp
 	 */
 	uint64_t getTimestamp();
 };
@@ -89,44 +89,52 @@ public:
 	/**
 	 * Get current timestamp in milliseconds
 	 *
-	 * \return uint64_t timestamp in msec
+	 * \return timestamp in msec
 	 */
 	static uint64_t getTimestamp();
 
 	/**
 	 * Get current timestamp in microseconds
 	 *
-	 * \return uint64_t timestamp in microsec
+	 * \return timestamp in microsec
 	 */
 	static uint64_t getTimestampExt();
 
 	/**
 	 * Get timezone offset in hours
 	 *
-	 * \return int32_t timezone offset
+	 * \return timezone offset
 	 */
 	static int32_t getTimezoneOffset();
 
 	/**
 	 * Get minutes from timestamp
 	 *
-	 * \return int32_t - minutes from day start
+	 * \return minutes from day start
 	 */
 	static int32_t getDayMinutesFromTimestamp(uint64_t timestamp);
 
 	/**
 	 * Get system time
 	 *
-	 * \return Time - system time in UTC
+	 * \return system time in UTC
 	 */
 	static Time getTime();
 
 	/**
 	 * Set system time
 	 *
-	 * \param[in] Time time - time in UTC
+	 * \param[in] time - time in UTC
 	 */
 	static void setTime(Time time);
+
+	/**
+	 * Set system time
+	 *
+	 * \param[in] time		- time in UTC
+	 * \param[in] timezone	- timezone
+	 */
+	static void setTime(Time time, int32_t timezone);
 };
 
 #endif /* COURIERCXX_UTIL_CLOCK_H_ */
