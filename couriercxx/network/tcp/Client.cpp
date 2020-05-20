@@ -6,30 +6,58 @@
  *       Email: sam-wanderman@yandex.ru
  */
 
-#include "../../network/tcp/Client.h"
-
-#ifdef _WIN32
-#else
+#include "Client.h"
 
 #include <arpa/inet.h>
+#include <event2/buffer.h>
+#include <event2/bufferevent.h>
+#include <event2/event.h>
+#include <event2/util.h>
 #include <netinet/in.h>
+#include <netinet/tcp.h>
 #include <sys/socket.h>
-
-#endif
-
-#include <unistd.h>
 #include <cstring>
-#include <vector>
+#include <iterator>
+#include <thread>
 
-#ifdef DEBUG
 #include "../../logger/Log.h"
-#endif
 
 namespace TCP {
 
+uint64_t totalRead = 0;
+
+static void readCallback(struct bufferevent* buffEvent, void* ctx) {
+	Log::debug("TCP.Client.readCallback()");
+
+	Client* self = reinterpret_cast<Client*>(ctx);
+
+	struct evbuffer *inputBuffer	= bufferevent_get_input(buffEvent);
+	uint32_t		len				= evbuffer_get_length(inputBuffer);
+
+	totalRead += len;
+
+	std::vector<uint8_t> bytes(len);
+
+	int bytesRead = evbuffer_remove(inputBuffer, &bytes[0], len);
+
+	self->addData(bytes);
+}
+
+static void eventCallback(struct bufferevent *buffEvent, short events, void *ctx) {
+	Log::debug("TCP.Client.eventCallback()");
+
+	if (events & BEV_EVENT_CONNECTED) {
+		evutil_socket_t fd = bufferevent_getfd(buffEvent);
+		int one = 1;
+		setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, &one, sizeof(one));
+	} else if (events & BEV_EVENT_ERROR) {
+		bufferevent_free(buffEvent);
+	}
+}
+
 Client::Client(std::string ip, uint16_t port) {
-	this->ip = ip;
-	this->port = port;
+	this->ip	= ip;
+	this->port	= port;
 }
 
 Client::~Client() { }
@@ -87,27 +115,41 @@ int Client::open() {
 
 #else
 
-	socketFd = socket(AF_INET, SOCK_STREAM, 0);
-	if (socketFd == -1) {
-		return -1;
-	}
+	auto func = [this]() {
+		base = event_base_new();
+		if (!base) {
+			close();
 
-	struct sockaddr_in servAddr;
-	memset(&servAddr, 0, sizeof(servAddr));
-	servAddr.sin_family = AF_INET;
-	servAddr.sin_port = htons(port);
+			return;
+		}
 
-	if (inet_pton(AF_INET, ip.c_str(), &servAddr.sin_addr) != 1) {
-		close();
+		struct sockaddr_in servAddr;
+		memset(&servAddr, 0, sizeof(servAddr));
+		servAddr.sin_family = AF_INET;
+		servAddr.sin_port = htons(port);
 
-		return -1;
-	}
+		if (inet_pton(AF_INET, ip.c_str(), &servAddr.sin_addr) != 1) {
+			close();
 
-	if (connect(socketFd, (struct sockaddr*) &servAddr, sizeof(servAddr)) == -1) {
-		close();
+			return;
+		}
 
-		return -1;
-	}
+		bufferEvent = bufferevent_socket_new(base, -1, BEV_OPT_CLOSE_ON_FREE);
+		bufferevent_setcb(bufferEvent, readCallback, nullptr, eventCallback, this);
+		bufferevent_enable(bufferEvent, EV_READ | EV_WRITE);
+
+		if (bufferevent_socket_connect(bufferEvent,(struct sockaddr *) &servAddr, sizeof(servAddr)) < 0) {
+			Log::error("bufferevent_socket_connect() error");
+
+			close();
+
+			return;
+		}
+
+		event_base_dispatch(base);
+	};
+	std::thread th(func);
+	th.detach();
 
 #endif
 
@@ -128,11 +170,20 @@ int Client::close() {
 
 	opened = false;
 
-	if (socketFd != -1) {
-		::close(socketFd);
+	bytesVariable.notify_all();
+
+	if (base != nullptr) {
+		struct timeval time;
+		time.tv_sec		= 0;
+		time.tv_usec	= 0;
+		event_base_loopexit(base, &time);
+		base = nullptr;
 	}
 
-	socketFd = -1;
+	if (bufferEvent != nullptr) {
+		bufferevent_free(bufferEvent);
+		bufferEvent = nullptr;
+	}
 
 #endif
 
@@ -147,7 +198,9 @@ int Client::write(const uint8_t* buffer, uint32_t bufferSize) {
 
 #else
 
-	int res = ::write(socketFd, buffer, bufferSize);
+	if (evbuffer_add(bufferevent_get_output(bufferEvent), buffer, bufferSize) == -1) {
+		return -1;
+	}
 
 #ifdef DEBUG
 	Log::log("> ");
@@ -157,7 +210,7 @@ int Client::write(const uint8_t* buffer, uint32_t bufferSize) {
 	Log::log("\r\n");
 #endif
 
-	return res;
+	return bufferSize;
 
 #endif
 
@@ -170,6 +223,7 @@ int Client::write(std::list<uint8_t>& buffer) {
 }
 
 int Client::read(uint8_t* buffer, uint32_t bufferSize) {
+	Log::debug("Client.read()");
 
 #ifdef _WIN32
 
@@ -177,7 +231,20 @@ int Client::read(uint8_t* buffer, uint32_t bufferSize) {
 
 #else
 
-	int res = ::read(socketFd, buffer, bufferSize);
+	std::unique_lock<decltype(bytesMutex)> lock(bytesMutex);
+
+	while (bytes.size() == 0) {
+		bytesVariable.wait(lock);
+
+		if (!isOpen()) {
+			return -1;
+		}
+	}
+
+	uint32_t min = bufferSize < bytes.size() ? bufferSize: bytes.size();
+
+	memmove(buffer, &bytes[0], min);
+	bytes.erase(bytes.begin(), bytes.begin() + min);
 
 #ifdef DEBUG
 	Log::log("< ");
@@ -187,7 +254,7 @@ int Client::read(uint8_t* buffer, uint32_t bufferSize) {
 	Log::log("\r\n");
 #endif
 
-	return res;
+	return min;
 
 #endif
 
@@ -195,6 +262,12 @@ int Client::read(uint8_t* buffer, uint32_t bufferSize) {
 
 bool Client::isOpen() {
 	return opened;
+}
+
+void Client::addData(std::vector<uint8_t>& data) {
+	std::lock_guard<decltype(bytesMutex)> lock(bytesMutex);
+	bytes.insert(bytes.end(), data.begin(), data.end());
+	bytesVariable.notify_all();
 }
 
 } /* namespace TCP */

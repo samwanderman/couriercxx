@@ -97,6 +97,8 @@ int Server::open() {
 
 		base = event_base_new();
 		if (!base) {
+			running = false;
+
 			return -1;
 		}
 

@@ -10,10 +10,16 @@
 #define COURIERCXX_NETWORK_TCP_CLIENT_H_
 
 #include <cstdint>
+#include <condition_variable>
 #include <list>
+#include <mutex>
 #include <string>
+#include <vector>
 
 #include "../../connector/IConnectorBase.h"
+
+struct bufferevent;
+struct event_base;
 
 #ifdef _WIN32
 
@@ -103,18 +109,31 @@ public:
 	 */
 	bool isOpen();
 
+	/**
+	 * Add data
+	 *
+	 * \param[in] data - data
+	 */
+	void addData(std::vector<uint8_t>& data);
+
 private:
-	std::string	ip;
-	uint16_t	port	= 0;
-	bool		opened	= false;
+	std::string				ip				= "";
+	uint16_t				port			= 0;
+
+	bool					opened			= false;
+
+	struct event_base		*base			= nullptr;
+	struct bufferevent		*bufferEvent	= nullptr;
+
+	std::vector<uint8_t>	bytes;
+	std::mutex				bytesMutex;
+	std::condition_variable	bytesVariable;
 
 #ifdef _WIN32
 
-	SOCKET		socketFd = INVALID_SOCKET;
+	SOCKET				socketFd	= INVALID_SOCKET;
 
 #else
-
-	int			socketFd = -1;
 
 #endif
 
