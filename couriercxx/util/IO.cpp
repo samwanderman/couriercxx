@@ -81,8 +81,7 @@ int IO::getSize(std::string path) {
 	int size = -1;
 
 	fseek(fd, 0, SEEK_END);
-	size = ftell(fd);
-
+	size = static_cast<int>(ftell(fd));
 
 	if (fclose(fd) == -1) {
 		return -1;
