@@ -24,7 +24,7 @@
 
 namespace TCP {
 
-#define BUFFER_SIZE			1024
+uint64_t totalSize = 0;
 
 void echoReadCallback(struct bufferevent *buffEvent, void *arg) {
 	Log::debug("TCP.Server.echoReadCallback()");
@@ -37,7 +37,6 @@ void echoReadCallback(struct bufferevent *buffEvent, void *arg) {
 	std::vector<uint8_t> bytes(len);
 
 	int bytesRead = evbuffer_remove(inputBuffer, &bytes[0], len);
-	Log::debug("read %i bytes", bytesRead);
 
 	self->getCallback()(self, static_cast<int32_t>(bufferevent_getfd(buffEvent)), bytes);
 }
@@ -152,11 +151,21 @@ int Server::close() {
 }
 
 int Server::write(int32_t clientFd, std::vector<uint8_t>& buffer) {
-	return ::write(clientFd, &buffer[0], buffer.size());
+	//return ::send(clientFd, &buffer[0], buffer.size(), 0);
+	auto it = connectedClients.find(clientFd);
+	if (it == connectedClients.end()) {
+		return -1;
+	}
+
+	if (evbuffer_add(bufferevent_get_output(it->second), &buffer[0], buffer.size()) == -1) {
+		return -1;
+	}
+
+	return buffer.size();
 }
 
 int Server::read(int32_t clientFd, std::vector<uint8_t>& buffer) {
-	return ::read(clientFd, &buffer[0], buffer.size());
+	return ::recv(clientFd, &buffer[0], buffer.size(), 0);
 }
 
 int Server::write(std::vector<uint8_t>& buffer) {
