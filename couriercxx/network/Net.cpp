@@ -66,9 +66,9 @@ int Net::getLocalIPAddr(std::string& addr) {
 		return -1;
 	}
 
-	char name[15];
-	memset(name, 0, 15 * sizeof(char));
-	snprintf(name, 15, "%hu.%hu.%hu.%hu", address.ip[0], address.ip[1], address.ip[2], address.ip[3]);
+	char name[32];
+	memset(name, 0, 32 * sizeof(char));
+	snprintf(name, 31, "%hu.%hu.%hu.%hu", address.ip[0], address.ip[1], address.ip[2], address.ip[3]);
 
 	addr = std::string((char*) name);
 
