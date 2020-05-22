@@ -1,3 +1,8 @@
+### Version 0.8.1.0
+[+] added conversion error exception
+
+[*] refactored TCP.client() and TCP.server() 
+
 ### Version 0.8.0.0
 [*] System module refactoring
 

@@ -201,6 +201,20 @@ public:
 	static int writeInt64LE(int64_t value, uint8_t* buffer, uint32_t pos);
 
 	/**
+	 * Write string to buffer
+	 *
+	 * \param[in] str - string to write
+	 *
+	 * \param[in, out]	buffer	- pointer to buffer
+	 * \param[in]		pos		- position to write
+	 *
+	 * \return
+	 * 			- number of written bytes if success
+	 * 			- -1 if error
+	 */
+	static int writeString(std::string str, uint8_t* buffer, uint32_t pos);
+
+	/**
 	 * Write uint8_t value to buffer in ascii
 	 *
 	 * \param[in]		value	- value
@@ -521,6 +535,16 @@ public:
 	 * \return value
 	 */
 	static int64_t readInt64LE(const uint8_t* buffer, uint32_t pos);
+
+	/**
+	 * Read string from buffer
+	 *
+	 * \param[in]	buffer	- pointer to buffer
+	 * \param[in]	pos		- read start position
+	 *
+	 * \return value
+	 */
+	static std::string readString(const uint8_t* buffer, uint32_t pos);
 
 	/**
 	 * Read uint8_t value from buffer from ascii

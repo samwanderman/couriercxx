@@ -17,6 +17,7 @@ RM := rm -rf
 -include couriercxx/network/subdir.mk
 -include couriercxx/logger/subdir.mk
 -include couriercxx/image/subdir.mk
+-include couriercxx/exception/subdir.mk
 -include couriercxx/event/event/subdir.mk
 -include couriercxx/event/subdir.mk
 -include couriercxx/device/bluetooth/subdir.mk

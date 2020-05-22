@@ -38,6 +38,7 @@ couriercxx/device \
 couriercxx/device/bluetooth \
 couriercxx/event \
 couriercxx/event/event \
+couriercxx/exception \
 couriercxx/image \
 couriercxx/logger \
 couriercxx/network \

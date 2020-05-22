@@ -35,8 +35,7 @@ void echoReadCallback(struct bufferevent *buffEvent, void *arg) {
 	uint32_t len = evbuffer_get_length(inputBuffer);
 
 	std::vector<uint8_t> bytes(len);
-
-	int bytesRead = evbuffer_remove(inputBuffer, &bytes[0], len);
+	evbuffer_remove(inputBuffer, &bytes[0], len);
 
 	self->getCallback()(self, static_cast<int32_t>(bufferevent_getfd(buffEvent)), bytes);
 }

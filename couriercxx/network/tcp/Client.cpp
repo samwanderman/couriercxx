@@ -37,8 +37,7 @@ static void readCallback(struct bufferevent* buffEvent, void* ctx) {
 	totalRead += len;
 
 	std::vector<uint8_t> bytes(len);
-
-	int bytesRead = evbuffer_remove(inputBuffer, &bytes[0], len);
+	evbuffer_remove(inputBuffer, &bytes[0], len);
 
 	self->addData(bytes);
 }

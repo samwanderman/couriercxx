@@ -9,6 +9,7 @@
 #include "String.h"
 
 #include <cstring>
+#include <vector>
 
 uint8_t writeASCII(uint8_t hex) {
 	hex = hex & 0xf;
@@ -131,6 +132,19 @@ int String::writeInt64LE(int64_t value, uint8_t* buffer, uint32_t pos) {
 	}
 
 	return sizeof(value);
+}
+
+int String::writeString(std::string str, uint8_t* buffer, uint32_t pos) {
+	std::vector<uint8_t> data(str.begin(), str.end());
+
+	uint32_t i = 0;
+	for (; i < data.size(); i++) {
+		buffer[pos + i] = data[i];
+	}
+
+	buffer[pos + i] = 0;
+
+	return i;
 }
 
 int String::writeUInt8ASCII(uint8_t value, uint8_t* buffer, uint32_t pos) {
@@ -363,6 +377,19 @@ int64_t String::readInt64LE(const uint8_t* buffer, uint32_t pos) {
 	}
 
 	return (int64_t) value;
+}
+
+std::string String::readString(const uint8_t* buffer, uint32_t pos) {
+	std::string str;
+	uint32_t i = 0;
+
+	while (buffer[pos + i] != 0) {
+		str.push_back(buffer[pos + i]);
+
+		i++;
+	}
+
+	return str;
 }
 
 uint8_t String::readUInt8ASCII(const uint8_t* buffer, uint32_t pos) {
