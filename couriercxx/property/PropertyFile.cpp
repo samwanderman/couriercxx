@@ -294,3 +294,15 @@ int PropertyFile::setProperties(std::map<std::string, std::string>& properties) 
 
 	return 0;
 }
+
+int PropertyFile::mergeProperties(std::map<std::string, std::string>& props) {
+	auto it = props.begin();
+
+	while (it != props.end()) {
+		properties[it->first] = it->second;
+
+		it++;
+	}
+
+	return 0;
+}

@@ -282,6 +282,17 @@ public:
 	int setProperties(std::map<std::string, std::string>& properties);
 
 	/**
+	 * Merge properties
+	 *
+	 * \param[in] properties - properties
+	 *
+	 * \return
+	 * 			- 0 if success
+	 * 			- -1 if error
+	 */
+	int mergeProperties(std::map<std::string, std::string>& properties);
+
+	/**
 	 * Save properties
 	 *
 	 * \return - 0 if success, -1 if error

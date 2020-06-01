@@ -1,3 +1,6 @@
+### Version 0.8.2.0
+[+] added PropertyFile.mergeProperties() method
+
 ### Version 0.8.1.0
 [+] added conversion error exception
 
