@@ -11,9 +11,12 @@
 
 #include <cstdint>
 
-static const uint8_t TYPE_SERIAL_PORT			= 1;
-static const uint8_t TYPE_I2C					= 2;
-static const uint8_t TYPE_GPIO					= 3;
-static const uint8_t TYPE_DOOR_CONTROLLER_BUS	= 4;
+typedef uint8_t ConnectionType;
+
+static const ConnectionType CONNECTION_TYPE_UNDEFINED	= 0;
+static const ConnectionType CONNECTION_TYPE_SERIAL		= 1;
+static const ConnectionType CONNECTION_TYPE_I2C			= 2;
+static const ConnectionType CONNECTION_TYPE_GPIO		= 3;
+static const ConnectionType CONNECTION_TYPE_SERIAL_BUS	= 4;
 
 #endif /* COURIERCXX_CONNECTION_CONNECTIONTYPE_H_ */
