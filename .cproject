@@ -59,6 +59,8 @@
                                 								
                                 <option id="gnu.c.compiler.option.dialect.flags.1570587280" name="Other dialect flags" superClass="gnu.c.compiler.option.dialect.flags" useByScannerDiscovery="true" value="" valueType="string"/>
                                 								
+                                <option id="gnu.c.compiler.option.misc.pic.1760779250" superClass="gnu.c.compiler.option.misc.pic" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+                                								
                                 <inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1941810010" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
                                 							
                             </tool>
@@ -72,6 +74,8 @@
                                 <option id="gnu.cpp.compiler.option.dialect.std.911572342" name="Language standard" superClass="gnu.cpp.compiler.option.dialect.std" useByScannerDiscovery="true" value="gnu.cpp.compiler.dialect.c++1y" valueType="enumerated"/>
                                 								
                                 <option id="gnu.cpp.compiler.option.dialect.flags.521696202" name="Other dialect flags" superClass="gnu.cpp.compiler.option.dialect.flags" useByScannerDiscovery="true" value="" valueType="string"/>
+                                								
+                                <option id="gnu.cpp.compiler.option.other.pic.360917702" superClass="gnu.cpp.compiler.option.other.pic" useByScannerDiscovery="false" value="true" valueType="boolean"/>
                                 								
                                 <inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1897319021" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
                                 							
