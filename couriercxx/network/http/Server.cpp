@@ -42,6 +42,7 @@ int Server::start() {
 
 		server = evhttp_new(eventLoop);
 		if (evhttp_bind_socket(server, config.host.c_str(), config.port) == -1) {
+			perror("");
 			Log::error("Server.start() error");
 
 			evhttp_free(server);

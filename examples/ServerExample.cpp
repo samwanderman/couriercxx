@@ -8,6 +8,12 @@
 int main(int ac, char** av) {
 	Log::setAppName(&av[0][2]);
 
+	if (ac < 3) {
+		Log::info("Usage:\r\n$ %s host port", av[0]);
+
+		return 0;
+	}
+
 	auto func = [] (HTTP::Request& request) {
 		Log::debug("Server.onRequest()");
 		char str[256];
@@ -18,8 +24,8 @@ int main(int ac, char** av) {
 	};
 
 	HTTP::Server::ServerConfig config;
-	config.host = "127.0.0.1";
-	config.port = 8888;
+	config.host = av[1];
+	config.port = atoi(av[2]);
 	HTTP::Server server(config, func);
 	int res = server.start();
 
