@@ -8,6 +8,8 @@
 
 #include "Server.h"
 
+#ifndef _WIN32
+
 #include "../../logger/Log.h"
 
 #include <event2/event.h>
@@ -94,3 +96,5 @@ int Server::stop() {
 }
 
 };
+
+#endif

@@ -8,6 +8,8 @@
 
 #include "Server.h"
 
+#ifndef _WIN32
+
 #include <event2/buffer.h>
 #include <event2/event.h>
 #include <event2/listener.h>
@@ -193,3 +195,5 @@ bool Server::isRunning() {
 }
 
 } /* namespace TCP */
+
+#endif

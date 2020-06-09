@@ -9,6 +9,9 @@
 #ifndef COURIERCXX_DB_POSTGRESCONNECTOR_H_
 #define COURIERCXX_DB_POSTGRESCONNECTOR_H_
 
+// FIXME - add postgresql support for windows
+#ifndef _WIN32
+
 #include <pqxx/connection>
 #include <cstdint>
 #include <list>
@@ -129,5 +132,7 @@ private:
 
 	bool opened = false;
 };
+
+#endif
 
 #endif /* COURIERCXX_DB_POSTGRESCONNECTOR_H_ */

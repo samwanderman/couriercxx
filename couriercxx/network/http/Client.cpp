@@ -10,6 +10,8 @@
 
 #include "Client.h"
 
+#ifndef _WIN32
+
 #include <event2/bufferevent.h>
 #include <event2/event.h>
 #include <event2/http.h>
@@ -96,3 +98,5 @@ void Client::clean() {
 }
 
 };
+
+#endif

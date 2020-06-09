@@ -9,6 +9,8 @@
 #ifndef COURIERCXX_DB_VALUE_H_
 #define COURIERCXX_DB_VALUE_H_
 
+#ifndef _WIN32
+
 #include <pqxx/binarystring.hxx>
 #include <cstdint>
 #include <typeindex>
@@ -63,5 +65,7 @@ const std::type_index typeArray(typeid(ArrayValue));
 const std::type_index typeString(typeid(StringValue));
 
 };
+
+#endif
 
 #endif /* COURIERCXX_DB_VALUE_H_ */

@@ -8,6 +8,8 @@
 
 #include "../../network/http/Request.h"
 
+#ifndef _WIN32
+
 #include <event2/buffer.h>
 #include <event2/buffer_compat.h>
 #include <event2/http.h>
@@ -69,3 +71,5 @@ uint32_t Request::getInputBufferSize() const {
 }
 
 };
+
+#endif

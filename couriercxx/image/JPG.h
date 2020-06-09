@@ -9,6 +9,8 @@
 #ifndef COURIERCXX_IMAGE_JPG_H_
 #define COURIERCXX_IMAGE_JPG_H_
 
+#ifndef _WIN32
+
 #include <cstdint>
 
 namespace Image {
@@ -65,5 +67,7 @@ private:
 };
 
 } /* namespace Image */
+
+#endif
 
 #endif /* COURIERCXX_IMAGE_JPG_H_ */

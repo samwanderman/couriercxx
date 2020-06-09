@@ -9,6 +9,8 @@
 #ifndef COURIERCXX_DEVICE_BLUETOOTH_BLUETOOTHDEVICE_H_
 #define COURIERCXX_DEVICE_BLUETOOTH_BLUETOOTHDEVICE_H_
 
+#ifndef _WIN32
+
 #include <cstdint>
 #include <string>
 
@@ -96,5 +98,7 @@ private:
 	uint32_t type = 0;
 	int sock = -1;
 };
+
+#endif
 
 #endif /* COURIERCXX_DEVICE_BLUETOOTH_BLUETOOTHDEVICE_H_ */

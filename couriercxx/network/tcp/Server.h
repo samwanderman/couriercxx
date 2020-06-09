@@ -9,6 +9,8 @@
 #ifndef COURIERCXX_NETWORK_TCP_SERVER_H_
 #define COURIERCXX_NETWORK_TCP_SERVER_H_
 
+#ifndef _WIN32
+
 #include <cstdint>
 #include <event2/bufferevent.h>
 #include <functional>
@@ -134,5 +136,7 @@ private:
 };
 
 } /* namespace TCP */
+
+#endif
 
 #endif /* COURIERCXX_NETWORK_TCP_SERVER_H_ */

@@ -60,7 +60,6 @@ int System::restartNetwork() {
 
 int System::reboot() {
 #ifndef _WIN32
-//	return ::reboot(RB_AUTOBOOT);
 	return System::exec("reboot");
 #else
 	return 0;

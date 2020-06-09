@@ -9,6 +9,8 @@
 #ifndef COURIERCXX_PROPERTY_PROPERTYDATABASE_H_
 #define COURIERCXX_PROPERTY_PROPERTYDATABASE_H_
 
+#ifndef _WIN32
+
 #include <cstdint>
 #include <string>
 
@@ -269,5 +271,7 @@ public:
 private:
 	PostgresConnector* connector = nullptr;
 };
+
+#endif
 
 #endif /* COURIERCXX_PROPERTY_PROPERTYDATABASE_H_ */

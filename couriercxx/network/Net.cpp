@@ -8,12 +8,11 @@
 
 #include "../network/Net.h"
 
-#ifdef _WIN32
-#else
+#ifndef _WIN32
+
 #include <ifaddrs.h>
 #include <netdb.h>
 #include <sys/socket.h>
-#endif
 #include <cstdio>
 #include <cstring>
 #include <list>
@@ -76,11 +75,6 @@ int Net::getLocalIPAddr(std::string& addr) {
 }
 
 int Net::get(Addr &addr) {
-
-#ifdef _WIN32
-
-#else
-
 	memset(&addr, 0, sizeof(addr));
 
 	FILE* fd = fopen(DEFAULT_NET_ROUTE, "r");
@@ -143,8 +137,6 @@ int Net::get(Addr &addr) {
 
 	freeifaddrs(ifaddr);
 
-#endif
-
 	return 0;
 }
 
@@ -155,3 +147,5 @@ std::string Net::ipToStr(uint8_t ip[4]) {
 
 	return std::string(buffer);
 }
+
+#endif

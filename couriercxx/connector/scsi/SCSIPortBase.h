@@ -9,6 +9,8 @@
 #ifndef COURIERCXX_CONNECTOR_SCSI_SCSIPORTBASE_H_
 #define COURIERCXX_CONNECTOR_SCSI_SCSIPORTBASE_H_
 
+#ifndef _WIN32
+
 #include <cstdint>
 #include <string>
 
@@ -81,5 +83,7 @@ private:
 	std::string port = "";
 	int fd = -1;
 };
+
+#endif
 
 #endif /* COURIERCXX_CONNECTOR_SCSI_SCSIPORTBASE_H_ */

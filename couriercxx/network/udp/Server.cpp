@@ -8,13 +8,11 @@
 
 #include "Server.h"
 
-#ifdef _WIN32
-#else
+#ifndef _WIN32
+
 #include <arpa/inet.h>
 #include <sys/select.h>
 #include <sys/socket.h>
-#endif
-
 #include <cstdint>
 #include <unistd.h>
 #include <thread>
@@ -36,8 +34,6 @@ Server::Server(std::string ip, uint16_t port, std::function<void(Server* server,
 Server::~Server() { }
 
 int Server::open() {
-#ifdef _WIN32
-#else
 	fd = socket(AF_INET, SOCK_DGRAM, 0);
 	if (fd == -1) {
 		return -1;
@@ -83,7 +79,6 @@ int Server::open() {
 	};
 	std::thread th(func);
 	th.detach();
-#endif
 
 	return 0;
 }
@@ -110,21 +105,16 @@ bool Server::isRunning() {
 }
 
 int Server::read(struct sockaddr_in* clientAddr, uint32_t& clientAddrLen, uint8_t* buffer, uint32_t bufferSize) {
-#ifdef _WIN32
-	return 0;
-#else
 	int res = recvfrom(fd, buffer, bufferSize, 0, (struct sockaddr*) clientAddr, (socklen_t*) &clientAddrLen);
 	Log::warn("DATA FROM IP: %s, Port: %d", inet_ntoa(clientAddr->sin_addr), ntohs(clientAddr->sin_port));
+
 	return res;
-#endif
 }
 
 int Server::write(struct sockaddr_in* clientAddr, uint32_t clientAddrLen, const uint8_t* buffer, uint32_t bufferSize) {
-#ifdef _WIN32
-	return 0;
-#else
 	return sendto(fd, buffer, bufferSize, 0, (struct sockaddr*) clientAddr, clientAddrLen);
-#endif
 }
 
 } /* nameserver */
+
+#endif

@@ -136,6 +136,10 @@ void Clock::setTime(Time newTime) {
 }
 
 void Clock::setTime(Time time, int32_t timezone) {
+#ifdef _WIN32
+	setTime(time);
+	// TODO - set timezone
+#else
 	struct timeval t;
 	t.tv_usec	= 0;
 	t.tv_sec	= time.getTimestamp();
@@ -145,4 +149,5 @@ void Clock::setTime(Time time, int32_t timezone) {
 	tz.tz_minuteswest = timezone * 60;
 
 	settimeofday(&t, &tz);
+#endif
 }

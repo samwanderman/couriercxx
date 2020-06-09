@@ -8,6 +8,8 @@
 
 #include "Client.h"
 
+#ifndef _WIN32
+
 #include <arpa/inet.h>
 #include <event2/buffer.h>
 #include <event2/bufferevent.h>
@@ -270,3 +272,5 @@ void Client::addData(std::vector<uint8_t>& data) {
 }
 
 } /* namespace TCP */
+
+#endif

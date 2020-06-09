@@ -9,11 +9,9 @@
 #ifndef COURIERCXX_NETWORK_UDP_CLIENT_H_
 #define COURIERCXX_NETWORK_UDP_CLIENT_H_
 
-#ifdef _WIN32
-#else
-#include <netinet/in.h>
-#endif
+#ifndef _WIN32
 
+#include <netinet/in.h>
 #include <cstdint>
 #include <string>
 
@@ -84,15 +82,13 @@ private:
 	std::string			ip				= "";
 	uint16_t			port			= 0;
 	int					fd				= -1;
-
-#ifdef _WIN32
-#else
 	struct sockaddr_in	broadcastAddr	= { 0 };
-#endif
 
 	void clean();
 };
 
 } /* namespace UDP */
+
+#endif
 
 #endif /* COURIERCXX_NETWORK_UDP_CLIENT_H_ */

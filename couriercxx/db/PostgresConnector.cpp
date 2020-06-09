@@ -8,6 +8,8 @@
 
 #include "PostgresConnector.h"
 
+#ifndef _WIN32
+
 #include <pqxx/binarystring.hxx>
 #include <pqxx/connection>
 #include <pqxx/prepared_statement.hxx>
@@ -277,3 +279,6 @@ pqxx::result PostgresConnector::exec(std::string sql) {
 		throw;
 	}
 }
+
+#endif
+

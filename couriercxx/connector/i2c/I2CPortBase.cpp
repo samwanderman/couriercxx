@@ -8,12 +8,11 @@
 
 #include "I2CPortBase.h"
 
+#ifndef _WIN32
+
 #include <fcntl.h>
-#ifdef _WIN32
-#else
 #include <linux/i2c-dev.h>
 #include <sys/ioctl.h>
-#endif
 #include <unistd.h>
 
 I2CPortBase::I2CPortBase(std::string name, uint8_t addr) : IConnectorBase() {
@@ -33,10 +32,6 @@ int I2CPortBase::open() {
 		return -1;
 	}
 
-#ifdef _WIN32
-	return 0;
-#else
-
 	if (ioctl(fd, I2C_SLAVE, addr) < 0) {
 		clean();
 
@@ -44,7 +39,6 @@ int I2CPortBase::open() {
 	}
 
 	return IConnectorBase::open();
-#endif
 }
 
 int I2CPortBase::close() {
@@ -76,3 +70,5 @@ int I2CPortBase::write(const uint8_t* buffer, uint32_t bufferSize) {
 
 	return ::write(fd, buffer, bufferSize);
 }
+
+#endif

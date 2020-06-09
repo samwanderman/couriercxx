@@ -6,13 +6,11 @@
  *       Email: sam-wanderman@yandex.ru
  */
 
+#ifndef _WIN32
+
 #include "PropertyDatabase.h"
 
-#ifdef _WIN32
-#else
 #include <pqxx/pqxx>
-#endif
-
 #include <exception>
 #include <list>
 #include <typeindex>
@@ -54,8 +52,6 @@ int PropertyDatabase::close() {
 }
 
 uint8_t* PropertyDatabase::getUInt8(std::string propertyName) {
-#ifdef _WIN32
-#else
 	try {
 		const char* propName = propertyName.c_str();
 		pqxx::result result = connector->execStatement("getParamValue", DB::StringValue(&propName));
@@ -68,7 +64,6 @@ uint8_t* PropertyDatabase::getUInt8(std::string propertyName) {
 	} catch (const std::exception& exception) {
 		Log::error("%s", exception.what());
 	}
-#endif
 
 	return nullptr;
 }
@@ -78,8 +73,6 @@ void PropertyDatabase::setUInt8(std::string propertyName, uint8_t value) {
 }
 
 int8_t* PropertyDatabase::getInt8(std::string propertyName) {
-#ifdef _WIN32
-#else
 	try {
 		const char* propName = propertyName.c_str();
 		pqxx::result result = connector->execStatement("getParamValue", DB::StringValue(&propName));
@@ -92,7 +85,6 @@ int8_t* PropertyDatabase::getInt8(std::string propertyName) {
 	} catch (const std::exception& exception) {
 		Log::error("%s", exception.what());
 	}
-#endif
 
 	return nullptr;
 }
@@ -102,8 +94,6 @@ void PropertyDatabase::setInt8(std::string propertyName, int8_t value) {
 }
 
 uint16_t* PropertyDatabase::getUInt16(std::string propertyName) {
-#ifdef _WIN32
-#else
 	try {
 		const char* propName = propertyName.c_str();
 		pqxx::result result = connector->execStatement("getParamValue", DB::StringValue(&propName));
@@ -116,7 +106,6 @@ uint16_t* PropertyDatabase::getUInt16(std::string propertyName) {
 	} catch (const std::exception& exception) {
 		Log::error("%s", exception.what());
 	}
-#endif
 
 	return nullptr;
 }
@@ -126,8 +115,6 @@ void PropertyDatabase::setUInt16(std::string propertyName, uint16_t value) {
 }
 
 int16_t* PropertyDatabase::getInt16(std::string propertyName) {
-#ifdef _WIN32
-#else
 	try {
 		const char* propName = propertyName.c_str();
 		pqxx::result result = connector->execStatement("getParamValue", DB::StringValue(&propName));
@@ -140,7 +127,6 @@ int16_t* PropertyDatabase::getInt16(std::string propertyName) {
 	} catch (const std::exception& exception) {
 		Log::error("%s", exception.what());
 	}
-#endif
 
 	return nullptr;
 }
@@ -150,8 +136,6 @@ void PropertyDatabase::setInt16(std::string propertyName, int16_t value) {
 }
 
 uint32_t* PropertyDatabase::getUInt32(std::string propertyName) {
-#ifdef _WIN32
-#else
 	try {
 		const char* propName = propertyName.c_str();
 		pqxx::result result = connector->execStatement("getParamValue", DB::StringValue(&propName));
@@ -164,7 +148,6 @@ uint32_t* PropertyDatabase::getUInt32(std::string propertyName) {
 	} catch (const std::exception& exception) {
 		Log::error("%s", exception.what());
 	}
-#endif
 
 	return nullptr;
 }
@@ -174,8 +157,6 @@ void PropertyDatabase::setUInt32(std::string propertyName, uint32_t value) {
 }
 
 int32_t* PropertyDatabase::getInt32(std::string propertyName) {
-#ifdef _WIN32
-#else
 	try {
 		const char* propName = propertyName.c_str();
 		pqxx::result result = connector->execStatement("getParamValue", DB::StringValue(&propName));
@@ -188,7 +169,6 @@ int32_t* PropertyDatabase::getInt32(std::string propertyName) {
 	} catch (const std::exception& exception) {
 		Log::error("%s", exception.what());
 	}
-#endif
 
 	return nullptr;
 }
@@ -198,8 +178,6 @@ void PropertyDatabase::setInt32(std::string propertyName, int32_t value) {
 }
 
 uint64_t* PropertyDatabase::getUInt64(std::string propertyName) {
-#ifdef _WIN32
-#else
 	try {
 		const char* propName = propertyName.c_str();
 		pqxx::result result = connector->execStatement("getParamValue", DB::StringValue(&propName));
@@ -212,7 +190,6 @@ uint64_t* PropertyDatabase::getUInt64(std::string propertyName) {
 	} catch (const std::exception& exception) {
 		Log::error("%s", exception.what());
 	}
-#endif
 
 	return nullptr;
 }
@@ -222,8 +199,6 @@ void PropertyDatabase::setUInt64(std::string propertyName, uint64_t value) {
 }
 
 int64_t* PropertyDatabase::getInt64(std::string propertyName) {
-#ifdef _WIN32
-#else
 	try {
 		const char* propName = propertyName.c_str();
 		pqxx::result result = connector->execStatement("getParamValue", DB::StringValue(&propName));
@@ -236,7 +211,6 @@ int64_t* PropertyDatabase::getInt64(std::string propertyName) {
 	} catch (const std::exception& exception) {
 		Log::error("%s", exception.what());
 	}
-#endif
 
 	return nullptr;
 }
@@ -246,8 +220,6 @@ void PropertyDatabase::setInt64(std::string propertyName, int64_t value) {
 }
 
 float* PropertyDatabase::getFloat(std::string propertyName) {
-#ifdef _WIN32
-#else
 	try {
 		const char* propName = propertyName.c_str();
 		pqxx::result result = connector->execStatement("getParamValue", DB::StringValue(&propName));
@@ -260,7 +232,6 @@ float* PropertyDatabase::getFloat(std::string propertyName) {
 	} catch (const std::exception& exception) {
 		Log::error("%s", exception.what());
 	}
-#endif
 
 	return nullptr;
 }
@@ -270,8 +241,6 @@ void PropertyDatabase::setFloat(std::string propertyName, float value) {
 }
 
 double* PropertyDatabase::getDouble(std::string propertyName) {
-#ifdef _WIN32
-#else
 	try {
 		const char* propName = propertyName.c_str();
 		pqxx::result result = connector->execStatement("getParamValue", DB::StringValue(&propName));
@@ -284,7 +253,6 @@ double* PropertyDatabase::getDouble(std::string propertyName) {
 	} catch (const std::exception& exception) {
 		Log::error("%s", exception.what());
 	}
-#endif
 
 	return nullptr;
 }
@@ -294,8 +262,6 @@ void PropertyDatabase::setDouble(std::string propertyName, double value) {
 }
 
 std::string* PropertyDatabase::getString(std::string propertyName) {
-#ifdef _WIN32
-#else
 	try {
 		const char* propName = propertyName.c_str();
 		pqxx::result result = connector->execStatement("getParamValue", DB::StringValue(&propName));
@@ -308,14 +274,11 @@ std::string* PropertyDatabase::getString(std::string propertyName) {
 	} catch (const std::exception& exception) {
 		Log::error("%s", exception.what());
 	}
-#endif
 
 	return nullptr;
 }
 
 void PropertyDatabase::setString(std::string propertyName, std::string value) {
-#ifdef _WIN32
-#else
 	try {
 		const char* propName = propertyName.c_str();
 		const char* propValue = value.c_str();
@@ -323,12 +286,9 @@ void PropertyDatabase::setString(std::string propertyName, std::string value) {
 	} catch (const std::exception& exception) {
 		Log::error("%s", exception.what());
 	}
-#endif
 }
 
 bool* PropertyDatabase::getBool(std::string propertyName) {
-#ifdef _WIN32
-#else
 	try {
 		const char* propName = propertyName.c_str();
 		pqxx::result result = connector->execStatement("getParamValue", DB::StringValue(&propName));
@@ -341,10 +301,11 @@ bool* PropertyDatabase::getBool(std::string propertyName) {
 	} catch (const std::exception& exception) {
 		Log::error("%s", exception.what());
 	}
-#endif
 	return nullptr;
 }
 
 void PropertyDatabase::setBool(std::string propertyName, bool value) {
 	setString(propertyName, std::to_string(value));
 }
+
+#endif

@@ -9,6 +9,8 @@
 #ifndef COURIERCXX_CONNECTOR_BLUETOOTH_BLUETOOTHPORTBASE_H_
 #define COURIERCXX_CONNECTOR_BLUETOOTH_BLUETOOTHPORTBASE_H_
 
+#ifndef _WIN32
+
 #include <list>
 #include <string>
 
@@ -75,5 +77,7 @@ private:
 	int fd = -1;
 	int devId = -1;
 };
+
+#endif
 
 #endif /* COURIERCXX_CONNECTOR_BLUETOOTH_BLUETOOTHPORTBASE_H_ */

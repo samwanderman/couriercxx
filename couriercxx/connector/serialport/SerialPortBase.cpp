@@ -10,9 +10,7 @@
 
 #include <fcntl.h>
 
-#ifdef _WIN32
-
-#else
+#ifndef _WIN32
 
 #include <sys/select.h>
 #include <termios.h>
@@ -532,9 +530,7 @@ bool SerialPortBase::isValid() {
 
 void SerialPortBase::clear() {
 
-#ifdef _WIN32
-
-#else
+#ifndef _WIN32
 
 	tcflush(fd, TCIOFLUSH);
 

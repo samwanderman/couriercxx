@@ -9,6 +9,8 @@
 #ifndef COURIERCXX_CONNECTOR_I2C_I2CPORTBASE_H_
 #define COURIERCXX_CONNECTOR_I2C_I2CPORTBASE_H_
 
+#ifndef _WIN32
+
 #include <cstdint>
 #include <string>
 
@@ -79,5 +81,7 @@ private:
 
 	void clean();
 };
+
+#endif
 
 #endif /* COURIERCXX_CONNECTOR_I2C_I2CPORTBASE_H_ */

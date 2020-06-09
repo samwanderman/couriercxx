@@ -6,12 +6,11 @@
  *       Email: sam-wanderman@yandex.ru
  */
 
+#ifndef _WIN32
+
 #include <errno.h>
 #include <fcntl.h>
-#ifdef _WIN32
-#else
 #include <sys/ioctl.h>
-#endif
 #include <unistd.h>
 #include <cstring>
 #include "SPIPortBase.h"
@@ -23,8 +22,6 @@ SPIPortBase::SPIPortBase(std::string path) {
 SPIPortBase::~SPIPortBase() { }
 
 int SPIPortBase::open() {
-#ifdef _WIN32
-#else
 	fd = ::open(path.c_str(), O_RDWR);
 	if (fd == -1) {
 		return -1;
@@ -83,18 +80,16 @@ int SPIPortBase::open() {
 
 		return -1;
 	}
-#endif
+
 	return 0;
 }
 
 int SPIPortBase::close() {
-#ifdef _WIN32
-#else
 	if (fd != -1) {
 		::close(fd);
 		fd = -1;
 	}
-#endif
+
 	return 0;
 }
 
@@ -103,9 +98,6 @@ int SPIPortBase::read(uint8_t* buffer, uint32_t bufferSize) {
 }
 
 int SPIPortBase::write(const uint8_t* buffer, uint32_t bufferSize) {
-#ifdef _WIN32
-	return 0;
-#else
 	uint8_t rx[bufferSize];
 	memset(rx, 0, bufferSize * sizeof(uint8_t));
 
@@ -139,5 +131,6 @@ int SPIPortBase::write(const uint8_t* buffer, uint32_t bufferSize) {
 	}
 
 	return bufferSize;
-#endif
 }
+
+#endif

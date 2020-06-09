@@ -9,6 +9,8 @@
 #ifndef COURIERCXX_NETWORK_TCP_CLIENT_H_
 #define COURIERCXX_NETWORK_TCP_CLIENT_H_
 
+#ifndef _WIN32
+
 #include <cstdint>
 #include <condition_variable>
 #include <list>
@@ -140,5 +142,7 @@ private:
 };
 
 } /* namespace TCP */
+
+#endif
 
 #endif /* COURIERCXX_NETWORK_TCP_CLIENT_H_ */

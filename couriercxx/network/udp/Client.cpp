@@ -8,13 +8,11 @@
 
 #include "Client.h"
 
-#ifdef _WIN32
-#else
+#ifndef _WIN32
+
 #include <asm-generic/socket.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
-#endif
-
 #include <cstdint>
 #include <unistd.h>
 
@@ -32,8 +30,6 @@ Client::Client(std::string ip, uint16_t port) {
 Client::~Client() { }
 
 int Client::open() {
-#ifdef _WIN32
-#else
 	fd = socket(AF_INET, SOCK_DGRAM, 0);
 	if (fd == -1) {
 		Log::error("socket() error");
@@ -57,8 +53,6 @@ int Client::open() {
 		broadcastAddr.sin_port			= htons(port);
 	}
 
-#endif
-
 	return 0;
 }
 
@@ -76,23 +70,17 @@ int Client::close() {
 }
 
 int Client::read(struct sockaddr_in* serverAddr, uint32_t* serverAddrLen, uint8_t* buffer, uint32_t bufferSize) {
-#ifdef _WIN32
-	return 0;
-#else
 	return recvfrom(fd, buffer, bufferSize, 0, (struct sockaddr*) serverAddr, (socklen_t*) serverAddrLen);
-#endif
 }
 
 int Client::write(const uint8_t* buffer, uint32_t bufferSize) {
 	if (ip.empty()) {
-#ifdef _WIN32
-		return 0;
-#else
 		return sendto(fd, buffer, bufferSize, 0, (struct sockaddr*) &broadcastAddr, sizeof(broadcastAddr));
-#endif
 	} else {
 		return 0;
 	}
 }
 
 } /* namespace UDP */
+
+#endif

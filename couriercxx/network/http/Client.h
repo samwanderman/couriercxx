@@ -9,6 +9,8 @@
 #ifndef COURIERCXX_NETWORK_HTTP_CLIENT_H_
 #define COURIERCXX_NETWORK_HTTP_CLIENT_H_
 
+#ifndef _WIN32
+
 #include <cstdint>
 #include <string>
 
@@ -77,5 +79,7 @@ private:
 };
 
 }; /* namespace HTTP */
+
+#endif
 
 #endif /* COURIERCXX_NETWORK_HTTP_CLIENT_H_ */

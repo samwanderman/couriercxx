@@ -9,10 +9,9 @@
 #ifndef COURIERCXX_NETWORK_SNIFFER_H_
 #define COURIERCXX_NETWORK_SNIFFER_H_
 
-#ifdef _WIN32
-#else
+#ifndef _WIN32
+
 #include <pcap/pcap.h>
-#endif
 #include <cstdint>
 #include <functional>
 #include <string>
@@ -49,12 +48,11 @@ public:
 private:
 	bool running = false;
 	std::mutex stopMutex;
-#ifdef _WIN32
-#else
 	pcap_t* handle = nullptr;
-#endif
 	std::string filter = "";
 	std::function<void (const uint8_t* packet, uint32_t packetSize)> callback = nullptr;
 };
+
+#endif
 
 #endif /* COURIERCXX_NETWORK_SNIFFER_H_ */

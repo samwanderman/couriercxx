@@ -8,14 +8,11 @@
 
 #include "UDPPortBase.h"
 
-#ifdef _WIN32
-#else
+#ifndef _WIN32
 #include <arpa/inet.h>
 #include <sys/socket.h>
-#endif
 #include <unistd.h>
 #include <cstring>
-
 
 UDPPortBase::UDPPortBase(std::string ip, uint16_t port) : IConnectorBase() {
 	this->ip = ip;
@@ -29,8 +26,6 @@ UDPPortBase::UDPPortBase(uint16_t port) : UDPPortBase("", port) {
 UDPPortBase::~UDPPortBase() { }
 
 int UDPPortBase::open() {
-#ifdef _WIN32
-#else
 	if (isOpen()) {
 		return -1;
 	}
@@ -57,7 +52,7 @@ int UDPPortBase::open() {
 			return -1;
 		}
 	}
-#endif
+
 	return IConnectorBase::open();
 }
 
@@ -80,12 +75,7 @@ int UDPPortBase::write(const uint8_t* buffer, uint32_t bufferSize) {
 		return -1;
 	}
 
-#ifdef _WIN32
-#else
 	return sendto(fd, buffer, bufferSize, 0, (sockaddr*) &sin, sizeof(sin));
-#endif
-
-	return 0;
 }
 
 int UDPPortBase::read(uint8_t* buffer, uint32_t bufferSize) {
@@ -93,13 +83,10 @@ int UDPPortBase::read(uint8_t* buffer, uint32_t bufferSize) {
 		return -1;
 	}
 
-#ifdef _WIN32
-	return 0;
-#else
-
 	sockaddr_in serverAddr;
 	socklen_t serverAddrSize = sizeof(serverAddr);
 
 	return recvfrom(fd, buffer, bufferSize, 0, (sockaddr*) &serverAddr, &serverAddrSize);
-#endif
 }
+
+#endif
