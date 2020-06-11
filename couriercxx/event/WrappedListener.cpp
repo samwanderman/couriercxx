@@ -25,6 +25,7 @@ WrappedListener::WrappedListener(std::function<void (const IEvent*, const Wrappe
 
 WrappedListener::WrappedListener(ListenerParams params, std::function<void (const IEvent*, const WrappedListener*)> listener) : IListener(params) {
 	this->listener = listener;
+	this->execOnce = params.execOnce;
 	enable();
 
 	if (params.timeout != (uint64_t) ~0) {
@@ -55,6 +56,8 @@ WrappedListener::WrappedListener(ListenerParams params, std::function<void (cons
 WrappedListener::~WrappedListener() {
 	running = false;
 
+	disable();
+
 	// If timeout thread running - wait while it complete
 	stopMutex.lock();
 
@@ -65,7 +68,9 @@ WrappedListener::~WrappedListener() {
 
 void WrappedListener::on(const IEvent* event) {
 	running = false;
-	disable();
+	if (execOnce) {
+		disable();
+	}
 
 	if (listener != nullptr) {
 		listener(event, this);

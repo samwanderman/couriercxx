@@ -50,8 +50,9 @@ public:
 private:
 	std::function<void (const IEvent*, const WrappedListener*)> listener = nullptr;
 
-	bool running = false;
-	std::mutex stopMutex;
+	bool		running		= false;
+	std::mutex	stopMutex;
+	bool		execOnce	= true;
 };
 
 #endif /* COURIERCXX_EVENT_WRAPPEDLISTENER_H_ */
