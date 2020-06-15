@@ -6,7 +6,6 @@
 *.bin
 *.lib
 *.exe
-.settings
 docs
 examples/*Example
 utils/*Util
