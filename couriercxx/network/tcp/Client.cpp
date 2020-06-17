@@ -205,7 +205,7 @@ int Client::write(const uint8_t* buffer, uint32_t bufferSize) {
 
 #ifdef DEBUG
 	Log::log("> ");
-	for (int i = 0; i < res; i++) {
+	for (uint32_t i = 0; i < bufferSize; i++) {
 		Log::log("%02x ", buffer[i]);
 	}
 	Log::log("\r\n");
@@ -249,7 +249,7 @@ int Client::read(uint8_t* buffer, uint32_t bufferSize) {
 
 #ifdef DEBUG
 	Log::log("< ");
-	for (int i = 0; i < res; i++) {
+	for (uint32_t i = 0; i < min; i++) {
 		Log::log("%02x ", buffer[i]);
 	}
 	Log::log("\r\n");
