@@ -75,7 +75,7 @@ int SerialPortBusDatasource::disable() {
 }
 
 int SerialPortBusDatasource::read(uint8_t* buffer, uint32_t bufferSize) {
-	Log::debug("SerialPortBusDatasource.read()");
+//	Log::debug("SerialPortBusDatasource.read()");
 
 	if (running && port->isOpen()) {
 		int res = port->read(buffer, bufferSize);
@@ -92,7 +92,7 @@ int SerialPortBusDatasource::read(uint8_t* buffer, uint32_t bufferSize) {
 }
 
 int SerialPortBusDatasource::read(uint8_t* buffer, uint32_t bufferSize, uint64_t timeout) {
-	Log::debug("SerialPortBusDatasource.read() with timeout %" PRIu64, timeout);
+//	Log::debug("SerialPortBusDatasource.read() with timeout %" PRIu64, timeout);
 
 	if (running && port->isOpen()) {
 		int res = port->read(buffer, bufferSize, timeout);
