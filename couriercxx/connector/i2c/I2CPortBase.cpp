@@ -32,10 +32,12 @@ int I2CPortBase::open() {
 		return -1;
 	}
 
+	// check addr
+	int _addr = addr;
 	std::stringstream str;
-	str << "i2cget -y 0 " << std::hex << addr;
+	str << "i2cget -y 0 0x" << std::hex << _addr;
 	std::string res = System::execAndGetOutput(str.str());
-	if (res.compare("Error: ") == 0) {
+	if (res.c_str()[0] != '0') {
 		return -1;
 	}
 
