@@ -8,6 +8,11 @@
 
 #include "I2CPortBase.h"
 
+#include <cstdint>
+#include <sstream>
+
+#include "../../util/System.h"
+
 #ifndef _WIN32
 
 #include <fcntl.h>
@@ -24,6 +29,13 @@ I2CPortBase::~I2CPortBase() { }
 
 int I2CPortBase::open() {
 	if (isOpen()) {
+		return -1;
+	}
+
+	std::stringstream str;
+	str << "i2cget -y 0 " << std::hex << addr;
+	std::string res = System::execAndGetOutput(str.str());
+	if (res.compare("Error: ") == 0) {
 		return -1;
 	}
 
