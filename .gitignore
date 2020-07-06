@@ -10,3 +10,4 @@ docs
 examples/*Example
 utils/*Util
 tests/*Test
+.settings
