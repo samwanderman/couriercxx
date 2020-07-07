@@ -8,6 +8,12 @@
 
 #include "Client.h"
 
+#include <bits/stdint-uintn.h>
+#include <bits/types/struct_timeval.h>
+#include <atomic>
+
+#include "../../util/System.h"
+
 #ifndef _WIN32
 
 #include <arpa/inet.h>
@@ -116,7 +122,10 @@ int Client::open() {
 
 #else
 
-	auto func = [this]() {
+	std::atomic<bool> ready;
+	ready = false;
+
+	auto func = [this, &ready]() {
 		base = event_base_new();
 		if (!base) {
 			close();
@@ -147,10 +156,16 @@ int Client::open() {
 			return;
 		}
 
+		ready = true;
+
 		event_base_dispatch(base);
 	};
 	std::thread th(func);
 	th.detach();
+
+	while (!ready) {
+		System::sleep(200);
+	}
 
 #endif
 
@@ -197,6 +212,8 @@ int Client::write(const uint8_t* buffer, uint32_t bufferSize) {
 
 		return 0;
 	}
+
+	std::lock_guard<decltype(writeMutex)> lock(writeMutex);
 
 #ifdef _WIN32
 

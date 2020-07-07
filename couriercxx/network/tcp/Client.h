@@ -131,6 +131,8 @@ private:
 	std::mutex				bytesMutex;
 	std::condition_variable	bytesVariable;
 
+	std::mutex				writeMutex;
+
 #ifdef _WIN32
 
 	SOCKET				socketFd	= INVALID_SOCKET;
