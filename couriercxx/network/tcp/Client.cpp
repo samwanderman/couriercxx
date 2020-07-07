@@ -192,6 +192,11 @@ int Client::close() {
 }
 
 int Client::write(const uint8_t* buffer, uint32_t bufferSize) {
+	if (bufferSize == 0) {
+		Log::warn("TCP.Client.write(): buffer size is 0");
+
+		return 0;
+	}
 
 #ifdef _WIN32
 
