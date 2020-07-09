@@ -1,3 +1,4 @@
+.settings
 *.a
 *.o
 *.d
@@ -10,4 +11,4 @@ docs
 examples/*Example
 utils/*Util
 tests/*Test
-.settings/
+
