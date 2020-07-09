@@ -23,7 +23,7 @@ public:
 	/**
 	 * Constructor
 	 *
-	 * \param[in] SerialPortBase* port - port
+	 * \param[in] port - serial port
 	 *
 	 * NOTE: port will be automatically deleted
 	 */
@@ -37,32 +37,55 @@ public:
 	/**
 	 * Enabled datasource
 	 *
-	 * \return int - 0 if success, -1 if error
+	 * \return
+	 * 		- 0 if success
+	 * 		- -1 if error
 	 */
 	int enable();
 
 	/**
-	 * Disable datasource - 0 if success, -1 if error
+	 * Disable datasource
+	 *
+	 * \return
+	 * 		- 0 if success
+	 * 		- -1 if error
 	 */
 	int disable();
 
 	/**
 	 * Read bytes from datasource
 	 *
-	 * \param[out] uint8_t* buffer - pointer to buffer
-	 * \param[in] uint32_t bufferSize - max buffer size
+	 * \param[out]	buffer		- pointer to buffer
+	 * \param[in]	bufferSize	- max buffer size
 	 *
-	 * \return int - number of read bytes if success, -1 if error
+	 * \return
+	 * 		- number of read bytes if success
+	 * 		- -1 if error
 	 */
 	int read(uint8_t* buffer, uint32_t bufferSize);
 
 	/**
+	 * Read bytes from datasource
+	 *
+	 * \param[out]	buffer		- pointer to buffer
+	 * \param[in]	bufferSize	- max buffer size
+	 * \param[in]	timeout		- read timeout
+	 *
+	 * \return
+	 * 		- number of read bytes if success
+	 * 		- -1 if error
+	 */
+	int read(uint8_t* buffer, uint32_t bufferSize, uint64_t timeout);
+
+	/**
 	 * Write bytes to datasource
 	 *
-	 * \param[in] const uint8_t* buffer - pointer to buffer
-	 * \param[in] uint32_t bufferSize - buffer size
+	 * \param[in] buffer		- pointer to buffer
+	 * \param[in] bufferSize	- buffer size
 	 *
-	 * \return int - number of written bytes if success, -1 if error
+	 * \return
+	 * 		- number of written bytes if success
+	 * 		- -1 if error
 	 */
 	int write(const uint8_t* buffer, uint32_t bufferSize);
 

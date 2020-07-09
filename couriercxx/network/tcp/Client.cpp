@@ -8,8 +8,7 @@
 
 #include "Client.h"
 
-#include <bits/stdint-uintn.h>
-#include <bits/types/struct_timeval.h>
+#include <cstdint>
 #include <atomic>
 
 #include "../../util/System.h"

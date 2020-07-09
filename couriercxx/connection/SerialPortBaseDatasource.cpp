@@ -40,6 +40,12 @@ int SerialPortBaseDatasource::read(uint8_t* buffer, uint32_t bufferSize) {
 	return port->read(buffer, bufferSize);
 }
 
+int SerialPortBaseDatasource::read(uint8_t* buffer, uint32_t bufferSize, uint64_t timeout) {
+	Log::debug("SerialPortBaseDatasource.read()");
+
+	return port->read(buffer, bufferSize, static_cast<int32_t>(timeout));
+}
+
 int SerialPortBaseDatasource::write(const uint8_t* buffer, uint32_t bufferSize) {
 	Log::debug("SerialPortBaseDatasource.write()");
 
