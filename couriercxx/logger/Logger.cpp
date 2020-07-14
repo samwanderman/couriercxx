@@ -15,6 +15,7 @@
 
 #include <cstdint>
 #include <cstring>
+#include <unistd.h>
 
 // color macrosses
 #define COLOR_ERROR		"\x1b[31m"
@@ -24,6 +25,7 @@
 #define COLOR_RESET		"\x1b[0m"
 
 #define STRING_MAX_LEN	1024
+#define LOG_FILE_MAX_SIZE	1024 * 1024
 
 const uint8_t Logger::LEVEL_LOG		= 0;
 const uint8_t Logger::LEVEL_INFO	= 1;
@@ -55,6 +57,10 @@ void Logger::close() {
 		closelog();
 #endif
 	}
+
+	if (fd != -1) {
+		close(fd);
+	}
 }
 
 void Logger::setDaemon(bool daemon) {
@@ -65,6 +71,11 @@ void Logger::setDaemon(bool daemon) {
 
 void Logger::setName(std::string name) {
 	this->name = name;
+}
+
+void Logger::useFile() {
+	logFile = "/var/log/" + name;
+	fd = open(logFile.c_str(), O_CREAT | O_RDWR);
 }
 
 void Logger::print(uint8_t level, std::string format, va_list args) {
@@ -102,6 +113,14 @@ void Logger::print(uint8_t level, std::string format, va_list args) {
 		memset(bytes, 0, STRING_MAX_LEN);
 		vsnprintf(bytes, STRING_MAX_LEN - 1, format.c_str(), args);
 		syslog(logLevel, "%s", bytes);
+
+		if (fd != -1) {
+			write(fd, bytes, strlen(bytes));
+			int res = LOG_FILE_MAX_SIZE - IO::getSize(logFile);
+			if (res < 0) {
+				ftruncate(fd, LOG_FILE_MAX_SIZE);
+			}
+		}
 #endif
 	} else {
 		std::string logLevel = "[INFO]";

@@ -39,9 +39,14 @@ public:
 	/**
 	 * Set daemon mode
 	 *
-	 * \param[in] bool daemon
+	 * \param[in] daemon - daemon mode
 	 */
 	void setDaemon(bool daemon);
+
+	/**
+	 * Use log file
+	 */
+	void useFile();
 
 	/**
 	 * Set app name for log
@@ -53,15 +58,17 @@ public:
 	/**
 	 * Print string to log with level
 	 *
-	 * \param[in] uint8_t level - log level
-	 * \param[in] string format - format string
-	 * \param[in] va_list args - arguments for format string
+	 * \param[in] level		- log level
+	 * \param[in] format	- format string
+	 * \param[in] args		- arguments for format string
 	 */
 	void print(uint8_t level, std::string format, va_list args);
 
 private:
-	std::string name = "";
-	bool daemon = false;
+	std::string	name	= "";
+	std::string logFile	= "";
+	bool		daemon	= false;
+	int			fd		= -1;
 
 	/**
 	 * Open log
