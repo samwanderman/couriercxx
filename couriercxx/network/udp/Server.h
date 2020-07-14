@@ -16,6 +16,7 @@
 #include <functional>
 #include <mutex>
 #include <string>
+#include <thread>
 
 namespace UDP {
 
@@ -100,7 +101,7 @@ private:
 	std::function<void(Server* server, struct sockaddr_in* clientAddr, uint32_t clientAddrLen, const uint8_t* buffer, uint32_t bufferSize)> callback = nullptr;
 
 	bool				running		= false;
-	std::mutex			stopMutex;
+	std::thread			th;
 
 	void clean();
 };

@@ -36,21 +36,15 @@ int SerialPortBusDatasource::enable() {
 	}
 
 	running = true;
-	stopMutex.unlock();
 
 	if (port->open() == -1) {
 		// async connect
 		auto connectFunc = [this]() {
-			stopMutex.lock();
-
 			while (running && (port->open() == -1)) {
 				System::sleep(TIMEOUT_RECONNECT);
 			}
-
-			stopMutex.unlock();
 		};
-		std::thread th(connectFunc);
-		th.detach();
+		th = std::thread(connectFunc);
 	}
 
 	return 0;
@@ -65,7 +59,9 @@ int SerialPortBusDatasource::disable() {
 
 	running = false;
 
-	stopMutex.lock();
+	if (th.joinable()) {
+		th.join();
+	}
 
 	if (port->isOpen()) {
 		return port->close();

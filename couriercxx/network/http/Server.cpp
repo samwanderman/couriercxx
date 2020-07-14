@@ -74,8 +74,7 @@ int Server::start() {
 		Log::debug("Server: event_dispatch() success");
 	};
 
-	std::thread thread(func);
-	thread.detach();
+	th = std::thread(func);
 
 	return 0;
 }
@@ -86,6 +85,9 @@ int Server::stop() {
 	}
 
 	running = false;
+	if (th.joinable()) {
+		th.join();
+	}
 
 	struct timeval time;
 	time.tv_sec = 0;

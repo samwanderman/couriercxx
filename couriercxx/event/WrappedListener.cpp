@@ -29,12 +29,9 @@ WrappedListener::WrappedListener(ListenerParams params, std::function<void (cons
 	enable();
 
 	if (params.timeout != (uint64_t) ~0) {
-		stopMutex.unlock();
 		running = true;
 
 		auto timeoutWatcher = [this, params]() {
-			stopMutex.lock();
-
 			while (running) {
 				if (Clock::getTimestamp() >= params.timeout) {
 					this->on(new EventTimeout());
@@ -44,12 +41,9 @@ WrappedListener::WrappedListener(ListenerParams params, std::function<void (cons
 
 				System::sleep(TIMEOUT);
 			}
-
-			stopMutex.unlock();
 		};
 
-		std::thread th(timeoutWatcher);
-		th.detach();
+		th = std::thread(timeoutWatcher);
 	}
 }
 
@@ -58,8 +52,9 @@ WrappedListener::~WrappedListener() {
 
 	disable();
 
-	// If timeout thread running - wait while it complete
-	stopMutex.lock();
+	if (th.joinable()) {
+		th.join();
+	}
 
 	if (listener == nullptr) {
 		listener = nullptr;

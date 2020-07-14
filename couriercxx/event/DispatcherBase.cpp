@@ -23,56 +23,56 @@
 #define EVENT_WATCHER_TIMEOUT	1000
 
 DispatcherBase::DispatcherBase() {
-	stopMutex.unlock();
 	running = true;
 
 	// timeout watcher
 	auto func = [this]() {
 		const EventTimeout eventTimeout;
 
-		stopMutex.lock();
-
 		while (running) {
 			uint64_t now = Clock::getTimestamp();
 
-			// iterate through listeners for different events
-			std::map<EVENT_T, std::list<IListener*>*>::iterator it = listeners.begin();
-			while (it != listeners.end()) {
-				std::list<IListener*>* listeners2 = it->second;
+			{
+				std::unique_lock<decltype(listenerMutex)> lock(listenerMutex);
 
-				std::list<IListener*> l(*listeners2);
-				std::list<IListener*>::iterator it2 = l.begin();
+				// iterate through listeners for different events
+				std::map<EVENT_T, std::list<IListener*>*>::iterator it = listeners.begin();
+				while (it != listeners.end()) {
+					std::list<IListener*>* listeners2 = it->second;
 
-				// iterate through listeners for same event
-				while (it2 != l.end()) {
-					IListener* listener = *it2;
-					ListenerParams params = listener->getParams();
+					std::list<IListener*> l(*listeners2);
+					std::list<IListener*>::iterator it2 = l.begin();
 
-					if (params.timeout < now) {
-						listener->on(&eventTimeout);
+					// iterate through listeners for same event
+					while (it2 != l.end()) {
+						IListener* listener = *it2;
+						ListenerParams params = listener->getParams();
+
+						if (params.timeout < now) {
+							listener->on(&eventTimeout);
+						}
+
+						it2++;
 					}
 
-					it2++;
+					it++;
 				}
-
-				it++;
 			}
 
 			System::sleep(EVENT_WATCHER_TIMEOUT);
 		}
-
-		stopMutex.unlock();
 	};
-	std::thread th(func);
-	th.detach();
+	th = std::thread(func);
 }
 
 DispatcherBase::~DispatcherBase() {
 	running = false;
 
-	stopMutex.lock();
+	if (th.joinable()) {
+		th.join();
+	}
 
-	listenerMutex.lock();
+	std::unique_lock<decltype(listenerMutex)> lock(listenerMutex);
 
 	std::map<EVENT_T, std::list<IListener*>*>::iterator it = listeners.begin();
 	while (it != listeners.end()) {
@@ -84,21 +84,19 @@ DispatcherBase::~DispatcherBase() {
 	}
 
 	listeners.clear();
-
-	listenerMutex.unlock();
 }
 
 int DispatcherBase::addListener(EVENT_T eventType, IListener* listener) {
 	Log::debug("DispatcherBase.addListener(%x)", listener);
-	listenerMutex.lock();
+
+	std::unique_lock<decltype(listenerMutex)> lock(listenerMutex);
+
 	std::list<IListener*>* foundListeners = getListeners(eventType);
 	bool eventExists = foundListeners != nullptr;
 	if (eventExists) {
 		// check if same listener exists
 		std::list<IListener*>::iterator it2 = std::find(foundListeners->begin(), foundListeners->end(), listener);
 		if (it2 != foundListeners->end()) {
-			listenerMutex.unlock();
-
 			return -1;
 		}
 	} else {
@@ -110,28 +108,23 @@ int DispatcherBase::addListener(EVENT_T eventType, IListener* listener) {
 		listeners.insert(std::pair<EVENT_T, std::list<IListener*>*>(eventType, foundListeners));
 	}
 
-	listenerMutex.unlock();
-
 	return 0;
 }
 
 int DispatcherBase::removeListener(EVENT_T eventType, IListener* listener) {
 	Log::debug("DispatcherBase.removeListener(%x)", listener);
-	listenerMutex.lock();
+
+	std::unique_lock<decltype(listenerMutex)> lock(listenerMutex);
 
 	std::list<IListener*>* foundListeners = getListeners(eventType);
 	bool eventExists = foundListeners != nullptr;
 	if (!eventExists) {
-		listenerMutex.unlock();
-
 		return -1;
 	}
 
 	// check if listener exists
 	std::list<IListener*>::iterator it2 = std::find(foundListeners->begin(), foundListeners->end(), listener);
 	if (it2 == foundListeners->end()) {
-		listenerMutex.unlock();
-
 		return -1;
 	}
 
@@ -140,8 +133,6 @@ int DispatcherBase::removeListener(EVENT_T eventType, IListener* listener) {
 		listeners.erase(eventType);
 		delete foundListeners;
 	}
-
-	listenerMutex.unlock();
 
 	return 0;
 }

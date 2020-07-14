@@ -14,6 +14,7 @@
 #include <cstdint>
 #include <functional>
 #include <string>
+#include <thread>
 
 #include "Request.h"
 
@@ -66,6 +67,7 @@ public:
 private:
 	ServerConfig					config;
 	bool							running		= false;
+	std::thread						th;
 	struct event_base*				eventLoop	= nullptr;
 	struct evhttp*					server		= nullptr;
 	std::function<void (Request&)>	callback	= nullptr;

@@ -17,6 +17,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <thread>
 
 struct evconnlistener;
 
@@ -133,6 +134,7 @@ private:
 	struct evconnlistener*																listener	= nullptr;
 	std::function<void (Server* self, int32_t clientFd, std::vector<uint8_t>& buffer)>	callback	= nullptr;
 	std::map<int32_t, struct bufferevent *> connectedClients;
+	std::thread	th;
 };
 
 } /* namespace TCP */

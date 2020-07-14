@@ -53,8 +53,6 @@ int Server::open() {
 	running = true;
 
 	auto func = [this]() {
-		stopMutex.lock();
-
 		int addrLen = sizeof(struct sockaddr_in);
 		fd_set readfd;
 
@@ -74,11 +72,8 @@ int Server::open() {
 				}
 			}
 		}
-
-		stopMutex.unlock();
 	};
-	std::thread th(func);
-	th.detach();
+	th = std::thread(func);
 
 	return 0;
 }
@@ -93,7 +88,9 @@ void Server::clean() {
 int Server::close() {
 	running = false;
 
-	stopMutex.lock();
+	if (th.joinable()) {
+		th.join();
+	}
 
 	clean();
 

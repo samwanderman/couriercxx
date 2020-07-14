@@ -118,8 +118,7 @@ int Server::open() {
 		return 0;
 	};
 
-	std::thread th(func);
-	th.detach();
+	th = std::thread(func);
 
 	return 0;
 }
@@ -128,6 +127,10 @@ int Server::close() {
 	Log::debug("TCP.Server.close()");
 
 	running = false;
+
+	if (th.joinable()) {
+		th.join();
+	}
 
 	if (listener != nullptr) {
 		evconnlistener_free(listener);

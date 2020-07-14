@@ -11,6 +11,7 @@
 
 #include <cstdint>
 #include <mutex>
+#include <thread>
 
 #include "IConcurrentDatasource.h"
 
@@ -90,7 +91,7 @@ public:
 
 private:
 	bool running = false;
-	std::mutex stopMutex;
+	std::thread th;
 	SerialPortBus* port = nullptr;
 };
 

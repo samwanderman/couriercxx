@@ -16,6 +16,7 @@
 #include <functional>
 #include <string>
 #include <mutex>
+#include <thread>
 
 /**
  * Sniffer class
@@ -47,7 +48,7 @@ public:
 
 private:
 	bool running = false;
-	std::mutex stopMutex;
+	std::thread th;
 	pcap_t* handle = nullptr;
 	std::string filter = "";
 	std::function<void (const uint8_t* packet, uint32_t packetSize)> callback = nullptr;

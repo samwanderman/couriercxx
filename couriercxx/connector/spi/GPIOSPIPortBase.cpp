@@ -67,11 +67,8 @@ int GPIOSPIPortBase::open() {
 	}
 	setCS();
 
-	stopMutex.unlock();
 	running = true;
 	auto func = [this]() {
-		stopMutex.lock();
-
 		while (running) {
 			outputBufferMutex.lock();
 
@@ -117,11 +114,8 @@ int GPIOSPIPortBase::open() {
 		}
 
 		clean();
-
-		stopMutex.unlock();
 	};
-	std::thread th(func);
-	th.detach();
+	th = std::thread(func);
 
 	return IConnectorBase::open();
 }
@@ -160,7 +154,9 @@ int GPIOSPIPortBase::close() {
 
 	running = false;
 
-	stopMutex.lock();
+	if (th.joinable()) {
+		th.join();
+	}
 
 	return IConnectorBase::close();
 }

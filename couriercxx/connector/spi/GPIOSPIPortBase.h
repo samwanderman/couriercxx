@@ -11,6 +11,7 @@
 
 #include <cstdint>
 #include <mutex>
+#include <thread>
 
 #include "../IConnectorBase.h"
 
@@ -112,7 +113,7 @@ private:
 	uint32_t outputBufferLen = 0;
 	std::mutex outputBufferMutex;
 
-	std::mutex stopMutex;
+	std::thread th;
 
 	void clean();
 

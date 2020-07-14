@@ -14,6 +14,7 @@
 #include <list>
 #include <map>
 #include <mutex>
+#include <thread>
 
 #include "IEvent.h"
 #include "IListener.h"
@@ -91,8 +92,7 @@ private:
 	 */
 	std::list<IListener*>* getListeners(EVENT_T eventType);
 	bool running = false;
-
-	std::mutex stopMutex;
+	std::thread th;
 };
 
 #endif /* COURIERCXX_EVENT_DISPATCHERBASE_H_ */

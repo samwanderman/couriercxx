@@ -17,6 +17,7 @@
 #include <mutex>
 #include <string>
 #include <vector>
+#include <thread>
 
 #include "../../connector/IConnectorBase.h"
 
@@ -123,6 +124,7 @@ private:
 	uint16_t				port			= 0;
 
 	bool					opened			= false;
+	std::thread				th;
 
 	struct event_base		*base			= nullptr;
 	struct bufferevent		*bufferEvent	= nullptr;

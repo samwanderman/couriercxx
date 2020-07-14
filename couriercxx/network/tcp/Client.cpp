@@ -159,8 +159,7 @@ int Client::open() {
 
 		event_base_dispatch(base);
 	};
-	std::thread th(func);
-	th.detach();
+	th = std::thread(func);
 
 	while (!ready) {
 		System::sleep(200);
@@ -186,6 +185,10 @@ int Client::close() {
 	opened = false;
 
 	bytesVariable.notify_all();
+
+	if (th.joinable()) {
+		th.join();
+	}
 
 	if (base != nullptr) {
 		struct timeval time;
