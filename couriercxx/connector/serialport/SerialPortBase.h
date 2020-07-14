@@ -30,7 +30,7 @@ public:
 		std::string	path		= "";
 		uint32_t	baudrate	= 0;
 		bool		nonBlock	= false;
-		uint32_t	timeout		= 0;
+		int32_t		timeout		= 0;
 		bool		parityCheck	= false;
 		bool		stopBit		= false;
 		bool		startBit	= false;
@@ -68,7 +68,7 @@ public:
 	 * \param[in] uint32_t baudrate- port baudrate
 	 * \param[in] uint32_t timeout - port IO timeout
 	 */
-	SerialPortBase(std::string path, uint32_t baudrate, uint32_t timeout);
+	SerialPortBase(std::string path, uint32_t baudrate, int32_t timeout);
 
 	/**
 	 * Copy constructor

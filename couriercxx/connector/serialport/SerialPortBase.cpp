@@ -38,7 +38,7 @@ SerialPortBase::SerialPortBase(std::string path, uint32_t baudrate) : SerialPort
 	config.baudrate = baudrate;
 }
 
-SerialPortBase::SerialPortBase(std::string path, uint32_t baudrate, uint32_t timeout) : SerialPortBase(path, baudrate) {
+SerialPortBase::SerialPortBase(std::string path, uint32_t baudrate, int32_t timeout) : SerialPortBase(path, baudrate) {
 	config.timeout = timeout;
 }
 
@@ -147,13 +147,13 @@ void SerialPortBase::clean() {
 }
 
 int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize) {
-//	Log::debug("SerialPortRead()");
+//	Log::debug("SerialPort.read()");
 
 	return read(buffer, bufferSize, -1);
 }
 
 int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize, int32_t timeout) {
-//	Log::debug("SerialPortRead(%i)", timeout);
+//	Log::debug("SerialPort.read(%i)", timeout);
 
 	if (!isOpen()) {
 		return ERR_DEFAULT;
@@ -403,6 +403,9 @@ int SerialPortBase::setBaudrate(uint32_t baudrate) {
 
 #endif
 
+	timeouts.ReadIntervalTimeout			= 0xffffffff;
+	timeouts.ReadTotalTimeoutMultiplier		= 0;
+
 	if (config.timeout != 0) {
 		timeouts.ReadIntervalTimeout = config.timeout;
 	}
@@ -414,7 +417,6 @@ int SerialPortBase::setBaudrate(uint32_t baudrate) {
 	if(!SetCommState(fd, &dcbSerialParams)) {
 		return -1;
 	}
-
 
 #else
 	uint32_t convertedBaudrate = 0;

@@ -48,8 +48,8 @@ int IConnectorBase::read(uint8_t* buffer, uint32_t bufferSize) {
 	return 0;
 }
 
-int IConnectorBase::read(uint8_t* buffer, uint32_t bufferSize, uint32_t timeout) {
-	return read(buffer, bufferSize);
+int IConnectorBase::read(uint8_t* buffer, uint32_t bufferSize, int32_t timeout) {
+	return 0;
 }
 
 int IConnectorBase::write(const uint8_t* buffer, uint32_t bufferSize) {

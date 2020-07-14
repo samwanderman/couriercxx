@@ -11,6 +11,8 @@
 
 #include <list>
 #include <mutex>
+#include <thread>
+#include <condition_variable>
 
 #include "../event/IEvent.h"
 #include "../event/IListener.h"
@@ -74,10 +76,14 @@ public:
 private:
 	Info info;
 	IConnectorBase* connector = nullptr;
-	bool running = false;
+
 	std::list<EventWrite*> eventsList;
 	std::mutex eventsListMutex;
-	std::mutex eventMutex;
+	std::condition_variable cond;
+
+	bool running = false;
+	std::thread readThread;
+	std::thread eventsThread;
 };
 
 } /* namespace Connection */

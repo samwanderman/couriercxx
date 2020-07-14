@@ -95,7 +95,7 @@ public:
 	 *
 	 * \return number of read bytes if success, -1 if error or timeout reached
 	 */
-	virtual int read(uint8_t* buffer, uint32_t bufferSize, uint32_t timeout);
+	virtual int read(uint8_t* buffer, uint32_t bufferSize, int32_t timeout);
 
 	/**
 	 * Write data to connector

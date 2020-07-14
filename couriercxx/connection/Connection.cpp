@@ -44,11 +44,11 @@ Connection::~Connection() {
 }
 
 int Connection::enable() {
+	Log::debug("Connection[%i].enable()", info.id);
+
 	if (isEnabled()) {
 		return -1;
 	}
-
-	Log::debug("Connection[%i].enable()", info.id);
 
 	int res = connector->open();
 	if (res == -1) {
@@ -57,13 +57,12 @@ int Connection::enable() {
 
 	Dispatcher::addListener(Connection::EVENT_WRITE, this);
 
-	eventMutex.unlock();
 	running = true;
 
 	auto readThreadFunc = [this]() {
 		while (running) {
 			uint8_t buffer[BUFFER_MAX_SIZE];
-			int bytesRead = this->connector->read(buffer, BUFFER_MAX_SIZE);
+			int bytesRead = this->connector->read(buffer, BUFFER_MAX_SIZE, 200);
 			if (bytesRead == -1) {
 				Log::error("Connection[%i].read() error %i", info.id, bytesRead);
 				perror("");
@@ -82,15 +81,13 @@ int Connection::enable() {
 			System::sleep(CONNECTION_READ_TIMEOUT);
 		}
 	};
-	std::thread readThread(readThreadFunc);
-	readThread.detach();
+	readThread = std::thread(readThreadFunc);
 
 	auto eventsThreadFunc = [this]() {
-		eventMutex.lock();
-
 		while (running) {
-			eventsListMutex.lock();
-			if (eventsList.size() > 0) {
+			std::unique_lock<decltype(eventsListMutex)> lock(eventsListMutex);
+			cond.wait(lock);
+			while (eventsList.size() > 0) {
 				EventWrite* ev = eventsList.front();
 				int res = this->connector->write(ev->getData(), ev->getDataSize());
 				Log::debug("Connection[%i].write() %i bytes", info.id, res);
@@ -103,31 +100,34 @@ int Connection::enable() {
 #endif
 				eventsList.pop_front();
 				delete ev;
-				System::sleep(info.commandTimeout);
 			}
-			eventsListMutex.unlock();
+			System::sleep(info.commandTimeout);
 		}
-
-		eventMutex.unlock();
 	};
-	std::thread thEvents(eventsThreadFunc);
-	thEvents.detach();
+	eventsThread = std::thread(eventsThreadFunc);
 
 	return IListener::enable();
 }
 
 int Connection::disable() {
+	Log::debug("Connection[%i].disable()", info.id);
+
 	if (!isEnabled()) {
 		return -1;
 	}
 
-	Log::debug("Connection[%i].disable()", info.id);
-
 	Dispatcher::removeListener(Connection::EVENT_WRITE, this);
 
 	running = false;
+	cond.notify_all();
 
-	eventMutex.lock();
+	if (eventsThread.joinable()) {
+		eventsThread.join();
+	}
+
+	if (readThread.joinable()) {
+		readThread.join();
+	}
 
 	int res = connector->close();
 	IListener::disable();
@@ -138,12 +138,12 @@ int Connection::disable() {
 void Connection::on(const IEvent* event) {
 	if (event->getType() == Connection::EVENT_WRITE) {
 		Log::debug("Connection[%i].on(EVENT_WRITE)", info.id);
-		eventsListMutex.lock();
+		std::unique_lock<decltype(eventsListMutex)> lock(eventsListMutex);
 		if (eventsList.size() >= MAX_EVENTS) {
 			eventsList.pop_front();
 		}
 		eventsList.push_back(new EventWrite(*dynamic_cast<const EventWrite*>(event)));
-		eventsListMutex.unlock();
+		cond.notify_all();
 	} else if (event->getType() == Connection::EVENT_STATUS) {
 		Log::debug("Connection[%i].on(EVENT_STATUS)", info.id);
 	}
