@@ -58,9 +58,11 @@ void Logger::close() {
 #endif
 	}
 
+#ifndef _WIN32
 	if (fd != -1) {
-		close(fd);
+		::close(fd);
 	}
+#endif
 }
 
 void Logger::setDaemon(bool daemon) {
@@ -74,8 +76,10 @@ void Logger::setName(std::string name) {
 }
 
 void Logger::useFile() {
+#ifndef _WIN32
 	logFile = "/var/log/" + name;
-	fd = open(logFile.c_str(), O_CREAT | O_RDWR);
+	fd = ::open(logFile.c_str(), O_CREAT | O_RDWR);
+#endif
 }
 
 void Logger::print(uint8_t level, std::string format, va_list args) {
