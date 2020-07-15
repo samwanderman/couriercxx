@@ -44,11 +44,6 @@ public:
 	void setDaemon(bool daemon);
 
 	/**
-	 * Use log file
-	 */
-	void useFile();
-
-	/**
 	 * Set app name for log
 	 *
 	 * \param[in] string name - name of application

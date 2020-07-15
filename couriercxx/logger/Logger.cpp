@@ -75,13 +75,6 @@ void Logger::setName(std::string name) {
 	this->name = name;
 }
 
-void Logger::useFile() {
-#ifndef _WIN32
-	logFile = "/var/log/" + name;
-	fd = ::open(logFile.c_str(), O_CREAT | O_RDWR);
-#endif
-}
-
 void Logger::print(uint8_t level, std::string format, va_list args) {
 	if (daemon) {
 #ifdef _WIN32
@@ -117,14 +110,6 @@ void Logger::print(uint8_t level, std::string format, va_list args) {
 		memset(bytes, 0, STRING_MAX_LEN);
 		vsnprintf(bytes, STRING_MAX_LEN - 1, format.c_str(), args);
 		syslog(logLevel, "%s", bytes);
-
-		if (fd != -1) {
-			write(fd, bytes, strlen(bytes));
-			int res = LOG_FILE_MAX_SIZE - IO::getSize(logFile);
-			if (res < 0) {
-				ftruncate(fd, LOG_FILE_MAX_SIZE);
-			}
-		}
 #endif
 	} else {
 		std::string logLevel = "[INFO]";
