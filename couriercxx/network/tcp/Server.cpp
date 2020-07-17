@@ -100,7 +100,7 @@ int Server::open() {
 		if (!base) {
 			running = false;
 
-			return -1;
+			return;
 		}
 
 		memset(&sin, 0, sizeof(sin));
@@ -114,11 +114,9 @@ int Server::open() {
 		evconnlistener_set_error_cb(listener, acceptErrorCallback);
 
 		event_base_dispatch(base);
-
-		return 0;
 	};
-
 	th = std::thread(func);
+	th.detach();
 
 	return 0;
 }
@@ -127,10 +125,6 @@ int Server::close() {
 	Log::debug("TCP.Server.close()");
 
 	running = false;
-
-	if (th.joinable()) {
-		th.join();
-	}
 
 	if (listener != nullptr) {
 		evconnlistener_free(listener);
