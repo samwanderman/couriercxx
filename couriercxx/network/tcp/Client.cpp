@@ -20,6 +20,7 @@
 #include <event2/bufferevent.h>
 #include <event2/event.h>
 #include <event2/util.h>
+#include <event2/thread.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <sys/socket.h>
@@ -64,6 +65,8 @@ static void eventCallback(struct bufferevent *buffEvent, short events, void *ctx
 Client::Client(std::string ip, uint16_t port) {
 	this->ip	= ip;
 	this->port	= port;
+
+	evthread_use_pthreads();
 }
 
 Client::~Client() { }
@@ -173,7 +176,6 @@ int Client::open() {
 }
 
 int Client::close() {
-
 #ifdef _WIN32
 
 	closesocket(socketFd);
@@ -186,16 +188,13 @@ int Client::close() {
 
 	bytesVariable.notify_all();
 
-	if (th.joinable()) {
-		th.join();
+	if (base != nullptr) {
+		struct timeval time = { 0, 0 };
+		event_base_loopexit(base, &time);
 	}
 
-	if (base != nullptr) {
-		struct timeval time;
-		time.tv_sec		= 0;
-		time.tv_usec	= 0;
-		event_base_loopexit(base, &time);
-		base = nullptr;
+	if (th.joinable()) {
+		th.join();
 	}
 
 	if (bufferEvent != nullptr) {
@@ -204,7 +203,6 @@ int Client::close() {
 	}
 
 #endif
-
 	return 0;
 }
 
