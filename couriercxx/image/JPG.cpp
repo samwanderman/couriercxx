@@ -51,7 +51,7 @@ int JPG::toBin(uint8_t** outBuffer, uint64_t* outBufferSize) {
 	cinfo.err = jpeg_std_error(&jerr);
 	jpeg_create_compress(&cinfo);
 
-	jpeg_mem_dest(&cinfo, outBuffer, outBufferSize);
+	jpeg_mem_dest(&cinfo, outBuffer, static_cast<unsigned long*>(outBufferSize));
 
 	cinfo.image_width = width;
 	cinfo.image_height = height;
