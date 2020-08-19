@@ -1,11 +1,11 @@
 #!/bin/sh
 
-g++ -o LoopPortTest LoopPortTest.cpp -std=c++14 -lCourierCXX -lpthread
-g++ -o NonBlockSerialPortTest NonBlockSerialPortTest.cpp -std=c++14 -lCourierCXX -lpthread
-g++ -o ClockTest ClockTest.cpp -std=c++14 -lCourierCXX -lpthread
-g++ -o SerialPortTimeoutTest SerialPortTimeoutTest.cpp -std=c++14 -lCourierCXX -lpthread
-g++ -o BMPTest BMPTest.cpp -std=c++14 -lCourierCXX -lpthread 
-g++ -o JPGTest JPGTest.cpp -std=c++14 -lCourierCXX -lpthread -ljpeg
-g++ -o UDPServerTest UDPServerTest.cpp -std=c++14 -lCourierCXX -lpthread
-g++ -o UDPClientTest UDPClientTest.cpp -std=c++14 -lCourierCXX -lpthread
-g++ -o HTTPClientTest HTTPClientTest.cpp -std=c++14 -lCourierCXX -lpthread -levent
+g++ -std=c++17 -o BMPTest                BMPTest.cpp                -lCourierCXX -lpthread
+g++ -std=c++17 -o ClockTest              ClockTest.cpp              -lCourierCXX -lpthread
+g++ -std=c++17 -o HTTPClientTest         HTTPClientTest.cpp         -lCourierCXX -lpthread -levent
+g++ -std=c++17 -o JPGTest                JPGTest.cpp                -lCourierCXX -lpthread -ljpeg
+g++ -std=c++17 -o LoopPortTest           LoopPortTest.cpp           -lCourierCXX -lpthread
+g++ -std=c++17 -o NonBlockSerialPortTest NonBlockSerialPortTest.cpp -lCourierCXX -lpthread
+g++ -std=c++17 -o SerialPortTimeoutTest  SerialPortTimeoutTest.cpp  -lCourierCXX -lpthread
+g++ -std=c++17 -o UDPClientTest          UDPClientTest.cpp          -lCourierCXX -lpthread 
+g++ -std=c++17 -o UDPServerTest          UDPServerTest.cpp          -lCourierCXX -lpthread

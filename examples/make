@@ -1,11 +1,11 @@
 #!/bin/sh
 
-g++ -o GPIOPortExample GPIOPortExample.cpp -std=c++14 -lCourierCXX -lpthread
-g++ -o I2CPortExample I2CPortExample.cpp -std=c++14 -lCourierCXX -lpthread
-g++ -o PWMExample PWMExample.cpp -std=c++14 -lCourierCXX -lpthread
-g++ -o SerialPortExample SerialPortExample.cpp -std=c++14 -lCourierCXX -lpthread
-g++ -o ServerExample ServerExample.cpp -std=c++14 -lCourierCXX -lpthread -levent
-g++ -o NetExample NetExample.cpp -std=c++14 -lCourierCXX -lpthread
-g++ -o BluetoothPortExample BluetoothPortExample.cpp -std=c++14 -lCourierCXX -lpthread -lbluetooth -fpermissive
-g++ -o SnifferExample SnifferExample.cpp -DDEBUG -std=c++14 -lCourierCXX -lpthread -lpcap
-g++ -o ConfigurationDatabaseExample ConfigurationDatabaseExample.cpp -DDEBUG -std=c++14 -lCourierCXX -lpthread -lpqxx
+g++ -std=c++17 -o BluetoothPortExample         BluetoothPortExample.cpp         -lCourierCXX -lpthread -lbluetooth -fpermissive
+g++ -std=c++14 -o ConfigurationDatabaseExample ConfigurationDatabaseExample.cpp -lCourierCXX -lpthread -lpqxx
+g++ -std=c++17 -o GPIOPortExample              GPIOPortExample.cpp              -lCourierCXX -lpthread
+g++ -std=c++17 -o I2CPortExample               I2CPortExample.cpp               -lCourierCXX -lpthread
+g++ -std=c++17 -o NetExample                   NetExample.cpp                   -lCourierCXX -lpthread
+g++ -std=c++17 -o PWMExample                   PWMExample.cpp                   -lCourierCXX -lpthread
+g++ -std=c++17 -o SerialPortExample            SerialPortExample.cpp            -lCourierCXX -lpthread
+g++ -std=c++17 -o ServerExample                ServerExample.cpp                -lCourierCXX -lpthread -levent
+g++ -std=c++17 -o SnifferExample               SnifferExample.cpp               -lCourierCXX -lpthread -lpcap
