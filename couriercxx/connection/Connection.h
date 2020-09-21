@@ -35,8 +35,8 @@ public:
 	/**
 	 * Constructor
 	 *
-	 * \param[in] const Info info - connection info
-	 * \param[in] IConnectorBase* connector - connector
+	 * \param[in] info		- connection info
+	 * \param[in] connector	- connector
 	 */
 	Connection(const Info info, IConnectorBase* connector);
 
@@ -48,21 +48,25 @@ public:
 	/**
 	 * Event callback
 	 *
-	 * \param[in] const IEvent* event
+	 * \param[in] event - event
 	 */
 	void on(const IEvent* event);
 
 	/**
 	 * Enable event catching
 	 *
-	 * \return int - 0 if success, -1 if error
+	 * \return
+	 * 		- 0 if success
+	 * 		- -1 if error
 	 */
 	int enable();
 
 	/**
 	 * Disable event catching
 	 *
-	 * \return int - 0 if success, -1 if error
+	 * \return
+	 *		- 0 if success
+	 *		- -1 if error
 	 */
 	int disable();
 

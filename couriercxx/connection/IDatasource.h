@@ -29,45 +29,55 @@ public:
 	/**
 	 * Enable datasource
 	 *
-	 * \return int - 0 if success, -1 if error
+	 * \return
+	 * 		- 0 if success
+	 * 		- -1 if error
 	 */
 	virtual int enable() = 0;
 
 	/**
 	 * Disable datasource
 	 *
-	 * \return int - 0 if success, -1 if error
+	 * \return
+	 * 		- 0 if success
+	 * 		- -1 if error
 	 */
 	virtual int disable() = 0;
 
 	/**
 	 * Read bytes
 	 *
-	 * \param[out] uint8_t* buffer - pointer to buffer
-	 * \param[in] uint32_t bufferSize - buffer size
+	 * \param[out]	buffer		- pointer to buffer
+	 * \param[in]	bufferSize	- buffer size
 	 *
-	 * \return int - number of read bytes if success, -1 if error
+	 * \return
+	 * 		- number of read bytes if success
+	 * 		- -1 if error
 	 */
 	virtual int read(uint8_t* buffer, uint32_t bufferSize) = 0;
 
 	/**
 	 * Read bytes
 	 *
-	 * \param[out] uint8_t* buffer - pointer to buffer
-	 * \param[in] uint32_t bufferSize - buffer size
-	 * \param[in] uint64_t timeout - timeout
+	 * \param[out]	buffer		- pointer to buffer
+	 * \param[in]	bufferSize	- buffer size
+	 * \param[in]	timeout		- timeout
 	 *
-	 * \return int - number of read bytes if success, -1 if error
+	 * \return
+	 * 		- number of read bytes if success
+	 * 		- -1 if error
 	 */
 	virtual int read(uint8_t* buffer, uint32_t bufferSize, uint64_t timeout) = 0;
 
 	/**
 	 * Write bytes
 	 *
-	 * \param[in] const uint8_t* buffer - pointer to buffer
-	 * \param[in] uint32_t bufferSize - buffer size
+	 * \param[in] buffer		- pointer to buffer
+	 * \param[in] bufferSize	- buffer size
 	 *
-	 * \return int - number of written bytes, -1 if error
+	 * \return
+	 * 		- number of written bytes
+	 * 		- -1 if error
 	 */
 	virtual int write(const uint8_t* buffer, uint32_t bufferSize) = 0;
 };

@@ -21,16 +21,16 @@ struct Info {
 	/**
 	 * Constructor
 	 *
-	 * \param[in] int32_t id - connection id
-	 * \param[in] string name - connection name
-	 * \param[in] uint64_t commandTimeout - command timeout
+	 * \param[in] id				- connection id
+	 * \param[in] name				- connection name
+	 * \param[in] commandTimeout	- command timeout
 	 */
 	Info(int32_t id, std::string name, uint64_t commandTimeout);
 
 	/**
 	 * Constructor
 	 *
-	 * \param[in] int32_t id - connection id
+	 * \param[in] id - connection id
 	 */
 	Info(int32_t id);
 
@@ -39,9 +39,9 @@ struct Info {
 	 */
 	Info();
 
-	int32_t id = -1;
-	std::string name = "";
-	uint64_t commandTimeout = 0;
+	int32_t		id				= -1;
+	std::string	name			= "";
+	uint64_t	commandTimeout	= 0;
 };
 typedef struct Info Info;
 
