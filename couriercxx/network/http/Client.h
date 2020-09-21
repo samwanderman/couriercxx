@@ -9,12 +9,11 @@
 #ifndef COURIERCXX_NETWORK_HTTP_CLIENT_H_
 #define COURIERCXX_NETWORK_HTTP_CLIENT_H_
 
-#ifndef _WIN32
-
 #include <cstdint>
-#include <string>
+#include <functional>
 
-struct bufferevent;
+#include "Http.h"
+
 struct event_base;
 struct evhttp_connection;
 
@@ -27,14 +26,15 @@ class Client {
 public:
 	// client config
 	struct ClientConfig {
-		std::string host = "";
-		uint32_t	port = 0;
+		const char*	host	= nullptr;
+		uint32_t	port	= 0;
+		uint32_t	timeout = 0;
 	};
 
 	/**
 	 * Constructor
 	 */
-	Client(ClientConfig config);
+	Client(ClientConfig config, std::function<void(uint8_t* data, uint32_t dataSize)> callback);
 
 	/**
 	 * Destructor
@@ -62,24 +62,39 @@ public:
 	/**
 	 * Send request
 	 *
+	 * \param[in] method	- request method
+	 * \param[in] url		- request url
+	 * \param[in] data		- data to send
+	 * \param[in] dataSize	- data size
+	 *
 	 * \return
 	 * 			0	- if success
 	 * 			-1	- if error
 	 */
-	int send();
+	int send(HTTP::Method method, const char* url, uint8_t* data, uint32_t dataSize);
+
+	/**
+	 * Get callback
+	 *
+	 * \return callback
+	 */
+	std::function<void(uint8_t* data, uint32_t dataSize)> getCallback();
 
 private:
-	ClientConfig config;
+	std::function<void(uint8_t* data, uint32_t dataSize)> callback;
+	ClientConfig				config;
 
-	struct event_base*			eventBase	= nullptr;
-	struct bufferevent*			eventBuffer	= nullptr;
-	struct evhttp_connection*	connection	= nullptr;
+	bool						running	= false;
 
+	struct event_base*			base	= nullptr;
+	struct evhttp_connection*	conn	= nullptr;
+
+	/**
+	 * Clean resources
+	 */
 	void clean();
 };
 
 }; /* namespace HTTP */
-
-#endif
 
 #endif /* COURIERCXX_NETWORK_HTTP_CLIENT_H_ */
