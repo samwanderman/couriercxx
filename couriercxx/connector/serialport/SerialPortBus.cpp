@@ -8,7 +8,7 @@
 
 #include "SerialPortBus.h"
 
-SerialPortBus::SerialPortBus(std::string path, uint32_t baudrate) : SerialPortBase(path, baudrate) { }
+SerialPortBus::SerialPortBus(SerialPortBase::Config config) : SerialPortBase(config) { }
 
 SerialPortBus::~SerialPortBus() { }
 

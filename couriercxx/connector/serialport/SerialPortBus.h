@@ -23,10 +23,9 @@ public:
 	/**
 	 * Constructor
 	 *
-	 * \param[in] string path - path to port
-	 * \param[in] uint32_t baudrate - port baudrate
+	 * \param[in] config - config
 	 */
-	SerialPortBus(std::string path, uint32_t baudrate);
+	SerialPortBus(SerialPortBase::Config config);
 
 	/**
 	 * Destructor
