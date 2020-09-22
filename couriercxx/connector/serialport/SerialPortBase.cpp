@@ -9,6 +9,7 @@
 #include "SerialPortBase.h"
 
 #include <fcntl.h>
+#include <cinttypes>
 
 #ifndef _WIN32
 
@@ -237,16 +238,15 @@ int SerialPortBase::read(uint8_t* buffer, uint32_t bufferSize, int32_t timeout) 
 	} else {
 		if (timeout > 0) {
 			fd_set set;
-			struct timeval timeoutVal;
+			struct timespec timeoutVal;
 
 			FD_ZERO(&set);
 			FD_SET(fd, &set);
 
-			uint64_t t = timeout * 1000;
-			timeoutVal.tv_sec = t / 1000000;
-			timeoutVal.tv_usec = t % 1000000;
+			timeoutVal.tv_sec = timeout / 1000;
+			timeoutVal.tv_nsec = (timeout % 1000) * 1000000;
 
-			int rv = select(fd + 1, &set, nullptr, nullptr, &timeoutVal);
+			int rv = pselect(fd + 1, &set, nullptr, nullptr, &timeoutVal, nullptr);
 			if (rv == -1) {
 				return ERR_DEFAULT;
 			} else if (rv == 0) {
