@@ -15,6 +15,7 @@
 #include <event2/http_struct.h>
 #include <event2/util.h>
 #include <string>
+#include <thread>
 
 #include "../../logger/Log.h"
 
@@ -69,6 +70,7 @@ int Client::start() {
 	}
 	Log::debug("event_base_new() success");
 
+	Log::debug("Host: %s, Port: %u", config.host, config.port);
 	conn = evhttp_connection_base_new(base, nullptr, config.host, config.port);
 	if (conn == nullptr) {
 		Log::error("evhttp_connection_base_new() error");
@@ -122,7 +124,11 @@ int Client::send(HTTP::Method method, const char* url, uint8_t* data = nullptr, 
 	}
 
 	evhttp_connection_set_timeout(req->evcon, config.timeout / 1000);
-	event_base_dispatch(base);
+
+	std::thread th([this]() {
+		event_base_dispatch(base);
+	});
+	th.detach();
 
 	return 0;
 }
