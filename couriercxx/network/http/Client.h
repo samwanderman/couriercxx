@@ -19,6 +19,8 @@ struct evhttp_connection;
 
 namespace HTTP {
 
+typedef std::function<void(bool error, uint8_t* data, uint32_t dataSize)> ClientCallback;
+
 /**
  * Simple HTTP Client
  */
@@ -34,7 +36,7 @@ public:
 	/**
 	 * Constructor
 	 */
-	Client(ClientConfig config, std::function<void(uint8_t* data, uint32_t dataSize)> callback);
+	Client(ClientConfig config, ClientCallback callback);
 
 	/**
 	 * Destructor
@@ -78,10 +80,10 @@ public:
 	 *
 	 * \return callback
 	 */
-	std::function<void(uint8_t* data, uint32_t dataSize)> getCallback();
+	ClientCallback getCallback();
 
 private:
-	std::function<void(uint8_t* data, uint32_t dataSize)> callback;
+	ClientCallback				callback;
 	ClientConfig				config;
 
 	bool						running	= false;

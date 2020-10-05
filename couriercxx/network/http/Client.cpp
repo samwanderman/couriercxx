@@ -26,24 +26,25 @@ namespace HTTP {
 
 void onRequestDone(struct evhttp_request* request, void* arg){
 	Log::debug("onRequestDone");
+
+	Client* client = reinterpret_cast<Client*>(arg);
+
+	if (request == nullptr) {
+		Log::error("HTTP.Client error");
+
+		client->getCallback()(true, nullptr, 0);
+
+		return;
+	}
+
     uint8_t buffer[BUFFER_SIZE];
     int size = evbuffer_remove(request->input_buffer, &buffer, sizeof(buffer) - 1);
-
-    Client* client = reinterpret_cast<Client*>(arg);
-
-//    Log::debug("size is %i", size);
     buffer[size] = 0;
-//    Log::log("%s", buffer);
 
-//    for (int i; i < size; i++) {
-//    	Log::log("%X ", buffer[i]);
-//    }
-//    Log::log("\r\n");
-
-    client->getCallback()(buffer, size);
+    client->getCallback()(false, buffer, size);
 }
 
-Client::Client(ClientConfig config, std::function<void(uint8_t* data, uint32_t dataSize)> callback) {
+Client::Client(ClientConfig config, ClientCallback callback) {
 	Log::debug("HTTP.Client()");
 	this->config	= config;
 	this->callback	= callback;
@@ -154,7 +155,7 @@ void Client::clean() {
 	}
 }
 
-std::function<void(uint8_t* data, uint32_t dataSize)> Client::getCallback() {
+ClientCallback Client::getCallback() {
 	return callback;
 }
 
