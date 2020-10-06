@@ -78,7 +78,7 @@ uint64_t Time::getTimestamp() {
     time.tm_gmtoff = gmt * 3600;
 #endif
 
-	return mktime(&time) * 1000 + msecond;
+    return (uint64_t) mktime(&time) * 1000 + msecond;
 }
 
 uint64_t Clock::getTimestamp() {
