@@ -11,10 +11,11 @@
 #include <chrono>
 #include <cstring>
 #include <ctime>
-#include <sys/time.h>
 
 #ifdef _WIN32
 #include <windows.h>
+#else
+#include <sys/time.h>
 #endif
 
 using namespace std::chrono;

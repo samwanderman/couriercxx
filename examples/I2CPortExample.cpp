@@ -1,3 +1,4 @@
+#ifndef _WIN32
 #include "../couriercxx/connector/i2c/I2CPortBase.h"
 #include "../couriercxx/logger/Log.h"
 
@@ -22,3 +23,8 @@ int main(int ac, char** av) {
 
 	return 0;
 }
+#else
+int main() {
+	return 0;
+}
+#endif

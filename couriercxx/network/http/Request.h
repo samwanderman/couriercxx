@@ -9,8 +9,6 @@
 #ifndef COURIERCXX_NETWORK_HTTP_REQUEST_H_
 #define COURIERCXX_NETWORK_HTTP_REQUEST_H_
 
-#ifndef _WIN32
-
 #include <cstdint>
 #include <string>
 
@@ -100,8 +98,6 @@ private:
 };
 
 };
-
-#endif
 
 #endif /* COURIERCXX_NETWORK_HTTP_REQUEST_H_ */
 

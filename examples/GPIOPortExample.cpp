@@ -1,3 +1,5 @@
+#ifndef _WIN32
+
 #include "../couriercxx/connector/gpio/GPIOPortBase.h"
 #include "../couriercxx/logger/Log.h"
 
@@ -49,3 +51,9 @@ int main(int ac, char** av) {
 
 	return 0;
 }
+
+#else
+int main() {
+	return 0;
+}
+#endif

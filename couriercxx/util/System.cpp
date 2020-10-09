@@ -18,14 +18,15 @@
 #include <windows.h>
 #else
 #include <sys/reboot.h>
+#include <sys/file.h>
+#include <unistd.h>
 #endif
+
 #include <chrono>
 #include <cstdio>
 #include <cstring>
 #include <thread>
 #include <sys/stat.h>
-#include <sys/file.h>
-#include <unistd.h>
 #include <cstdlib>
 #include <exception>
 
@@ -161,6 +162,7 @@ void System::selfUpdate(std::string path) {
 std::string System::execAndGetOutput(std::string shellCommand) {
 	std::string result = "";
 
+#ifndef _WIN32
 	FILE* file = popen(shellCommand.c_str(), "r");
 	if (file == nullptr) {
 		return "ERROR";
@@ -181,6 +183,7 @@ std::string System::execAndGetOutput(std::string shellCommand) {
 	}
 
 	pclose(file);
+#endif
 
 	return result;
 }

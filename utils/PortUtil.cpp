@@ -1,3 +1,5 @@
+#ifndef _WIN32
+
 #include <fcntl.h>
 #include <unistd.h>
 #include <cstdint>
@@ -39,3 +41,11 @@ int main(int ac, char** av) {
 
 	return 0;
 }
+
+#else
+
+int main() {
+	return 0;
+}
+
+#endif

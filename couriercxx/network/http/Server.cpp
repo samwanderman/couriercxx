@@ -8,13 +8,15 @@
 
 #include "Server.h"
 
-#ifndef _WIN32
-
 #include "../../logger/Log.h"
 
 #include <event2/event.h>
 #include <event2/http.h>
+
+#ifndef _WIN32
 #include <sys/time.h>
+#endif
+
 #include <thread>
 
 namespace HTTP {
@@ -98,5 +100,3 @@ int Server::stop() {
 }
 
 };
-
-#endif

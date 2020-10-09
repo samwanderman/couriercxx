@@ -11,11 +11,11 @@
 #ifdef _WIN32
 #else
 #include <syslog.h>
+#include <unistd.h>
 #endif
 
 #include <cstdint>
 #include <cstring>
-#include <unistd.h>
 
 // color macrosses
 #define COLOR_ERROR		"\x1b[31m"

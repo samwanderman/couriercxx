@@ -9,7 +9,11 @@
 #include "Hardware.h"
 
 #include <fcntl.h>
+
+#ifndef _WIN32
 #include <unistd.h>
+#endif
+
 #include <cstdio>
 #include <cstring>
 
@@ -19,6 +23,7 @@
 float Hardware::getCPUTemperature() {
 	float temperature = 0.0f;
 
+#ifndef _WIN32
 	int fd = ::open(DEFAULT_THERMAL_ZONE, O_RDONLY);
 	if (fd == -1) {
 		return 0.0f;
@@ -35,6 +40,8 @@ float Hardware::getCPUTemperature() {
 	::close(fd);
 
 	sscanf(buffer, "%f", &temperature);
+
+#endif
 
 	return temperature / 1000.0f;
 }

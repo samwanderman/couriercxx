@@ -1,3 +1,5 @@
+#ifndef _WIN32
+
 #include <cstdint>
 #include <cstdio>
 #include <cstring>
@@ -187,3 +189,9 @@ int main(int ac, char** av) {
 
 	return 0;
 }
+
+#else
+int main() {
+	return 0;
+}
+#endif

@@ -5,6 +5,13 @@
 #include "../couriercxx/network/http/Request.h"
 #include "../couriercxx/network/http/Server.h"
 
+#ifdef _WIN32
+#pragma comment(lib, "ws2_32.lib")
+#pragma comment(lib, "Iphlpapi.lib")
+#pragma comment(lib, "Bcrypt.lib")
+#pragma comment(lib, "event.lib")
+#endif
+
 int main(int ac, char** av) {
 	Log::setAppName(&av[0][2]);
 

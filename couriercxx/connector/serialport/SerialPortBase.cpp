@@ -15,11 +15,11 @@
 
 #include <sys/select.h>
 #include <termios.h>
+#include <sys/time.h>
+#include <unistd.h>
 
 #endif
 
-#include <sys/time.h>
-#include <unistd.h>
 #include <cstring>
 
 #include "../../util/Clock.h"

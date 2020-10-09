@@ -1,3 +1,5 @@
+#ifndef _WIN32
+
 #include "../couriercxx/logger/Log.h"
 #include "../couriercxx/network/Net.h"
 
@@ -15,3 +17,11 @@ int main(int c, char** av) {
 
 	return 0;
 }
+
+#else
+
+int main() {
+	return 0;
+}
+
+#endif

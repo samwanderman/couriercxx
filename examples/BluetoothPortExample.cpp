@@ -1,3 +1,5 @@
+#ifndef _WIN32
+
 #include <list>
 #include <string>
 
@@ -43,3 +45,11 @@ int main(int argc, char **argv) {
 
 	return 0;
 }
+
+#else
+
+int main(){
+	return 0;
+}
+
+#endif

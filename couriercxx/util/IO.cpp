@@ -10,12 +10,18 @@
 
 #include <fcntl.h>
 #include <sys/stat.h>
+
+#ifndef _WIN32
 #include <unistd.h>
+#endif
+
 #include <cstdio>
+#include <vector>
 
 #include "System.h"
 
 int IO::writeTo(std::string path, const uint8_t* buffer, uint32_t bufferSize) {
+#ifndef _WIN32
 	int fd = ::open(path.c_str(), O_WRONLY | O_CREAT | O_TRUNC, 0755);
 	if (fd == -1) {
 		return -1;
@@ -33,9 +39,13 @@ int IO::writeTo(std::string path, const uint8_t* buffer, uint32_t bufferSize) {
 	}
 
 	return bytesWritten;
+#else
+	return -1;
+#endif
 }
 
 int IO::readFrom(std::string path, uint8_t* buffer, uint32_t bufferSize) {
+#ifndef _WIN32
 	int fd = ::open(path.c_str(), O_RDONLY);
 	if (fd == -1) {
 		return -1;
@@ -53,18 +63,21 @@ int IO::readFrom(std::string path, uint8_t* buffer, uint32_t bufferSize) {
 	}
 
 	return bytesRead;
+#else
+	return -1;
+#endif
 }
 
 int IO::copyFile(std::string src, std::string dst) {
 	int size = getSize(src);
 
-	uint8_t buffer[size];
+	std::vector<uint8_t> buffer(size);
 
-	if (readFrom(src, buffer, size) == -1) {
+	if (readFrom(src, &buffer[0], size) == -1) {
 		return -1;
 	}
 
-	return writeTo(dst, buffer, size);
+	return writeTo(dst, &buffer[0], size);
 }
 
 bool IO::exists(std::string path) {

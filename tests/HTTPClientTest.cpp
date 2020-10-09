@@ -20,6 +20,13 @@
 #include <fstream>
 #include <vector>
 
+#ifdef _WIN32
+#pragma comment(lib, "ws2_32.lib")
+#pragma comment(lib, "Iphlpapi.lib")
+#pragma comment(lib, "Bcrypt.lib")
+#pragma comment(lib, "event.lib")
+#endif
+
 static void requestDone(struct evhttp_request *req, void *ctx) {
 	if (!req || !evhttp_request_get_response_code(req)) {
 		Log::error("Some error occured");
