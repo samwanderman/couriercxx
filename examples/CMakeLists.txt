@@ -8,19 +8,15 @@ add_executable(SerialPortExample SerialPortExample.cpp)
 add_executable(ServerExample ServerExample.cpp)
 add_executable(SnifferExample SnifferExample.cpp)
 
-add_library(event STATIC IMPORTED)
-
-set_target_properties(event PROPERTIES IMPORTED_LOCATION ${LIBEVENT_LIB_DIR})
-
-target_link_libraries(BluetoothPortExample CourierCXX)
-target_link_libraries(ConfigurationDatabaseExample CourierCXX)
+target_link_libraries(BluetoothPortExample CourierCXX "bluetooth")
+target_link_libraries(ConfigurationDatabaseExample CourierCXX "pqxx")
 target_link_libraries(GPIOPortExample CourierCXX)
 target_link_libraries(I2CPortExample CourierCXX)
 target_link_libraries(NetExample CourierCXX)
 target_link_libraries(PWMExample CourierCXX)
 target_link_libraries(SerialPortExample CourierCXX)
-target_link_libraries(ServerExample CourierCXX event)
-target_link_libraries(SnifferExample CourierCXX)
+target_link_libraries(ServerExample CourierCXX "event" "pthread")
+target_link_libraries(SnifferExample CourierCXX "pcap" "pthread")
 
 target_include_directories(BluetoothPortExample PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../)
 target_include_directories(ConfigurationDatabaseExample PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../)

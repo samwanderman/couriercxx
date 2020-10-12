@@ -1,28 +1,32 @@
 # CourierCXX
-##### v0.8.2.1
+##### v0.9.0.0
 C++ framework for standart operations simplification
 
 ### Requirements (Linux)
-[1] libevent-dev
+[1] Cmake
 
-[2] libpq-dev
+[2] libevent-dev
 
-[3] libpqxx-dev
+[3] libpq-dev
 
-[4] libpcap-dev
+[4] libpqxx-dev
 
-[5] libbluetooth-dev
+[5] libpcap-dev
 
-[6] libghc-iconv-dev
+[6] libbluetooth-dev
 
-[7] libjpeg-dev
+[7] libghc-iconv-dev
 
-[8] doxygen
+[8] libjpeg-dev
+
+[9] doxygen
 
 ### Requirements (Windows)
-[1] postgresql 10 ( https://www.postgresql.org/download/windows/ )
+[1] Cmake
 
-[2] libpqxx 6.4 ( https://github.com/jtv/libpqxx/tree/6.4 )
+[2] postgresql 10 ( https://www.postgresql.org/download/windows/ )
+
+[3] libpqxx 6.4 ( https://github.com/jtv/libpqxx/tree/6.4 )
 
 ### Documentation
 To generate documentation, execute command:
@@ -30,13 +34,4 @@ To generate documentation, execute command:
 	$ doxygen config.doxygen
 
 After generation it will be placed in /docs folder
-
-### Makefile commands
-- clean - clean files
-- all - make all files
-- install - install library
-- uninstall - uninstall library
-- examples - make examples
-- utils - make utils
-- docs - generate docs
  

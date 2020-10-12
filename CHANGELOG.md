@@ -1,3 +1,6 @@
+### Version 0.9.0.0
+[*] Build system changed to CMake
+
 ### Version 0.8.2.1
 [*] fixed bug with execOnce flag for ListenerParams
 

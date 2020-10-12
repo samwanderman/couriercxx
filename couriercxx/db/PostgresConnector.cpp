@@ -10,11 +10,7 @@
 
 #ifndef _WIN32
 
-#include <pqxx/binarystring.hxx>
-#include <pqxx/connection>
-#include <pqxx/prepared_statement.hxx>
-#include <pqxx/result>
-#include <pqxx/transaction>
+#include <pqxx/pqxx>
 #include <cstdarg>
 #include <cstdio>
 #include <cstring>

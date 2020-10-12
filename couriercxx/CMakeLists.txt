@@ -5,4 +5,7 @@ add_library(LibEvent STATIC IMPORTED)
 
 set_target_properties(CourierCXX PROPERTIES LINKER_LANGUAGE CXX)
 
-target_include_directories(CourierCXX PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${LIBEVENT_INCLUDE_DIR} ${LIBEVENT_INCLUDE_DIR_EXT})
+install(TARGETS CourierCXX LIBRARY DESTINATION /usr/local/lib)
+install(DIRECTORY ../couriercxx DESTINATION /usr/local/include FILES_MATCHING PATTERN "*.h")
+
+target_include_directories(CourierCXX PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})

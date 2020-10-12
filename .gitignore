@@ -11,4 +11,4 @@ docs
 examples/*Example
 utils/*Util
 tests/*Test
-build
+build*

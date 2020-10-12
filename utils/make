@@ -1,4 +1,0 @@
-#!/bin/sh
-
-g++ -std=c++17 -o PortUtil    PortUtil.cpp    -lCourierCXX -lpthread
-g++ -std=c++17 -o GPIOPinUtil GPIOPinUtil.cpp -lCourierCXX -lpthread
