@@ -65,8 +65,6 @@ static void eventCallback(struct bufferevent *buffEvent, short events, void *ctx
 Client::Client(std::string ip, uint16_t port) {
 	this->ip	= ip;
 	this->port	= port;
-
-	evthread_use_pthreads();
 }
 
 Client::~Client() { }
