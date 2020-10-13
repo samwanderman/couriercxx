@@ -85,9 +85,16 @@ int SerialPortBase::open() {
 
 #ifdef _WIN32
 
-	fd = ::CreateFile(config.path.c_str(), GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, 0, 0);
+	Log::debug("SerialPort.open('%s', %u)", config.path.c_str(), config.baudrate);
+
+	std::string path = std::string(config.path.c_str());
+	if (path.size() > 4) {
+		path = "\\\\.\\" + path;
+	}
+
+	fd = ::CreateFile(path.c_str(), GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, 0, 0);
 	if (fd == INVALID_HANDLE_VALUE) {
-		return -1;
+		return ERR_DEFAULT;
 	}
 
 	if (setBaudrate(config.baudrate) == -1) {

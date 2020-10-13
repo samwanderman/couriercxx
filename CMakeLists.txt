@@ -14,6 +14,7 @@ if(WIN32)
 	set(LIBEVENT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../../libs/libevent/include/)
 	set(LIBEVENT_INCLUDE_DIR_EXT ${CMAKE_CURRENT_SOURCE_DIR}/../../../libs/libevent/build_win_vc/include)
 	set(LIBEVENT_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../../libs/libevent/build_win_vc/lib/Release/event.lib)
+	
 	set(LIBPQXX_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../../libs/libpqxx/build/src/Release/pqxx.lib)
 endif(WIN32)
 
