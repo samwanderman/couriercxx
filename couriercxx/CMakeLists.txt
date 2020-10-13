@@ -7,4 +7,4 @@ set_target_properties(CourierCXX PROPERTIES LINKER_LANGUAGE CXX)
 install(TARGETS CourierCXX ARCHIVE DESTINATION /usr/local/lib COMPONENT library)
 install(DIRECTORY ../couriercxx DESTINATION /usr/local/include FILES_MATCHING PATTERN "*.h")
 
-target_include_directories(CourierCXX PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(CourierCXX PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${LIBEVENT_INCLUDE_DIR} ${LIBEVENT_INCLUDE_DIR_EXT})

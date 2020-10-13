@@ -4,13 +4,18 @@ project(CourierCXX VERSION 0.1)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
+
+find_package(Threads REQUIRED)
 
 add_definitions(-DNOMINMAX)
 
-# WIN
-#set(LIBEVENT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../../libs/libevent/include/)
-#set(LIBEVENT_INCLUDE_DIR_EXT ${CMAKE_CURRENT_SOURCE_DIR}/../../../libs/libevent/build_win_vc/include)
-#set(LIBEVENT_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../../libs/libevent/build_win_vc/lib/Release/event.lib)
+if(WIN32)
+	set(LIBEVENT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../../libs/libevent/include/)
+	set(LIBEVENT_INCLUDE_DIR_EXT ${CMAKE_CURRENT_SOURCE_DIR}/../../../libs/libevent/build_win_vc/include)
+	set(LIBEVENT_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../../libs/libevent/build_win_vc/lib/Release/event.lib)
+	set(LIBPQXX_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../../libs/libpqxx/build/src/Release/pqxx.lib)
+endif(WIN32)
 
 add_subdirectory(couriercxx)
 add_subdirectory(tests)
