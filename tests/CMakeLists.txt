@@ -13,7 +13,7 @@ endif(UNIX)
 
 target_link_libraries(BMPTest CourierCXX)
 target_link_libraries(ClockTest CourierCXX)
-target_link_libraries(HTTPClientTest CourierCXX ${LIBEVENT_LIB_DIR})
+target_link_libraries(HTTPClientTest CourierCXX ${LIBEVENT_LIB})
 target_link_libraries(LoopPortTest CourierCXX)
 target_link_libraries(NonBlockSerialPortTest CourierCXX)
 target_link_libraries(SerialPortTimeoutTest CourierCXX)
