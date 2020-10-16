@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 
 project(CourierCXX VERSION 0.1)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -21,6 +21,7 @@ else(UNIX)
 	set(LIBEVENT_INCLUDE_DIR /usr/local/include)
 	set(LIBEVENT_LIB /usr/local/lib/libevent.a)
 	
+	#find_library(LIBPQXX_LIB libpqxx.a)
 	set(LIBPQXX_LIB "pqxx")
 	set(LIBPQ_LIB "pq")
 endif()
