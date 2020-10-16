@@ -4,7 +4,13 @@ add_library(CourierCXX SHARED ${Sources})
 
 set_target_properties(CourierCXX PROPERTIES LINKER_LANGUAGE CXX)
 
-install(TARGETS CourierCXX ARCHIVE DESTINATION /usr/local/lib COMPONENT library)
+install(
+	TARGETS CourierCXX 
+	ARCHIVE DESTINATION /usr/local/lib 
+	LIBRARY DESTINATION /usr/local/lib 
+	COMPONENT library
+)
+
 install(DIRECTORY ../couriercxx DESTINATION /usr/local/include FILES_MATCHING PATTERN "*.h")
 
 target_link_libraries(CourierCXX ${LIBEVENT_LIB} ${LIBPQXX_LIB} Threads::Threads "bluetooth" "pcap" "jpeg")
