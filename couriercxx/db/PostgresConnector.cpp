@@ -117,7 +117,7 @@ int PostgresConnector::removeStatement(std::string name) {
 }
 
 pqxx::result PostgresConnector::execStatement(std::string name, ...) {
-	accessMutex.lock();
+	std::unique_lock lock(accessMutex);
 	va_list args;
 	va_start(args, name);
 
@@ -245,33 +245,25 @@ pqxx::result PostgresConnector::execStatement(std::string name, ...) {
 		} catch (const std::exception& e) {
 			va_end(args);
 
-			accessMutex.unlock();
-
 			throw;
 		}
 	}
 
 	va_end(args);
 
-	accessMutex.unlock();
-
 	return res;
 }
 
 pqxx::result PostgresConnector::exec(std::string sql) {
-	try {
-		accessMutex.lock();
+	std::unique_lock lock(accessMutex);
 
+	try {
 		pqxx::work worker(*connection);
 		pqxx::result res = worker.exec(sql);
 		worker.commit();
 
-		accessMutex.unlock();
-
 		return res;
 	} catch (const std::exception& e) {
-		accessMutex.unlock();
-
 		throw;
 	}
 }
