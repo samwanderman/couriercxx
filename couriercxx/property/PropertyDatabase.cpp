@@ -305,7 +305,7 @@ bool* PropertyDatabase::getBool(std::string propertyName) {
 }
 
 void PropertyDatabase::setBool(std::string propertyName, bool value) {
-	setString(propertyName, std::to_string(value));
+	setString(propertyName, value ? "true" : "false");
 }
 
 #endif
