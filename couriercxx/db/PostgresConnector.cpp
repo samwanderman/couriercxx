@@ -36,7 +36,6 @@ PostgresConnector::PostgresConnector(std::string host, uint16_t port, std::strin
 	this->password	= password;
 	this->dbName	= dbName;
 	this->encoding	= encoding;
-	connection		= nullptr;
 }
 
 PostgresConnector::~PostgresConnector() {
@@ -51,7 +50,7 @@ int PostgresConnector::open() {
 	try {
 		char buffer[BUFFER_SIZE];
 		sprintf(buffer, "host=%s port=%u user=%s password=%s dbname=%s\r\n", host.c_str(), port, username.c_str(), password.c_str(), dbName.c_str());
-		connection = new pqxx::connection(buffer);
+		connection = std::make_shared<pqxx::connection>(buffer);
 		if (!connection->is_open()) {
 			close();
 
@@ -77,9 +76,6 @@ int PostgresConnector::close() {
 		if (connection->is_open()) {
 			connection->disconnect();
 		}
-
-		delete connection;
-		connection = nullptr;
 	}
 
 	opened = false;

@@ -19,6 +19,7 @@
 #include <mutex>
 #include <string>
 #include <typeindex>
+#include <memory>
 
 /**
  * Postgresql database connector
@@ -119,12 +120,12 @@ public:
 	pqxx::result exec(std::string sql);
 
 private:
-	pqxx::connection *connection = nullptr;
+	std::shared_ptr<pqxx::connection> connection;
 	std::map<std::string, std::list<std::type_index>> preparedStatements;
 	std::mutex accessMutex;
 
 	std::string host = "";
-	uint16_t port = 0;
+	uint16_t	port = 0;
 	std::string username = "";
 	std::string password = "";
 	std::string dbName = "";
