@@ -32,6 +32,8 @@
 
 namespace TCP {
 
+#define BUFFER_MAX_SIZE	1024
+
 uint64_t totalRead = 0;
 
 static void readCallback(struct bufferevent* buffEvent, void* ctx) {
@@ -62,10 +64,9 @@ static void eventCallback(struct bufferevent *buffEvent, short events, void *ctx
 	}
 }
 
-Client::Client(std::string ip, uint16_t port) {
-	this->ip	= ip;
-	this->port	= port;
-}
+Client::Client(std::string ip, uint16_t port) : Client(ip, port, nullptr) { }
+
+Client::Client(std::string ip_, uint16_t port_, Callback callback_) : ip(ip_), port(port_), callback(callback_) { }
 
 Client::~Client() { }
 
@@ -160,7 +161,7 @@ int Client::open() {
 
 		event_base_dispatch(base);
 	};
-	th = std::thread(func);
+	startThread = std::thread(func);
 
 	while (!ready) {
 		System::sleep(200);
@@ -169,6 +170,25 @@ int Client::open() {
 #endif
 
 	opened = true;
+
+	if (callback != nullptr) {
+		readThread = std::thread([&]() {
+			while (opened) {
+				std::vector<uint8_t> buffer(BUFFER_MAX_SIZE);
+				int readBytes = read(&buffer[0], BUFFER_MAX_SIZE);
+				if (readBytes >= 0) {
+#ifdef DEBUG
+					for (uint32_t i = 0; i < std::min(res, 200); i++) {
+						Log::log("%X ", tmpBuffer[i]);
+					}
+					Log::log("\r\n");
+#endif
+
+					callback(buffer);
+				}
+			}
+		});
+	}
 
 	return 0;
 }
@@ -191,8 +211,12 @@ int Client::close() {
 		event_base_loopexit(base, &time);
 	}
 
-	if (th.joinable()) {
-		th.join();
+	if (startThread.joinable()) {
+		startThread.join();
+	}
+
+	if (readThread.joinable()) {
+		readThread.join();
 	}
 
 	if (bufferEvent != nullptr) {

@@ -18,6 +18,7 @@
 #include <string>
 #include <vector>
 #include <thread>
+#include <functional>
 
 #include "../../connector/IConnectorBase.h"
 
@@ -41,13 +42,25 @@ namespace TCP {
  */
 class Client : public IConnectorBase {
 public:
+	// type definitions
+	typedef std::function<void(const std::vector<uint8_t>& data)> Callback;
+
 	/**
 	 * Constructor
 	 *
-	 * \param[in] string ip - ip addr for tcp connection
-	 * \param[in] uint16_t port - port for tcp connection
+	 * \param[in] ip	- ip addr for tcp connection
+	 * \param[in] port	- port for tcp connection
 	 */
 	Client(std::string ip, uint16_t port);
+
+	/**
+	 * Constructor
+	 *
+	 * \param[in] ip		- ip addr for tcp connection
+	 * \param[in] port		- port for tcp connection
+	 * \param[in] callback	- callback
+	 */
+	Client(std::string ip, uint16_t port, Callback callback);
 
 	/**
 	 * Destructor
@@ -65,50 +78,60 @@ public:
 	/**
 	 * Open tcp port
 	 *
-	 * \return 0 if success, -1 if error
+	 * \return
+	 * 		- 0 if success
+	 * 		- -1 if error
 	 */
 	int open();
 
 	/**
 	 * Close tcp port
 	 *
-	 * \return 0 if success, -1 if error
+	 * \return
+	 * 		- 0 if success
+	 * 		- -1 if error
 	 */
 	int close();
 
 	/**
 	 * Write data
 	 *
-	 * \param[in] const uint8_t* buffer - pointer to buffer
-	 * \param[in] uint32_t bufferSize - size of buffer
+	 * \param[in] buffer		- pointer to buffer
+	 * \param[in] bufferSize	- size of buffer
 	 *
-	 * \return number of written bytes if success, -1 if error
+	 * \return
+	 * 		- number of written bytes if success
+	 * 		- -1 if error
 	 */
 	int write(const uint8_t* buffer, uint32_t bufferSize);
 
 	/**
 	 * Write data
 	 *
-	 * \param[in] list<uint8_t>& buffer - buffer
+	 * \param[in] buffer - buffer
 	 *
-	 * \return number of written bytes if success, -1 if error
+	 * \return
+	 * 		- number of written bytes if success
+	 * 		- -1 if error
 	 */
 	int write(std::list<uint8_t>& buffer);
 
 	/**
 	 * Read data
 	 *
-	 * \param[out] uint8_t* buffer - pointer to buffer
-	 * \param[in] uint32_t bufferSize - size of buffer
+	 * \param[out]	buffer		- pointer to buffer
+	 * \param[in]	bufferSize	- size of buffer
 	 *
-	 * \return number of read bytes if success, -1 if error
+	 * \return
+	 * 		- number of read bytes if success
+	 * 		- -1 if error
 	 */
 	int read(uint8_t* buffer, uint32_t bufferSize);
 
 	/**
 	 * Check if port is open
 	 *
-	 * \return bool - open state
+	 * \return open state
 	 */
 	bool isOpen();
 
@@ -124,16 +147,20 @@ private:
 	uint16_t				port			= 0;
 
 	bool					opened			= false;
-	std::thread				th;
+	std::thread				startThread;
+	std::thread				readThread;
 
-	struct event_base		*base			= nullptr;
-	struct bufferevent		*bufferEvent	= nullptr;
+	struct event_base*		base			= nullptr;
+	struct bufferevent*		bufferEvent		= nullptr;
 
 	std::vector<uint8_t>	bytes;
 	std::mutex				bytesMutex;
 	std::condition_variable	bytesVariable;
 
 	std::mutex				writeMutex;
+
+	// optional callback
+	Callback				callback;
 
 #ifdef _WIN32
 
