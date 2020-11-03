@@ -66,7 +66,9 @@ static void eventCallback(struct bufferevent *buffEvent, short events, void *ctx
 
 Client::Client(std::string ip, uint16_t port) : Client(ip, port, nullptr) { }
 
-Client::Client(std::string ip_, uint16_t port_, Callback callback_) : ip(ip_), port(port_), callback(callback_) { }
+Client::Client(std::string ip_, uint16_t port_, Callback callback_) : ip(ip_), port(port_), callback(callback_) {
+	Log::debug("TCP.Client('%s', %u)", ip.c_str(), port);
+}
 
 Client::~Client() { }
 
@@ -176,6 +178,7 @@ int Client::open() {
 			while (opened) {
 				std::vector<uint8_t> buffer(BUFFER_MAX_SIZE);
 				int readBytes = read(&buffer[0], BUFFER_MAX_SIZE);
+				Log::debug("read %i bytes", readBytes);
 				if (readBytes >= 0) {
 #ifdef DEBUG
 					for (uint32_t i = 0; i < std::min(res, 200); i++) {
