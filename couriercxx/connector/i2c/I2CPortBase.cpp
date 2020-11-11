@@ -9,9 +9,11 @@
 #include "I2CPortBase.h"
 
 #include <cstdint>
+#include <cctype>
 #include <sstream>
 
 #include "../../util/System.h"
+#include "../../logger/Log.h"
 
 #ifndef _WIN32
 
@@ -21,13 +23,18 @@
 #include <unistd.h>
 
 I2CPortBase::I2CPortBase(std::string name, uint8_t addr) : IConnectorBase() {
+	Log::debug("I2CPortBase(%s, %X)", name.c_str(), addr);
 	this->name = name;
 	this->addr = addr;
 }
 
-I2CPortBase::~I2CPortBase() { }
+I2CPortBase::~I2CPortBase() {
+	Log::debug("~I2CPortBase()");
+}
 
 int I2CPortBase::open() {
+	Log::debug("I2CPortBase.open()");
+
 	if (isOpen()) {
 		return -1;
 	}
@@ -37,7 +44,7 @@ int I2CPortBase::open() {
 	std::stringstream str;
 	str << "i2cget -y 0 0x" << std::hex << _addr;
 	std::string res = System::execAndGetOutput(str.str());
-	if (res.c_str()[0] != '0') {
+	if (!isdigit(res.c_str()[0])) {
 		return -1;
 	}
 
@@ -56,6 +63,8 @@ int I2CPortBase::open() {
 }
 
 int I2CPortBase::close() {
+	Log::debug("I2CPortBase.close()");
+
 	if (!isOpen()) {
 		return -1;
 	}
@@ -66,10 +75,14 @@ int I2CPortBase::close() {
 }
 
 void I2CPortBase::clean() {
+	Log::debug("I2CPortBase.clean()");
+
 	::close(fd);
 }
 
 int I2CPortBase::read(uint8_t* buffer, uint32_t bufferSize) {
+	Log::debug("I2CPortBase.read()");
+
 	if (!isOpen()) {
 		return -1;
 	}
@@ -78,6 +91,8 @@ int I2CPortBase::read(uint8_t* buffer, uint32_t bufferSize) {
 }
 
 int I2CPortBase::write(const uint8_t* buffer, uint32_t bufferSize) {
+	Log::debug("I2CPortBase.write()");
+
 	if (!isOpen()) {
 		return -1;
 	}
