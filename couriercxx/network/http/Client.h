@@ -28,7 +28,7 @@ class Client {
 public:
 	// client config
 	struct ClientConfig {
-		const char*	host	= nullptr;
+		std::string	host;
 		uint32_t	port	= 0;
 		uint32_t	timeout = 0;
 	};
@@ -73,7 +73,7 @@ public:
 	 * 			0	- if success
 	 * 			-1	- if error
 	 */
-	int send(HTTP::Method method, const char* url, uint8_t* data, uint32_t dataSize);
+	int send(HTTP::Method method, std::string url, uint8_t* data, uint32_t dataSize);
 
 	/**
 	 * Get callback

@@ -71,8 +71,8 @@ int Client::start() {
 	}
 	Log::debug("event_base_new() success");
 
-	Log::debug("Host: %s, Port: %u", config.host, config.port);
-	conn = evhttp_connection_base_new(base, nullptr, config.host, config.port);
+	Log::debug("Host: %s, Port: %u", config.host.c_str(), config.port);
+	conn = evhttp_connection_base_new(base, nullptr, config.host.c_str(), config.port);
 	if (conn == nullptr) {
 		Log::error("evhttp_connection_base_new() error");
 
@@ -97,19 +97,19 @@ int Client::stop() {
 	return 0;
 }
 
-int Client::send(HTTP::Method method, const char* url, uint8_t* data = nullptr, uint32_t dataSize = 0) {
-	Log::debug("HTTP.Client.send('%s')", url);
+int Client::send(HTTP::Method method, std::string url, uint8_t* data = nullptr, uint32_t dataSize = 0) {
+	Log::debug("HTTP.Client.send('%s')", url.c_str());
 
 	if (!running) {
 		return -1;
 	}
 
 	auto req = evhttp_request_new(onRequestDone, this);
-	evhttp_add_header(req->output_headers, "Host", config.host);
+	evhttp_add_header(req->output_headers, "Host", config.host.c_str());
 
 	switch (method) {
 	case HTTP::Method::Get: {
-	    evhttp_make_request(conn, req, EVHTTP_REQ_GET, url);
+	    evhttp_make_request(conn, req, EVHTTP_REQ_GET, url.c_str());
 	} break;
 
 	case HTTP::Method::Post: {
@@ -117,7 +117,7 @@ int Client::send(HTTP::Method method, const char* url, uint8_t* data = nullptr, 
 		evbuffer_add(outputBuffer, data, dataSize);
 		evutil_snprintf(reinterpret_cast<char*>(data), sizeof(data) - 1, "%lu", (unsigned long) dataSize);
 		evhttp_add_header(req->output_headers, "Content-Length", std::to_string(dataSize).c_str());
-	    evhttp_make_request(conn, req, EVHTTP_REQ_POST, url);
+	    evhttp_make_request(conn, req, EVHTTP_REQ_POST, url.c_str());
 	} break;
 
 	default:
