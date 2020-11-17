@@ -1,3 +1,6 @@
+### Version 0.9.0.1
+[*] Bugfixes
+
 ### Version 0.9.0.0
 [*] Build system changed to CMake
 

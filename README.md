@@ -1,5 +1,5 @@
 # CourierCXX
-##### v0.9.0.0
+##### v0.9.0.1
 C++ framework for standart operations simplification
 
 ### Requirements (Linux)
@@ -34,4 +34,18 @@ To generate documentation, execute command:
 	$ doxygen config.doxygen
 
 After generation it will be placed in /docs folder
+
+### Build
+1) Make build directory in project root folder and cd to it
+
+	$ mkdir build
+	$ cd build
+	
+2) Init CMake config
+	
+	$ cmake ..
+	
+3) Build targets with desired configuration (Debug/Release
+
+	$ cmake --build . --config Debug 
  
