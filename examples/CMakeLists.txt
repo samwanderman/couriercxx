@@ -11,7 +11,7 @@ if(UNIX)
 	add_executable(SnifferExample SnifferExample.cpp)
 endif(UNIX)
 
-target_link_libraries(ConfigurationDatabaseExample CourierCXX ${LIBPQXX_LIB} ${LIBPQ_LIB})
+target_link_libraries(ConfigurationDatabaseExample CourierCXX ${LIBPQ_LIB} ${LIBPQXX_LIB})
 target_link_libraries(GPIOPortExample CourierCXX)
 target_link_libraries(I2CPortExample CourierCXX)
 target_link_libraries(NetExample CourierCXX)

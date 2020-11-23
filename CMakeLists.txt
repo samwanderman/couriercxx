@@ -21,10 +21,13 @@ else(UNIX)
 	set(LIBEVENT_INCLUDE_DIR /usr/local/include)
 	set(LIBEVENT_LIB /usr/local/lib/libevent.a)
 	
-	#find_library(LIBPQXX_LIB libpqxx.a)
-	set(LIBPQXX_LIB "pqxx")
+	find_library(LIBPQXX_LIB libpqxx.a)
+	#find_library(LIBPQ_LIB libpq.a)
+	#set(LIBPQXX_LIB "pqxx")
 	set(LIBPQ_LIB "pq")
 endif()
+
+link_directories(/usr/lib/x86_64-linux-gnu/)
 
 add_subdirectory(couriercxx)
 add_subdirectory(tests)
