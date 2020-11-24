@@ -8,6 +8,7 @@ set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 find_package(Threads REQUIRED)
+find_package(PostgreSQL REQUIRED)
 
 add_definitions(-DNOMINMAX)
 
@@ -24,10 +25,8 @@ else(UNIX)
 	find_library(LIBPQXX_LIB libpqxx.a)
 	#find_library(LIBPQ_LIB libpq.a)
 	#set(LIBPQXX_LIB "pqxx")
-	set(LIBPQ_LIB "pq")
+	#set(LIBPQ_LIB "pq")
 endif()
-
-link_directories(/usr/lib/x86_64-linux-gnu/)
 
 add_subdirectory(couriercxx)
 add_subdirectory(tests)
