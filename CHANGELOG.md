@@ -1,3 +1,6 @@
+### Version 0.9.0.2
+[*] Build fixes
+
 ### Version 0.9.0.1
 [*] Bugfixes
 
