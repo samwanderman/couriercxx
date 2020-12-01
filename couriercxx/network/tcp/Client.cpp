@@ -181,8 +181,8 @@ int Client::open() {
 				Log::debug("read %i bytes", readBytes);
 				if (readBytes >= 0) {
 #ifdef DEBUG
-					for (uint32_t i = 0; i < std::min(res, 200); i++) {
-						Log::log("%X ", tmpBuffer[i]);
+					for (uint32_t i = 0; i < std::min(readBytes, 200); i++) {
+						Log::log("%X ", buffer[i]);
 					}
 					Log::log("\r\n");
 #endif
