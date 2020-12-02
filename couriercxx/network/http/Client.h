@@ -11,6 +11,7 @@
 
 #include <cstdint>
 #include <functional>
+#include <thread>
 
 #include "Http.h"
 #include "../../Types.h"
@@ -91,6 +92,8 @@ private:
 
 	struct event_base*			base	= nullptr;
 	struct evhttp_connection*	conn	= nullptr;
+
+	std::thread					startThread;
 
 	/**
 	 * Clean resources

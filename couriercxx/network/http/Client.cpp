@@ -125,10 +125,9 @@ int Client::send(HTTP::Method method, std::string url, uint8_t* data = nullptr, 
 
 	evhttp_connection_set_timeout(req->evcon, config.timeout / 1000);
 
-	std::thread th([this]() {
+	startThread = std::thread([this]() {
 		event_base_dispatch(base);
 	});
-	th.detach();
 
 	return 0;
 }
@@ -151,6 +150,10 @@ void Client::clean() {
 	if (base != nullptr) {
 		event_base_free(base);
 		base = nullptr;
+	}
+
+	if (startThread.joinable()) {
+		startThread.join();
 	}
 }
 
