@@ -10,7 +10,7 @@
 
 namespace Connection {
 
-Info::Info(int32_t id, std::string name, uint64_t commandTimeout) {
+Info::Info(int32_t id, std::string name, Timeout commandTimeout) {
 	this->id = id;
 	this->name = name;
 	this->commandTimeout = commandTimeout;

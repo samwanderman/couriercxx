@@ -12,6 +12,8 @@
 #include <cstdint>
 #include <functional>
 
+#include "../Types.h"
+
 /**
  * Callback class
  *
@@ -23,43 +25,43 @@ public:
 	/**
 	 * Constructor
 	 *
-	 * \param[in] T event - captured event
-	 * \param[in] callback - callback
-	 * \param[in] uint64_t timeout - response wait timeout
+	 * \param[in] event		- captured event
+	 * \param[in] callback	- callback
+	 * \param[in] timeout	- response wait timeout
 	 */
-	Callback(T event, std::function<void (void*, void*, void*)> callback, uint64_t timeout) {
-		this->event = event;
-		this->callback = callback;
-		this->timeout = timeout;
-		this->permanent = false;
+	Callback(T event, std::function<void (void*, void*, void*)> callback, Timeout timeout) {
+		this->event		= event;
+		this->callback	= callback;
+		this->timeout	= timeout;
+		this->permanent	= false;
 	}
 
 	/**
 	 * Constructor
 	 *
-	 * \param[in] T event - captured event
-	 * \param[in] callback - callback
-	 * \param[in] bool permanent - do not remove after callback call
+	 * \param[in] event		- captured event
+	 * \param[in] callback	- callback
+	 * \param[in] permanent	- do not remove after callback call
 	 */
 	Callback(T event, std::function<void (void*, void*, void*)> callback, bool permanent) {
-		this->event = event;
-		this->callback = callback;
-		this->timeout = 0;
-		this->permanent = permanent;
+		this->event		= event;
+		this->callback	= callback;
+		this->timeout	= -1;
+		this->permanent	= permanent;
 	}
 
 	/**
 	 * Constructor
 	 *
-	 * \param[in] T event - captured event
-	 * \param[in] callback - callback
-	 * \param[in] uint64_t timeout - response wait timeout
-	 * \param[in] bool permanent - do not remove after callback call
+	 * \param[in] event		- captured event
+	 * \param[in] callback	- callback
+	 * \param[in] timeout	- response wait timeout
+	 * \param[in] permanent	- do not remove after callback call
 	 */
-	Callback(T event, std::function<void (void*, void*, void*)> callback, uint64_t timeout, bool permanent) {
-		this->event = event;
-		this->callback = callback;
-		this->timeout = timeout;
+	Callback(T event, std::function<void (void*, void*, void*)> callback, Timeout timeout, bool permanent) {
+		this->event		= event;
+		this->callback	= callback;
+		this->timeout	= timeout;
 		this->permanent = permanent;
 	}
 
@@ -82,7 +84,7 @@ public:
 	 *
 	 * return event timeout
 	 */
-	uint64_t getTimeout() {
+	Timeout getTimeout() {
 		return timeout;
 	}
 
@@ -105,10 +107,10 @@ public:
 	}
 
 private:
-	uint64_t timeout = 0;
-	T event;
-	std::function<void (void*, void*, void*)> callback;
-	bool permanent = false;
+	Timeout										timeout		= -1;
+	T											event;
+	std::function<void (void*, void*, void*)>	callback;
+	bool										permanent	= false;
 };
 
 #endif /* COURIERCXX_EVENT_CALLBACK_H_ */

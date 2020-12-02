@@ -45,7 +45,7 @@ void Dispatcher::trigger(IEvent* event, EVENT_T responseEventType, IListener* li
 	Dispatcher::trigger(event);
 }
 
-void Dispatcher::trigger(IEvent* event, EVENT_T responseEventType, IListener* listener, uint32_t timeout) {
+void Dispatcher::trigger(IEvent* event, EVENT_T responseEventType, IListener* listener, Timeout timeout) {
 	ListenerParams params;
 	params.timeout = Clock::getTimestamp() + timeout;
 	WrappedListener* wListener = new WrappedListener(params, [listener, responseEventType](const IEvent* event, const WrappedListener* self) {
@@ -69,7 +69,7 @@ void Dispatcher::wait(EVENT_T eventType, std::function<void (const IEvent*)> lis
 	Dispatcher::getInstance().wait(eventType, listener);
 }
 
-void Dispatcher::wait(EVENT_T eventType, std::function<void (const IEvent*)> listener, uint64_t timeout) {
+void Dispatcher::wait(EVENT_T eventType, std::function<void (const IEvent*)> listener, Timeout timeout) {
 	Dispatcher::getInstance().wait(eventType, listener, timeout);
 }
 

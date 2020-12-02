@@ -19,7 +19,6 @@
 
 #include "../../logger/Log.h"
 
-#define TIMEOUT		2000
 #define BUFFER_SIZE	1024
 
 namespace HTTP {

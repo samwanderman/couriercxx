@@ -10,7 +10,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 find_package(Threads REQUIRED)
 find_package(PostgreSQL REQUIRED)
 
-add_definitions(-DNOMINMAX)
+add_definitions(-DNOMINMAX -DDEBUG)
 
 if(WIN32)
 	set(LIBEVENT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../../libs/libevent/include/)

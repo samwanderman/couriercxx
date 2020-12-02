@@ -12,6 +12,7 @@
 #include <functional>
 
 #include "IEvent.h"
+#include "../Types.h"
 
 class DispatcherBase;
 
@@ -59,12 +60,12 @@ public:
 	/**
 	 * Trigger an event and catch response
 	 *
-	 * \param[in] IEvent* event - event
-	 * \param[in] EVENT_T responseEventType - response event type
-	 * \param[in] IListener* listener - listener
-	 * \param[in] uint32_t timeout - timeout in milliseconds
+	 * \param[in] event				- event
+	 * \param[in] responseEventType - response event type
+	 * \param[in] listener			- listener
+	 * \param[in] timeout			- timeout in milliseconds
 	 */
-	static void trigger(IEvent* event, EVENT_T responseEventType, IListener* listener, uint32_t timeout);
+	static void trigger(IEvent* event, EVENT_T responseEventType, IListener* listener, Timeout timeout);
 
 	/**
 	 * Wait for event
@@ -77,11 +78,11 @@ public:
 	/**
 	 * Wait for event
 	 *
-	 * \param[in] EVENT_T eventType - type
-	 * \param[in] function(const IEvent*) listener - listener
-	 * \param[in] uint64_t timeout
+	 * \param[in] eventType	- type
+	 * \param[in] listener	- listener
+	 * \param[in] timeout
 	 */
-	static void wait(EVENT_T eventType, std::function<void (const IEvent*)> listener, uint64_t timeout);
+	static void wait(EVENT_T eventType, std::function<void (const IEvent*)> listener, Timeout timeout);
 
 private:
 	/**

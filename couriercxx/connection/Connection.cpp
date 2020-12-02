@@ -20,7 +20,6 @@
 
 #define BUFFER_MAX_SIZE			1024
 #define MAX_EVENTS				128
-#define CONNECTION_READ_TIMEOUT	100
 
 namespace Connection {
 
@@ -77,8 +76,6 @@ int Connection::enable() {
 #endif
 				Dispatcher::trigger(new EventRead(this->info, buffer, bytesRead));
 			}
-
-			System::sleep(CONNECTION_READ_TIMEOUT);
 		}
 	};
 	readThread = std::thread(readThreadFunc);
@@ -138,7 +135,7 @@ int Connection::disable() {
 void Connection::on(const IEvent* event) {
 	if (event->getType() == Connection::EVENT_WRITE) {
 		Log::debug("Connection[%i].on(EVENT_WRITE)", info.id);
-		std::unique_lock<decltype(eventsListMutex)> lock(eventsListMutex);
+		std::unique_lock lock(eventsListMutex);
 		if (eventsList.size() >= MAX_EVENTS) {
 			eventsList.pop_front();
 		}

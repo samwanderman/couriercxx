@@ -1,3 +1,6 @@
+### Version 0.9.0.3
+[*] Minor refactoring
+
 ### Version 0.9.0.2
 [*] Build fixes
 

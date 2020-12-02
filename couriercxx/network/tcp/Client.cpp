@@ -181,8 +181,8 @@ int Client::open() {
 				Log::debug("read %i bytes", readBytes);
 				if (readBytes >= 0) {
 #ifdef DEBUG
-					for (uint32_t i = 0; i < std::min(res, 200); i++) {
-						Log::log("%X ", tmpBuffer[i]);
+					for (int i = 0; i < std::min(readBytes, 200); i++) {
+						Log::log("%X ", buffer[i]);
 					}
 					Log::log("\r\n");
 #endif
@@ -238,7 +238,7 @@ int Client::write(const uint8_t* buffer, uint32_t bufferSize) {
 		return 0;
 	}
 
-	std::lock_guard<decltype(writeMutex)> lock(writeMutex);
+	std::lock_guard lock(writeMutex);
 
 #ifdef _WIN32
 
@@ -313,7 +313,7 @@ bool Client::isOpen() {
 }
 
 void Client::addData(std::vector<uint8_t>& data) {
-	std::lock_guard<decltype(bytesMutex)> lock(bytesMutex);
+	std::lock_guard lock(bytesMutex);
 	bytes.insert(bytes.end(), data.begin(), data.end());
 	bytesVariable.notify_all();
 }

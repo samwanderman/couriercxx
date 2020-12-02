@@ -37,7 +37,7 @@ public:
 	 * \param[in] value - value
 	 */
 	void insert(K key, V value) {
-		std::lock_guard<decltype(mutex)> lock(mutex);
+		std::lock_guard lock(mutex);
 		container.insert(std::pair<K, V>(key, value));
 	}
 
@@ -58,7 +58,7 @@ public:
 	 */
 	template<typename ... Args>
 	void emplace(Args&&... args) {
-		std::lock_guard<decltype(mutex)> lock(mutex);
+		std::lock_guard lock(mutex);
 		container.emplace(args...);
 	}
 
@@ -68,7 +68,7 @@ public:
 	 * \param[in] key
 	 */
 	void erase(K key) {
-		std::lock_guard<decltype(mutex)> lock(mutex);
+		std::lock_guard lock(mutex);
 		container.erase(key);
 	}
 
@@ -78,7 +78,7 @@ public:
 	 * \param[in] func - function to execute
 	 */
 	void forEach(std::function<void(const K& key, V& value)> func) {
-		std::lock_guard<decltype(mutex)> lock(mutex);
+		std::lock_guard lock(mutex);
 		auto it = container.begin();
 		while (it != container.end()) {
 			func(it->first, it->second);
@@ -92,7 +92,7 @@ public:
 	 * \return size
 	 */
 	int size() {
-		std::lock_guard<decltype(mutex)> lock(mutex);
+		std::lock_guard lock(mutex);
 
 		return container.size();
 	}

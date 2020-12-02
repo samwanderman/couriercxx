@@ -10,13 +10,14 @@
 #define COURIERCXX_EVENT_LISTENERPARAMS_H_
 
 #include <cstdint>
+#include "../Types.h"
 
 /**
  * Params from IListener
  */
 struct ListenerParams {
-	uint64_t	timeout		= ~0;
-	bool		execOnce	= false;
+	Timeout	timeout		= -1;
+	bool	execOnce	= false;
 };
 typedef struct ListenerParams ListenerParams;
 
