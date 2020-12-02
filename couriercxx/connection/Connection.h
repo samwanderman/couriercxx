@@ -11,6 +11,7 @@
 
 #include <list>
 #include <mutex>
+#include <atomic>
 #include <thread>
 #include <condition_variable>
 
@@ -78,16 +79,23 @@ public:
 	Info getInfo();
 
 private:
-	Info info;
-	IConnectorBase* connector = nullptr;
+	Info					info;
+	IConnectorBase*			connector		= nullptr;
 
-	std::list<EventWrite*> eventsList;
-	std::mutex eventsListMutex;
-	std::condition_variable cond;
+	std::list<EventWrite*>	eventsList;
+	std::mutex				eventsListMutex;
+	std::condition_variable	cond;
 
-	bool running = false;
-	std::thread readThread;
-	std::thread eventsThread;
+	std::atomic<bool>		running{false};
+	std::atomic<bool>		stopThreads{false};
+
+	std::thread				lazyStart;
+	std::thread				readThread;
+	std::thread				eventsThread;
+
+	int connect();
+	int disconnect();
+	int reconnect();
 };
 
 } /* namespace Connection */

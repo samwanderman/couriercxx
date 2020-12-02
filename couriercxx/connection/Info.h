@@ -32,6 +32,17 @@ struct Info {
 	/**
 	 * Constructor
 	 *
+	 * \param[in] id				- connection id
+	 * \param[in] name				- connection name
+	 * \param[in] commandTimeout	- command timeout
+	 * \param[in] reconnectOnErrors	- reconnect on errors
+	 * \param[in] reconnectTimeout	- timeout between reconnection attempts
+	 */
+	Info(int32_t id, std::string name, Timeout commandTimeout, bool reconnectOnErrors, Timeout reconnectTimeout);
+
+	/**
+	 * Constructor
+	 *
 	 * \param[in] id - connection id
 	 */
 	Info(int32_t id);
@@ -41,9 +52,12 @@ struct Info {
 	 */
 	Info();
 
-	int32_t		id				= -1;
-	std::string	name			= "";
-	Timeout		commandTimeout	= -1;
+	int32_t		id					= -1;
+	std::string	name;
+	Timeout		commandTimeout		= -1;
+
+	bool		reconnectOnErrors	= false;
+	Timeout		reconnectTimeout	= -1;
 };
 typedef struct Info Info;
 
