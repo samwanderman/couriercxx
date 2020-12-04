@@ -10,6 +10,7 @@
 
 #include <cstdint>
 #include <atomic>
+#include <future>
 
 #include "../../util/System.h"
 
@@ -34,8 +35,6 @@ namespace TCP {
 
 #define BUFFER_MAX_SIZE	1024
 
-uint64_t totalRead = 0;
-
 static void readCallback(struct bufferevent* buffEvent, void* ctx) {
 	Log::debug("TCP.Client.readCallback()");
 
@@ -44,7 +43,7 @@ static void readCallback(struct bufferevent* buffEvent, void* ctx) {
 	struct evbuffer *inputBuffer	= bufferevent_get_input(buffEvent);
 	uint32_t		len				= evbuffer_get_length(inputBuffer);
 
-	totalRead += len;
+	Log::debug("buffer len is %i", len);
 
 	std::vector<uint8_t> bytes(len);
 	evbuffer_remove(inputBuffer, &bytes[0], len);
@@ -60,7 +59,14 @@ static void eventCallback(struct bufferevent *buffEvent, short events, void *ctx
 		int one = 1;
 		setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, &one, sizeof(one));
 	} else if (events & BEV_EVENT_ERROR) {
+		Log::error("Connection error");
+
 		bufferevent_free(buffEvent);
+
+		Client* self = reinterpret_cast<Client*>(ctx);
+
+		System::sleep(5000);
+		self->reconnect();
 	}
 }
 
@@ -125,74 +131,11 @@ int Client::open() {
 
 #else
 
-	std::atomic<bool> ready;
-	ready = false;
-
-	auto func = [this, &ready]() {
-		base = event_base_new();
-		if (!base) {
-			close();
-
-			return;
-		}
-
-		struct sockaddr_in servAddr;
-		memset(&servAddr, 0, sizeof(servAddr));
-		servAddr.sin_family = AF_INET;
-		servAddr.sin_port = htons(port);
-
-		if (inet_pton(AF_INET, ip.c_str(), &servAddr.sin_addr) != 1) {
-			close();
-
-			return;
-		}
-
-		bufferEvent = bufferevent_socket_new(base, -1, BEV_OPT_CLOSE_ON_FREE);
-		bufferevent_setcb(bufferEvent, readCallback, nullptr, eventCallback, this);
-		bufferevent_enable(bufferEvent, EV_READ | EV_WRITE);
-
-		if (bufferevent_socket_connect(bufferEvent,(struct sockaddr *) &servAddr, sizeof(servAddr)) < 0) {
-			Log::error("bufferevent_socket_connect() error");
-
-			close();
-
-			return;
-		}
-
-		ready = true;
-
-		event_base_dispatch(base);
-	};
-	startThread = std::thread(func);
-
-	while (!ready) {
-		System::sleep(200);
-	}
-
-#endif
-
 	opened = true;
 
-	if (callback != nullptr) {
-		readThread = std::thread([&]() {
-			while (opened) {
-				std::vector<uint8_t> buffer(BUFFER_MAX_SIZE);
-				int readBytes = read(&buffer[0], BUFFER_MAX_SIZE);
-				Log::debug("read %i bytes", readBytes);
-				if (readBytes >= 0) {
-#ifdef DEBUG
-					for (int i = 0; i < std::min(readBytes, 200); i++) {
-						Log::log("%X ", buffer[i]);
-					}
-					Log::log("\r\n");
+	connect();
+
 #endif
-
-					callback(buffer);
-				}
-			}
-		});
-	}
-
 	return 0;
 }
 
@@ -207,25 +150,7 @@ int Client::close() {
 
 	opened = false;
 
-	bytesVariable.notify_all();
-
-	if (base != nullptr) {
-		struct timeval time = { 0, 0 };
-		event_base_loopexit(base, &time);
-	}
-
-	if (startThread.joinable()) {
-		startThread.join();
-	}
-
-	if (readThread.joinable()) {
-		readThread.join();
-	}
-
-	if (bufferEvent != nullptr) {
-		bufferevent_free(bufferEvent);
-		bufferEvent = nullptr;
-	}
+	disconnect();
 
 #endif
 	return 0;
@@ -313,9 +238,122 @@ bool Client::isOpen() {
 }
 
 void Client::addData(std::vector<uint8_t>& data) {
+	Log::debug("addData() %i bytes", data.size());
+
 	std::lock_guard lock(bytesMutex);
 	bytes.insert(bytes.end(), data.begin(), data.end());
 	bytesVariable.notify_all();
+}
+
+int Client::connect() {
+	Log::debug("Client.connect()");
+
+	stopThreads.store(false);
+
+	std::atomic<bool> ready{false};
+
+	startThread = std::thread([&]() {
+		base = event_base_new();
+		if (!base) {
+			close();
+
+			return;
+		}
+
+		struct sockaddr_in servAddr;
+		memset(&servAddr, 0, sizeof(servAddr));
+		servAddr.sin_family = AF_INET;
+		servAddr.sin_port = htons(port);
+
+		if (inet_pton(AF_INET, ip.c_str(), &servAddr.sin_addr) != 1) {
+			close();
+
+			return;
+		}
+
+		bufferEvent = bufferevent_socket_new(base, -1, BEV_OPT_CLOSE_ON_FREE);
+		bufferevent_setcb(bufferEvent, readCallback, nullptr, eventCallback, this);
+		bufferevent_enable(bufferEvent, EV_READ | EV_WRITE);
+
+		if (bufferevent_socket_connect(bufferEvent, (struct sockaddr*) &servAddr, sizeof(servAddr)) < 0) {
+			Log::error("bufferevent_socket_connect() error");
+
+			close();
+
+			return;
+		}
+
+		ready = true;
+
+		event_base_dispatch(base);
+	});
+
+	while (!ready && !stopThreads.load()) {
+		std::this_thread::yield();
+	}
+
+	if (callback != nullptr) {
+		readThread = std::thread([&]() {
+			while (!stopThreads.load()) {
+				std::vector<uint8_t> buffer(BUFFER_MAX_SIZE);
+				int readBytes = read(&buffer[0], BUFFER_MAX_SIZE);
+				Log::debug("TCP.Client: read %i bytes", readBytes);
+				if (readBytes >= 0) {
+#ifdef DEBUG
+					for (int i = 0; i < std::min(readBytes, 200); i++) {
+						Log::log("%X ", buffer[i]);
+					}
+					Log::log("\r\n");
+#endif
+
+					std::thread th([&, buffer](){
+						callback(buffer);
+					});
+					th.detach();
+				}
+			}
+		});
+	}
+
+	return 0;
+}
+
+int Client::disconnect() {
+	Log::debug("Client.disconnect()");
+
+	stopThreads.store(true);
+
+	bytesVariable.notify_all();
+
+	if (base != nullptr) {
+		struct timeval time = { 0, 0 };
+		event_base_loopexit(base, &time);
+	}
+
+	if (startThread.joinable()) {
+		startThread.join();
+	}
+
+	if (readThread.joinable()) {
+		readThread.join();
+	}
+
+	if (bufferEvent != nullptr) {
+		bufferevent_free(bufferEvent);
+		bufferEvent = nullptr;
+	}
+
+	return 0;
+}
+
+int Client::reconnect() {
+	disconnect();
+
+	if (opened.load()) {
+		connect();
+	}
+
+	return 0;
 }
 
 } /* namespace TCP */
