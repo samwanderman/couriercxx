@@ -19,7 +19,6 @@
 #include <vector>
 #include <thread>
 #include <functional>
-#include <atomic>
 
 #include "../../connector/IConnectorBase.h"
 
@@ -143,14 +142,11 @@ public:
 	 */
 	void addData(std::vector<uint8_t>& data);
 
-	int reconnect();
-
 private:
-	std::string				ip;
+	std::string				ip				= "";
 	uint16_t				port			= 0;
 
-	std::atomic<bool>		opened			{false};
-	std::atomic<bool>		stopThreads		{false};
+	bool					opened			= false;
 	std::thread				startThread;
 	std::thread				readThread;
 
@@ -165,9 +161,6 @@ private:
 
 	// optional callback
 	Callback				callback;
-
-	int connect();
-	int disconnect();
 
 #ifdef _WIN32
 

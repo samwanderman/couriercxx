@@ -116,6 +116,7 @@ int Server::open() {
 		event_base_dispatch(base);
 	};
 	th = std::thread(func);
+	th.detach();
 
 	return 0;
 }
@@ -145,10 +146,6 @@ int Server::close() {
 	}
 
 	connectedClients.clear();
-
-	if (th.joinable()) {
-		th.join();
-	}
 
 	return 0;
 }

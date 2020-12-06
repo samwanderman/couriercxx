@@ -11,8 +11,6 @@
 
 #include <cstdint>
 #include <functional>
-#include <vector>
-#include <future>
 
 #include "Http.h"
 #include "../../Types.h"
@@ -34,17 +32,6 @@ public:
 		std::string	host;
 		uint32_t	port	= 0;
 		Timeout		timeout = -1;
-	};
-
-	struct Response {
-		uint32_t				status;
-		std::vector<uint8_t>	data;
-
-		Response() : status{0} { }
-
-		Response(uint32_t status) {
-			this->status = status;
-		}
 	};
 
 	/**
@@ -87,7 +74,7 @@ public:
 	 * 			0	- if success
 	 * 			-1	- if error
 	 */
-	std::promise<Response> send(HTTP::Method method, std::string url, uint8_t* data, uint32_t dataSize);
+	int send(HTTP::Method method, std::string url, uint8_t* data, uint32_t dataSize);
 
 	/**
 	 * Get callback

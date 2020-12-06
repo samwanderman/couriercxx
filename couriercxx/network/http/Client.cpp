@@ -16,8 +16,6 @@
 #include <event2/util.h>
 #include <string>
 #include <thread>
-#include <future>
-#include <list>
 
 #include "../../logger/Log.h"
 
@@ -26,17 +24,17 @@
 namespace HTTP {
 
 void onRequestDone(struct evhttp_request* request, void* arg){
+	Log::debug("onRequestDone");
+
 	Client* client = reinterpret_cast<Client*>(arg);
 
-	if ((request == nullptr) || (request->response_code != 200)) {
-		Log::error("HTTP.Client.onRequestDone() error");
+	if (request == nullptr) {
+		Log::error("HTTP.Client error");
 
 		client->getCallback()(true, nullptr, 0);
 
 		return;
 	}
-
-	Log::debug("HTTP.Client.onRequestDone([%i]) success", request->response_code);
 
     uint8_t buffer[BUFFER_SIZE];
     int size = evbuffer_remove(request->input_buffer, &buffer, sizeof(buffer) - 1);
@@ -98,44 +96,14 @@ int Client::stop() {
 	return 0;
 }
 
-std::promise<Client::Response> Client::send(HTTP::Method method, std::string url, uint8_t* data = nullptr, uint32_t dataSize = 0) {
+int Client::send(HTTP::Method method, std::string url, uint8_t* data = nullptr, uint32_t dataSize = 0) {
 	Log::debug("HTTP.Client.send('%s')", url.c_str());
 
-	std::promise<Response> p;
-
-	// if client not running - exit
 	if (!running) {
-		p.set_value(Response(0));
-
-		return p;
+		return -1;
 	}
 
-	auto req = evhttp_request_new(/*onRequestDone*/[](struct evhttp_request* request, void* arg){
-		std::promise<Response>* p = reinterpret_cast<std::promise<Response>*>(arg);
-
-		Response response;
-
-		if ((request == nullptr) || (request->response_code != 200)) {
-			Log::error("HTTP.Client.onRequestDone() error");
-
-			response.status = 0;
-
-			p->set_value(response);
-
-			return;
-		}
-
-		Log::debug("HTTP.Client.onRequestDone([%i]) success", request->response_code);
-
-	    int bufferLen = evbuffer_get_length(request->input_buffer);
-	    response.status = 200;
-	    response.data.resize(bufferLen + 1);
-
-	    evbuffer_remove(request->input_buffer, &response.data[0], bufferLen);
-	    response.data[bufferLen] = 0;
-
-	    p->set_value(response);
-	}, &p);
+	auto req = evhttp_request_new(onRequestDone, this);
 	evhttp_add_header(req->output_headers, "Host", config.host.c_str());
 
 	switch (method) {
@@ -152,9 +120,7 @@ std::promise<Client::Response> Client::send(HTTP::Method method, std::string url
 	} break;
 
 	default:
-		p.set_value(Response(0));
-
-		return p;
+		return -1;
 	}
 
 	evhttp_connection_set_timeout(req->evcon, config.timeout / 1000);
@@ -164,7 +130,7 @@ std::promise<Client::Response> Client::send(HTTP::Method method, std::string url
 	});
 	th.detach();
 
-	return p;
+	return 0;
 }
 
 void Client::clean() {
