@@ -14,7 +14,7 @@
 
 namespace Connection {
 
-EventWrite::EventWrite(const Info info, const uint8_t* data, uint32_t dataSize) : IEvent(Connection::EVENT_WRITE), EventConnection(info) {
+EventWrite::EventWrite(const Info info, const uint8_t* data, uint32_t dataSize) : IEvent(EVENT_WRITE), EventConnection(info) {
 	if ((data != nullptr) && (dataSize > 0)) {
 		this->data = new uint8_t[dataSize];
 		this->dataSize = dataSize;
@@ -25,7 +25,7 @@ EventWrite::EventWrite(const Info info, const uint8_t* data, uint32_t dataSize) 
 	}
 }
 
-EventWrite::EventWrite(const Info info, const uint8_t* data, uint32_t dataSize, IListener* source, IListener* target) : IEvent(Connection::EVENT_WRITE, source, target), EventConnection(info) {
+EventWrite::EventWrite(const Info info, const uint8_t* data, uint32_t dataSize, IListener* source, IListener* target) : IEvent(EVENT_WRITE, source, target), EventConnection(info) {
 	if ((data != nullptr) && (dataSize > 0)) {
 		this->data = new uint8_t[dataSize];
 		this->dataSize = dataSize;

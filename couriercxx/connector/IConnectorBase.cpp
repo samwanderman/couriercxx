@@ -8,8 +8,6 @@
 
 #include "IConnectorBase.h"
 
-#include "../Types.h"
-
 const int IConnectorBase::ERR_DEFAULT		= -1;
 const int IConnectorBase::ERR_ALREADY_OPEN	= -2;
 const int IConnectorBase::ERR_NOT_OPEN		= -3;
@@ -50,7 +48,7 @@ int IConnectorBase::read(uint8_t* buffer, uint32_t bufferSize) {
 	return 0;
 }
 
-int IConnectorBase::read(uint8_t* buffer, uint32_t bufferSize, Timeout timeout) {
+int IConnectorBase::read(uint8_t* buffer, uint32_t bufferSize, int32_t timeout) {
 	return 0;
 }
 

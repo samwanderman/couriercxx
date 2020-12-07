@@ -14,7 +14,7 @@
 
 namespace Connection {
 
-EventRead::EventRead(const Info info, const uint8_t* data, uint32_t dataSize) : IEvent(Connection::EVENT_READ), EventConnection(info) {
+EventRead::EventRead(const Info info, const uint8_t* data, uint32_t dataSize) : IEvent(EVENT_READ), EventConnection(info) {
 	if ((data != nullptr) && (dataSize > 0)) {
 		this->data = new uint8_t[dataSize];
 		this->dataSize = dataSize;
@@ -25,7 +25,7 @@ EventRead::EventRead(const Info info, const uint8_t* data, uint32_t dataSize) : 
 	}
 }
 
-EventRead::EventRead(const Info info, const uint8_t* data, uint32_t dataSize, IListener* source, IListener* target) : IEvent(Connection::EVENT_READ, source, target), EventConnection(info) {
+EventRead::EventRead(const Info info, const uint8_t* data, uint32_t dataSize, IListener* source, IListener* target) : IEvent(EVENT_READ, source, target), EventConnection(info) {
 	if ((data != nullptr) && (dataSize > 0)) {
 		this->data = new uint8_t[dataSize];
 		this->dataSize = dataSize;

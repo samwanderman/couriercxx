@@ -11,8 +11,6 @@
 
 #include <cstdint>
 
-#include "../Types.h"
-
 /**
  * Datasource interface
  */
@@ -69,7 +67,7 @@ public:
 	 * 		- number of read bytes if success
 	 * 		- -1 if error
 	 */
-	virtual int read(uint8_t* buffer, uint32_t bufferSize, Timeout timeout) = 0;
+	virtual int read(uint8_t* buffer, uint32_t bufferSize, uint64_t timeout) = 0;
 
 	/**
 	 * Write bytes

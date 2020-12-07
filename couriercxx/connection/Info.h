@@ -12,8 +12,6 @@
 #include <cstdint>
 #include <string>
 
-#include "../Types.h"
-
 namespace Connection {
 
 /**
@@ -27,18 +25,7 @@ struct Info {
 	 * \param[in] name				- connection name
 	 * \param[in] commandTimeout	- command timeout
 	 */
-	Info(int32_t id, std::string name, Timeout commandTimeout);
-
-	/**
-	 * Constructor
-	 *
-	 * \param[in] id				- connection id
-	 * \param[in] name				- connection name
-	 * \param[in] commandTimeout	- command timeout
-	 * \param[in] reconnectOnErrors	- reconnect on errors
-	 * \param[in] reconnectTimeout	- timeout between reconnection attempts
-	 */
-	Info(int32_t id, std::string name, Timeout commandTimeout, bool reconnectOnErrors, Timeout reconnectTimeout);
+	Info(int32_t id, std::string name, uint64_t commandTimeout);
 
 	/**
 	 * Constructor
@@ -52,12 +39,9 @@ struct Info {
 	 */
 	Info();
 
-	int32_t		id					= -1;
-	std::string	name;
-	Timeout		commandTimeout		= -1;
-
-	bool		reconnectOnErrors	= false;
-	Timeout		reconnectTimeout	= -1;
+	int32_t		id				= -1;
+	std::string	name			= "";
+	uint64_t	commandTimeout	= 0;
 };
 typedef struct Info Info;
 

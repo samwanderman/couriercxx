@@ -35,7 +35,7 @@ public:
 	 * \return vector size
 	 */
 	int size() {
-		std::lock_guard lock(mutex);
+		std::lock_guard<decltype(mutex)> lock(mutex);
 
 		return container.size();
 	}
@@ -46,7 +46,7 @@ public:
 	 * \param[in] value - value
 	 */
 	void pushBack(T& value) {
-		std::lock_guard lock(mutex);
+		std::lock_guard<decltype(mutex)> lock(mutex);
 
 		container.push_back(value);
 	}
@@ -57,7 +57,7 @@ public:
 	 * \param[in] value - value
 	 */
 	void remove(T& value) {
-		std::lock_guard lock(mutex);
+		std::lock_guard<decltype(mutex)> lock(mutex);
 
 		auto it = container.begin();
 		while (it != container.end()) {
@@ -79,7 +79,7 @@ public:
 	 * \param[in] func - function to execute
 	 */
 	void forEach(std::function<void(T& value)> func) {
-		std::lock_guard lock(mutex);
+		std::lock_guard<decltype(mutex)> lock(mutex);
 
 		auto it = container.begin();
 		while (it != container.end()) {

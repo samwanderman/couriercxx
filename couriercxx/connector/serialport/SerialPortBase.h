@@ -17,7 +17,6 @@
 #endif
 
 #include "../IConnectorBase.h"
-#include "../../Types.h"
 
 /**
  * Serial port base class
@@ -31,7 +30,7 @@ public:
 		std::string	path		= "";
 		uint32_t	baudrate	= 0;
 		bool		nonBlock	= false;
-		Timeout		timeout		= -1;
+		int32_t		timeout		= 0;
 		bool		parityCheck	= false;
 		bool		stopBit		= false;
 		bool		startBit	= false;
@@ -65,11 +64,11 @@ public:
 	/**
 	 * Base serial port constructor
 	 *
-	 * \param[in] path		- path to port
-	 * \param[in] baudrate	- port baudrate
-	 * \param[in] timeout	- port IO timeout
+	 * \param[in] string path - path to port
+	 * \param[in] uint32_t baudrate- port baudrate
+	 * \param[in] uint32_t timeout - port IO timeout
 	 */
-	SerialPortBase(std::string path, uint32_t baudrate, Timeout timeout);
+	SerialPortBase(std::string path, uint32_t baudrate, int32_t timeout);
 
 	/**
 	 * Copy constructor
@@ -123,13 +122,13 @@ public:
 	/**
 	 * Read data from serial port
 	 *
-	 * \param[out]	buffer		- buffer to store data
-	 * \param[in]	bufferSize	- size of buffer
-	 * \param[in]	timeout		- timeout in msec
+	 * \param[out] uint8_t* buffer - buffer to store data
+	 * \param[in] uint32_t bufferSize - size of buffer
+	 * \param[in] int32_t timeout - timeout in msec
 	 *
 	 * \return number of read bytes if success, -1 if error
 	 */
-	int read(uint8_t* buffer, uint32_t bufferSize, Timeout timeout);
+	int read(uint8_t* buffer, uint32_t bufferSize, int32_t timeout);
 
 	/**
 	 * Write data to serial port

@@ -9,30 +9,21 @@
 #ifndef COURIERCXX_NETWORK_TCP_CLIENT_H_
 #define COURIERCXX_NETWORK_TCP_CLIENT_H_
 
-#ifndef _WIN32
-
-#include <cstdint>
-#include <condition_variable>
-#include <list>
-#include <mutex>
-#include <string>
-#include <vector>
-#include <thread>
-#include <functional>
-
 #include "../../connector/IConnectorBase.h"
-
-struct bufferevent;
-struct event_base;
+#include <cstdint>
+#include <vector>
+#include <functional>
+#include <string>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
 
 #ifdef _WIN32
-
 #include <winsock2.h>
-#include <windows.h>
-#include <ws2tcpip.h>
-#include <cstdlib>
-#include <cstdio>
-
+#else
+#include <list>
+struct bufferevent;
+struct event_base;
 #endif
 
 namespace TCP {
@@ -147,11 +138,7 @@ private:
 	uint16_t				port			= 0;
 
 	bool					opened			= false;
-	std::thread				startThread;
 	std::thread				readThread;
-
-	struct event_base*		base			= nullptr;
-	struct bufferevent*		bufferEvent		= nullptr;
 
 	std::vector<uint8_t>	bytes;
 	std::mutex				bytesMutex;
@@ -164,16 +151,17 @@ private:
 
 #ifdef _WIN32
 
-	SOCKET				socketFd	= INVALID_SOCKET;
+	SOCKET					socketFd	= INVALID_SOCKET;
 
 #else
+	std::thread				startThread;
 
+	struct event_base*		base			= nullptr;
+	struct bufferevent*		bufferEvent		= nullptr;
 #endif
 
 };
 
 } /* namespace TCP */
-
-#endif
 
 #endif /* COURIERCXX_NETWORK_TCP_CLIENT_H_ */

@@ -16,6 +16,8 @@
 #include "event/EventTimeout.h"
 #include "ListenerParams.h"
 
+#define TIMEOUT	200
+
 WrappedListener::WrappedListener(std::function<void (const IEvent*, const WrappedListener*)> listener) : IListener() {
 	this->listener = listener;
 	enable();
@@ -26,7 +28,7 @@ WrappedListener::WrappedListener(ListenerParams params, std::function<void (cons
 	this->execOnce = params.execOnce;
 	enable();
 
-	if (params.timeout > 0) {
+	if (params.timeout != (uint64_t) ~0) {
 		running = true;
 
 		auto timeoutWatcher = [this, params]() {
@@ -37,7 +39,7 @@ WrappedListener::WrappedListener(ListenerParams params, std::function<void (cons
 					break;
 				}
 
-				std::this_thread::yield();
+				System::sleep(TIMEOUT);
 			}
 		};
 

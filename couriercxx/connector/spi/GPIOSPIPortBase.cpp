@@ -230,6 +230,6 @@ uint8_t GPIOSPIPortBase::readMISO() {
 	return gpioMOSI->getValue() - GPIOPortBase::Signal::LOW;
 }
 
-void GPIOSPIPortBase::delay(Timeout timeout) {
+void GPIOSPIPortBase::delay(uint32_t timeout) {
 	System::sleep(timeout);
 }

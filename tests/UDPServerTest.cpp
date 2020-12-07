@@ -17,6 +17,8 @@
 #include "../couriercxx/network/udp/Server.h"
 #include "../couriercxx/util/System.h"
 
+#define TIMEOUT	2000
+
 int main(int ac, char** av) {
 	Log::setAppName(&av[0][2]);
 
@@ -51,7 +53,7 @@ int main(int ac, char** av) {
 	Log::debug("UDP.Server.open() success");
 
 	while (true) {
-		std::this_thread::yield();
+		System::sleep(TIMEOUT);
 	}
 
 	if (server->close() == -1) {

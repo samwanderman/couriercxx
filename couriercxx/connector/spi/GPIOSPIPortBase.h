@@ -14,7 +14,6 @@
 #include <thread>
 
 #include "../IConnectorBase.h"
-#include "../../Types.h"
 
 class GPIOPortBase;
 
@@ -125,7 +124,7 @@ private:
 	void setCS();
 	void clearCS();
 	uint8_t readMISO();
-	void delay(Timeout timeout);
+	void delay(uint32_t timeout);
 };
 
 #endif /* COURIERCXX_CONNECTOR_SPI_GPIOSPIPORTBASE_H_ */

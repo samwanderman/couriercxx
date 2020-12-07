@@ -131,8 +131,10 @@ void Clock::setTime(Time newTime) {
 	time.wMilliseconds	= newTime.msecond;
 	SetSystemTime(&time);
 #else
-	time_t t = newTime.getTimestamp() / 1000;
-	stime(&t);
+	struct timespec t;
+	t.tv_nsec = 0;
+	t.tv_sec = newTime.getTimestamp();
+	clock_settime(CLOCK_REALTIME, &t);
 #endif
 }
 

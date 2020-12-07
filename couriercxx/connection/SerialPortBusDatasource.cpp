@@ -87,7 +87,7 @@ int SerialPortBusDatasource::read(uint8_t* buffer, uint32_t bufferSize) {
 	return -1;
 }
 
-int SerialPortBusDatasource::read(uint8_t* buffer, uint32_t bufferSize, Timeout timeout) {
+int SerialPortBusDatasource::read(uint8_t* buffer, uint32_t bufferSize, uint64_t timeout) {
 //	Log::debug("SerialPortBusDatasource.read() with timeout %" PRIu64, timeout);
 
 	if (running && port->isOpen()) {

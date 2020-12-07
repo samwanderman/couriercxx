@@ -11,7 +11,6 @@
 
 #include <list>
 #include <mutex>
-#include <atomic>
 #include <thread>
 #include <condition_variable>
 
@@ -20,18 +19,34 @@
 #include "event/EventWrite.h"
 #include "Info.h"
 
+#ifdef _WIN32
+#ifdef MYDLL_EXPORTS
+#define MYDLL_API __declspec(dllexport)
+#else
+#define MYDLL_API __declspec(dllimport)
+#endif
+#else
+#ifndef MYDLL_API
+#define MYDLL_API
+#endif
+#endif
+
 class IConnectorBase;
 
 namespace Connection {
+
+extern const MYDLL_API EVENT_T EVENT_READ;
+extern const MYDLL_API EVENT_T EVENT_WRITE;
+extern const MYDLL_API EVENT_T EVENT_STATUS;
 
 /**
  * Connection class
  */
 class Connection : public IListener {
 public:
-	static const EVENT_T EVENT_READ;
-	static const EVENT_T EVENT_WRITE;
-	static const EVENT_T EVENT_STATUS;
+//	static const EVENT_T EVENT_READ;
+//	static const EVENT_T EVENT_WRITE;
+//	static const EVENT_T EVENT_STATUS;
 
 	/**
 	 * Constructor
@@ -79,23 +94,16 @@ public:
 	Info getInfo();
 
 private:
-	Info					info;
-	IConnectorBase*			connector		= nullptr;
+	Info info;
+	IConnectorBase* connector = nullptr;
 
-	std::list<EventWrite*>	eventsList;
-	std::mutex				eventsListMutex;
-	std::condition_variable	cond;
+	std::list<EventWrite*> eventsList;
+	std::mutex eventsListMutex;
+	std::condition_variable cond;
 
-	std::atomic<bool>		running{false};
-	std::atomic<bool>		stopThreads{false};
-
-	std::thread				lazyStart;
-	std::thread				readThread;
-	std::thread				eventsThread;
-
-	int connect();
-	int disconnect();
-	int reconnect();
+	bool running = false;
+	std::thread readThread;
+	std::thread eventsThread;
 };
 
 } /* namespace Connection */

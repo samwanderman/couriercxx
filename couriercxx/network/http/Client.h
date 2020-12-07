@@ -13,7 +13,6 @@
 #include <functional>
 
 #include "Http.h"
-#include "../../Types.h"
 
 struct event_base;
 struct evhttp_connection;
@@ -31,7 +30,7 @@ public:
 	struct ClientConfig {
 		std::string	host;
 		uint32_t	port	= 0;
-		Timeout		timeout = -1;
+		uint32_t	timeout = 0;
 	};
 
 	/**

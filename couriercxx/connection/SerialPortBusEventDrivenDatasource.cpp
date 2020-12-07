@@ -29,8 +29,8 @@ int SerialPortBusEventDrivenDatasource::enable() {
 	tmpBuffer = new uint8_t[BUFFER_SIZE];
 	tmpBufferSize = 0;
 
-	Dispatcher::addListener(Connection::Connection::EVENT_READ, this);
-	Dispatcher::addListener(Connection::Connection::EVENT_STATUS, this);
+	Dispatcher::addListener(Connection::EVENT_READ, this);
+	Dispatcher::addListener(Connection::EVENT_STATUS, this);
 
 	return IListener::enable();
 }
@@ -38,8 +38,8 @@ int SerialPortBusEventDrivenDatasource::enable() {
 int SerialPortBusEventDrivenDatasource::disable() {
 	int res = IListener::disable();
 
-	Dispatcher::removeListener(Connection::Connection::EVENT_STATUS, this);
-	Dispatcher::removeListener(Connection::Connection::EVENT_READ, this);
+	Dispatcher::removeListener(Connection::EVENT_STATUS, this);
+	Dispatcher::removeListener(Connection::EVENT_READ, this);
 
 	if (tmpBuffer != nullptr) {
 		delete[] tmpBuffer;
@@ -77,7 +77,7 @@ int SerialPortBusEventDrivenDatasource::write(const uint8_t* buffer, uint32_t bu
 }
 
 void SerialPortBusEventDrivenDatasource::on(const IEvent* event) {
-	if (event->getType() == Connection::Connection::EVENT_READ) {
+	if (event->getType() == Connection::EVENT_READ) {
 		const Connection::EventRead* ev = dynamic_cast<const Connection::EventRead*>(event);
 
 		accessMutex.lock();

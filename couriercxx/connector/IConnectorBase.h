@@ -11,8 +11,6 @@
 
 #include <cstdint>
 
-#include "../Types.h"
-
 /**
  * Base connector interface
  */
@@ -55,27 +53,21 @@ public:
 	/**
 	 * Open connector
 	 *
-	 * \return
-	 * 		- 0 - success
-	 * 		- -1 - error
+	 * \return 0 - success, -1 - error
 	 */
 	virtual int open();
 
 	/**
 	 * Close connector
 	 *
-	 * \return
-	 * 		- 0 - success
-	 * 		- -1 - error
+	 * \return 0 - success, -1 - error
 	 */
 	virtual int close();
 
 	/**
 	 * Check if connector is open
 	 *
-	 * \return
-	 * 		- true - connector is open
-	 * 		- false - connector is closed
+	 * \return true - connector is open, false - connector is closed
 	 */
 	virtual bool isOpen();
 
@@ -87,37 +79,31 @@ public:
 	/**
 	 * Read data from connector
 	 *
-	 * \param[out]	buffer		- buffer to store data
-	 * \param[in]	bufferSize	- buffer size
+	 * \param[out] uint8_t* buffer - buffer to store data
+	 * \param[in] uint32_t bufferSize - buffer size
 	 *
-	 * \return
-	 * 		- number of read bytes if success
-	 * 		- -1 if error
+	 * \return number of read bytes if success, -1 if error
 	 */
 	virtual int read(uint8_t* buffer, uint32_t bufferSize);
 
 	/**
 	 * Read data from connector, wait for timeout msec
 	 *
-	 * \param[out]	buffer		- buffer to store data
-	 * \param[in]	bufferSize	- buffer size
-	 * \param[in]	timeout		- read timeout (msec)
+	 * \param[out] uint8_t* buffer - buffer to store data
+	 * \param[in] uint32_t bufferSize - buffer size
+	 * \param[in] uint32_t timeout - read timeout (msec)
 	 *
-	 * \return
-	 * 		- number of read bytes if success
-	 * 		- -1 if error or timeout reached
+	 * \return number of read bytes if success, -1 if error or timeout reached
 	 */
-	virtual int read(uint8_t* buffer, uint32_t bufferSize, Timeout timeout);
+	virtual int read(uint8_t* buffer, uint32_t bufferSize, int32_t timeout);
 
 	/**
 	 * Write data to connector
 	 *
-	 * \param[in] buffer		- buffer with data
-	 * \param[in] bufferSize	- buffer size
+	 * \param[in] const uint8_t* buffer - buffer with data
+	 * \param[in] uint32_t bufferSize - buffer size
 	 *
-	 * \return
-	 * 		- number of written bytes if success
-	 * 		- -1 if error
+	 * \return number of written bytes if success, -1 if error
 	 */
 	virtual int write(const uint8_t* buffer, uint32_t bufferSize);
 

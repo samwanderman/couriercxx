@@ -75,7 +75,7 @@ public:
 	 * 		- number of read bytes if success
 	 * 		- -1 if error
 	 */
-	int read(uint8_t* buffer, uint32_t bufferSize, Timeout timeout);
+	int read(uint8_t* buffer, uint32_t bufferSize, uint64_t timeout);
 
 	/**
 	 * Write bytes to datasource

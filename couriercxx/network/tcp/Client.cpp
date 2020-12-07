@@ -8,25 +8,23 @@
 
 #include "Client.h"
 
-#include <cstdint>
-#include <atomic>
-
-#include "../../util/System.h"
-
-#ifndef _WIN32
-
+#ifdef _WIN32
+#include <ws2tcpip.h>
+#pragma comment(lib, "Ws2_32.lib")
+#else
 #include <arpa/inet.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <sys/socket.h>
 #include <event2/buffer.h>
 #include <event2/bufferevent.h>
 #include <event2/event.h>
 #include <event2/util.h>
 #include <event2/thread.h>
-#include <netinet/in.h>
-#include <netinet/tcp.h>
-#include <sys/socket.h>
 #include <cstring>
-#include <iterator>
-#include <thread>
+#include <atomic>
+#include "../../util/System.h"
+#endif
 
 #include "../../logger/Log.h"
 
@@ -34,7 +32,7 @@ namespace TCP {
 
 #define BUFFER_MAX_SIZE	1024
 
-uint64_t totalRead = 0;
+#ifndef _WIN32
 
 static void readCallback(struct bufferevent* buffEvent, void* ctx) {
 	Log::debug("TCP.Client.readCallback()");
@@ -43,8 +41,6 @@ static void readCallback(struct bufferevent* buffEvent, void* ctx) {
 
 	struct evbuffer *inputBuffer	= bufferevent_get_input(buffEvent);
 	uint32_t		len				= evbuffer_get_length(inputBuffer);
-
-	totalRead += len;
 
 	std::vector<uint8_t> bytes(len);
 	evbuffer_remove(inputBuffer, &bytes[0], len);
@@ -63,6 +59,8 @@ static void eventCallback(struct bufferevent *buffEvent, short events, void *ctx
 		bufferevent_free(buffEvent);
 	}
 }
+
+#endif
 
 Client::Client(std::string ip, uint16_t port) : Client(ip, port, nullptr) { }
 
@@ -181,8 +179,8 @@ int Client::open() {
 				Log::debug("read %i bytes", readBytes);
 				if (readBytes >= 0) {
 #ifdef DEBUG
-					for (int i = 0; i < std::min(readBytes, 200); i++) {
-						Log::log("%X ", buffer[i]);
+					for (uint32_t i = 0; i < std::min(res, 200); i++) {
+						Log::log("%X ", tmpBuffer[i]);
 					}
 					Log::log("\r\n");
 #endif
@@ -238,7 +236,7 @@ int Client::write(const uint8_t* buffer, uint32_t bufferSize) {
 		return 0;
 	}
 
-	std::lock_guard lock(writeMutex);
+	std::lock_guard<decltype(writeMutex)> lock(writeMutex);
 
 #ifdef _WIN32
 
@@ -313,11 +311,9 @@ bool Client::isOpen() {
 }
 
 void Client::addData(std::vector<uint8_t>& data) {
-	std::lock_guard lock(bytesMutex);
+	std::lock_guard<decltype(bytesMutex)> lock(bytesMutex);
 	bytes.insert(bytes.end(), data.begin(), data.end());
 	bytesVariable.notify_all();
 }
 
 } /* namespace TCP */
-
-#endif

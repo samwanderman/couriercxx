@@ -35,7 +35,7 @@ public:
 	 * \return size
 	 */
 	int size() {
-		std::lock_guard lock(mutex);
+		std::lock_guard<decltype(mutex)> lock(mutex);
 
 		return container.size();
 	}
@@ -46,7 +46,7 @@ public:
 	 * \param[in] item - item to push
 	 */
 	void push(T& item) {
-		std::lock_guard lock(mutex);
+		std::lock_guard<decltype(mutex)> lock(mutex);
 
 		container.push(item);
 	}
@@ -59,7 +59,7 @@ public:
 	 * 		- nullptr if error
 	 */
 	std::shared_ptr<T> pop() {
-		std::lock_guard lock(mutex);
+		std::lock_guard<decltype(mutex)> lock(mutex);
 
 		if (container.size() > 0) {
 			auto it = std::make_shared<T>(std::move(container.front()));

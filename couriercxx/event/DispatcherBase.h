@@ -18,7 +18,6 @@
 
 #include "IEvent.h"
 #include "IListener.h"
-#include "../Types.h"
 
 /**
  * Event dispatcher class
@@ -73,11 +72,11 @@ public:
 	/**
 	 * Wait for event with timeout
 	 *
-	 * \param[in] eventType	- type
-	 * \param[in] listener	- listener
-	 * \param[in] timeout	- timeout
+	 * \param[in] EVENT_T eventType - type
+	 * \param[in] function(const IEvent*) listener - listener
+	 * \param[in] uint64_t timeout - timeout
 	 */
-	void wait(EVENT_T eventType, std::function<void (const IEvent*)> listener, Timeout timeout);
+	void wait(EVENT_T eventType, std::function<void (const IEvent*)> listener, uint64_t timeout);
 
 
 private:

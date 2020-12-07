@@ -12,11 +12,11 @@
 
 namespace Connection {
 
-EventStatus::EventStatus(const Info info, uint8_t status) : IEvent(Connection::EVENT_STATUS), EventConnection(info) {
+EventStatus::EventStatus(const Info info, uint8_t status) : IEvent(EVENT_STATUS), EventConnection(info) {
 	this->status = status;
 }
 
-EventStatus::EventStatus(const Info info, uint8_t status, IListener* source, IListener* target) : IEvent(Connection::EVENT_STATUS, source, target), EventConnection(info) {
+EventStatus::EventStatus(const Info info, uint8_t status, IListener* source, IListener* target) : IEvent(EVENT_STATUS, source, target), EventConnection(info) {
 	this->status = status;
 }
 

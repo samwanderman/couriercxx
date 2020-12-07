@@ -33,7 +33,7 @@ DispatcherBase::DispatcherBase() {
 			uint64_t now = Clock::getTimestamp();
 
 			{
-				std::unique_lock lock(listenerMutex);
+				std::unique_lock<decltype(listenerMutex)> lock(listenerMutex);
 
 				// iterate through listeners for different events
 				std::map<EVENT_T, std::list<IListener*>*>::iterator it = listeners.begin();
@@ -72,7 +72,7 @@ DispatcherBase::~DispatcherBase() {
 		th.join();
 	}
 
-	std::unique_lock lock(listenerMutex);
+	std::unique_lock<decltype(listenerMutex)> lock(listenerMutex);
 
 	std::map<EVENT_T, std::list<IListener*>*>::iterator it = listeners.begin();
 	while (it != listeners.end()) {
@@ -89,7 +89,7 @@ DispatcherBase::~DispatcherBase() {
 int DispatcherBase::addListener(EVENT_T eventType, IListener* listener) {
 	Log::debug("DispatcherBase.addListener(%x)", listener);
 
-	std::unique_lock lock(listenerMutex);
+	std::unique_lock<decltype(listenerMutex)> lock(listenerMutex);
 
 	std::list<IListener*>* foundListeners = getListeners(eventType);
 	bool eventExists = foundListeners != nullptr;
@@ -114,7 +114,7 @@ int DispatcherBase::addListener(EVENT_T eventType, IListener* listener) {
 int DispatcherBase::removeListener(EVENT_T eventType, IListener* listener) {
 	Log::debug("DispatcherBase.removeListener(%x)", listener);
 
-	std::unique_lock lock(listenerMutex);
+	std::unique_lock<decltype(listenerMutex)> lock(listenerMutex);
 
 	std::list<IListener*>* foundListeners = getListeners(eventType);
 	bool eventExists = foundListeners != nullptr;
@@ -178,7 +178,7 @@ void DispatcherBase::wait(EVENT_T eventType, std::function<void (const IEvent*)>
 	}));
 }
 
-void DispatcherBase::wait(EVENT_T eventType, std::function<void (const IEvent*)> listener, Timeout timeout) {
+void DispatcherBase::wait(EVENT_T eventType, std::function<void (const IEvent*)> listener, uint64_t timeout) {
 	ListenerParams param;
 	param.timeout = Clock::getTimestamp() + timeout;
 	addListener(eventType, new WrappedListener(param, [this, eventType, listener](const IEvent* event, const WrappedListener* self) {
